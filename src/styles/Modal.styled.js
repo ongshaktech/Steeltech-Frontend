@@ -12,7 +12,7 @@ export const ModalComponent = styled.div`
         position: relative;
         padding: 30px;
         max-width: 580px;
-        margin: 200px auto;
+        margin: 22vh auto;
         background: #fff;
         border-radius: 10px;
     
