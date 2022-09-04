@@ -3,7 +3,6 @@ import { ref, onValue } from "firebase/database";
 import { Timestamp, addDoc, collection, updateDoc, doc } from 'firebase/firestore';
 import { useEffect, useState, useRef, useReducer} from "react";
 import { onSnapshot, query, where , orderBy } from 'firebase/firestore';
-import { FieldValue } from "firebase/firestore";
 
 // Realtime Database
 export const GetData = (path, callback) => {
@@ -37,44 +36,6 @@ export const useFirestore = (collectionName) => {
         try {
             const creatingDate = timeStamp.fromDate(new Date());
             const addDocument = await addDoc(ref, { ...doc, creatingDate});
-
-
-
-
-
-
-            const statsRef = db.collection('stories').doc('--stats--');
-            
-            const increment = firebase.firestore.FieldValue.increment(1);
-            
-            const batch = db.batch();
-            const storyRef = db.collection('stories').doc(`${Math.random()}`);
-            batch.set(storyRef, { title: 'New Story!' });
-            
-            batch.set(statsRef, { storyCount: increment }, { merge: true });
-            batch.commit();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             dispatchIfNotCancelled({ type: "ADD_DOCUMENT", payload: addDocument });
         }
         catch (error) {

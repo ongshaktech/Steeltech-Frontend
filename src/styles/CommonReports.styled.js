@@ -14,21 +14,28 @@ export const ReportDetails = styled.div`
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         align-items: center;
-        /* justify-items: center; */
         gap: 1rem;
         margin-bottom: 2rem;
         font-size: 1.8rem;
         font-weight: 700;
+        text-align: center;
     }
     
     .table_content {
+        text-align: center;
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         align-items: center;
-        /* justify-items: center; */
         gap: 1rem;
         font-size: 1.6rem;
-        margin-bottom: 1rem;
+        margin-bottom: .8rem;
+        margin-top: .8rem;
+    }
+
+    .divider{
+        color: #dcdbdb;
+        border-width: 1px;
+        border-color: aliceblue;
     }
 `
 

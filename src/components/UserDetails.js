@@ -1,64 +1,28 @@
 import React from 'react'
 import { ReportDetails } from '../styles/CommonReports.styled'
 
-const userData = [
-    {
-        id: '1',
-        userName: "John Doe",
-        email: "johndoe@gmail.com",
-        phone: "018762834",
-        type: "admin"
-    },
-    {
-        id: '2',
-        userName: "John Doe",
-        email: "johndoe@gmail.com",
-        phone: "018762834",
-        type: "admin"
-    },
-    {
-        id: '3',
-        userName: "John Doe",
-        email: "johndoe@gmail.com",
-        phone: "018762834",
-        type: "manager"
-    },
-    {
-        id: '4',
-        userName: "John Doe",
-        email: "johndoe@gmail.com",
-        phone: "018762834",
-        type: "manager"
-    },
-    {
-        id: '5',
-        userName: "John Doe",
-        email: "johndoe@gmail.com",
-        phone: "018762834",
-        type: "admin"
-    },
-]
-
-export default function UserDetails() {
+export default function UserDetails({ userdata }) {
     return (
         <ReportDetails>
             <div className='table_heading'>
                 <p>ID</p>
-                <p>UserName</p>
+                <p>Name</p>
+                <p>User Name</p>
                 <p>Email</p>
-                <p>Phone</p>
-                <p>Type</p>
+                <p>Access</p>
             </div>
             {
-                userData.map(item => (
-
-                    <div className='table_content' key={item.id}>
-                        <p>{item.id}</p>
-                        <p>{item.userName}</p>
-                        <p>{item.email}</p>
-                        <p>{item.phone}</p>
-                        <p>{item.type}</p>
-                    </div>
+                userdata.map((item, index) => (
+                    <>
+                        <hr className='divider' />
+                        <div className='table_content' key={item.id}>
+                            <p>{index + 1}</p>
+                            <p>{item.name}</p>
+                            <p>{item.username}</p>
+                            <p>{item.email}</p>
+                            <p>{item.access}</p>                            
+                        </div>
+                    </>
                 ))
             }
         </ReportDetails>
