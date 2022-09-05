@@ -1,0 +1,39 @@
+body{
+    background-color: #e5e5e5;
+}
+.loginDivCont{
+    max-width: 30rem;
+    padding: 1.5rem;
+    background-color: white;
+    border-radius: 2rem;
+    margin: auto;
+    margin-top: 25vh;
+    text-align: center;
+}
+
+.loginInputField{
+    margin-top: 1rem;
+    font-size: large;
+    border-radius: .5rem;
+    outline: none;
+    border-width: 1.5px;
+    border-style: solid;
+    padding: .8rem;
+}
+
+.loginButton{
+    background-color: #8884d8;
+    color: white;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    width: 8rem;
+    border-radius: .8rem;
+    font-size: large;
+    padding: .6rem;
+    margin-top: 1rem;
+}
+
+.loginButton:hover{
+    background-color: #6964be;
+}

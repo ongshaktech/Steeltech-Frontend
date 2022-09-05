@@ -3,10 +3,12 @@ import GlobalStyles from './styles/Global.styled';
 import Sidebar from './shared/Sidebar';
 import { WebWrapper } from './styles/Common.styled';
 import Dashboard from './views/Dashboard/Dashboard';
-import {Routes,Route} from "react-router-dom";
+import Login from "./views/Authentication/Login";
+import { Routes, Route } from "react-router-dom";
 import Reports from './views/Reports/Reports';
 import Users from './views/Users/Users';
 import ManageProducts from './views/ManageProducts/ManageProducts';
+import { useLocation } from "react-router-dom";
 
 const Theme = {
   color: {
@@ -20,21 +22,30 @@ const Theme = {
 };
 
 function App() {
+  let location = useLocation();
   return (
     // <BrowserRouter>
-    <ThemeProvider theme={Theme}>
-      <GlobalStyles />
+    <>
+      {location.pathname === '/login' ?
+      <Routes>
+        <Route path="/login" element={<Login />} />
+      </Routes>
+      :
+      <ThemeProvider theme={Theme}>
+        <GlobalStyles />
 
-      <WebWrapper>
-        <Sidebar />
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/report" element={<Reports />} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/manage-products" element={<ManageProducts />} />
-        </Routes>
-      </WebWrapper>
-    </ThemeProvider>
+        <WebWrapper>
+          <Sidebar />
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/report" element={<Reports />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/manage-products" element={<ManageProducts />} />
+          </Routes>
+        </WebWrapper>
+      </ThemeProvider>
+      }
+    </>
     // </BrowserRouter>
   );
 }

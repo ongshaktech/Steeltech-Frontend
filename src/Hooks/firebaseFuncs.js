@@ -2,7 +2,7 @@ import { db_firestore, db_realtime } from "./config";
 import { ref, onValue } from "firebase/database";
 import { Timestamp, addDoc, collection, updateDoc, doc } from 'firebase/firestore';
 import { useEffect, useState, useRef, useReducer} from "react";
-import { onSnapshot, query, where , orderBy } from 'firebase/firestore';
+import { onSnapshot, query, where , orderBy, getDocs } from 'firebase/firestore';
 
 // Realtime Database
 export const GetData = (path, callback) => {
@@ -14,6 +14,36 @@ export const GetData = (path, callback) => {
 }
 
 // ------- Firestore Database ---------
+export async function AuthLogin (collection_name, email, password) {
+    const ref = collection(db_firestore, collection_name);
+
+    const q = query(ref, where('email', '==', email), where('password', '==', password));
+
+    const querySnapshot = await getDocs(q);
+    let items = [];
+
+    querySnapshot.forEach((doc) => {  
+      items.push(doc.data());
+    });
+
+    return items.length !== 0 ? true : false;
+}
+
+
+export async function FirestoreQuery (collection_name, target, operator, value) {
+    const ref = collection(db_firestore, collection_name);
+    const q = query(ref, where(target, operator, value));
+
+    const querySnapshot = await getDocs(q);
+    let items = [];
+
+    querySnapshot.forEach((doc) => {  
+      items.push(doc.data());
+    });
+
+    return items;
+}
+
 
 export const useFirestore = (collectionName) => {
     const [isCancelled, setIsCancelled] = useState(false);
