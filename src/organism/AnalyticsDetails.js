@@ -14,9 +14,9 @@ export default function AnalyticsDetails() {
                 </div>
             </div>
             <div className='detail'>
-                <p><sapn style={{ fontWeight: 700 }}>Highest Mass : </sapn><span>2000KG</span></p>
-                <p><sapn style={{ fontWeight: 700 }}>Machine No : </sapn><span>Ek9123</span></p>
-                <p><sapn style={{ fontWeight: 700 }}>Max/Minute : </sapn><span>200 KG/Minute</span></p>
+                <p><span style={{ fontWeight: 700 }}>Highest Mass : </span><span>2000KG</span></p>
+                <p><span style={{ fontWeight: 700 }}>Machine No : </span><span>Ek9123</span></p>
+                <p><span style={{ fontWeight: 700 }}>Max/Minute : </span><span>200 KG/Minute</span></p>
             </div>
             <div>
                 <Button>View More</Button>

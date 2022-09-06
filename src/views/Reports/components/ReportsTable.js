@@ -144,7 +144,9 @@ const details = [
     },
 ]
 
-export default function ReportsTable() {
+export default function ReportsTable({ReportData}) {
+    console.log(ReportData);
+    
     return (
         <ReportTableWrapper>
             <div className='table_heading'>

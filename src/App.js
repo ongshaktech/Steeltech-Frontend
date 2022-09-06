@@ -8,7 +8,12 @@ import { Routes, Route } from "react-router-dom";
 import Reports from './views/Reports/Reports';
 import Users from './views/Users/Users';
 import ManageProducts from './views/ManageProducts/ManageProducts';
-import { useLocation } from "react-router-dom";
+import { GetCookie } from "./views/Authentication/Cookies";
+import { AuthLogin } from "./Hooks/firebaseFuncs";
+import { useState, useEffect } from "react";
+import { Triangle } from "react-loader-spinner";
+import './styles/spinnerStyle.css';
+import { ProtectedRoute } from "./views/Authentication/ProtectedRoute";
 
 const Theme = {
   color: {
@@ -22,31 +27,58 @@ const Theme = {
 };
 
 function App() {
-  let location = useLocation();
-  return (
-    // <BrowserRouter>
-    <>
-      {location.pathname === '/login' ?
-      <Routes>
-        <Route path="/login" element={<Login />} />
-      </Routes>
-      :
-      <ThemeProvider theme={Theme}>
-        <GlobalStyles />
+  let [isUser, setUser] = useState("unknown");
+  let [authview, setAuthview] = useState(<></>);
 
-        <WebWrapper>
-          <Sidebar />
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/report" element={<Reports />} />
-            <Route path="/users" element={<Users />} />
-            <Route path="/manage-products" element={<ManageProducts />} />
-          </Routes>
-        </WebWrapper>
-      </ThemeProvider>
+  useEffect(
+    () => {
+      AuthLogin('users', GetCookie('email'), GetCookie('pswd')).then(
+        (response) => {
+          if (response[0]) setUser('is_user');
+          else setUser("not_user");
+        }
+      );
+    }, []
+  );
+
+  useEffect(
+    () => {
+      if (isUser === 'unknown') setAuthview(
+        <div className="loadingSpinner">
+          <Triangle
+            height="80"
+            width="80"
+            color="#4fa94d"
+            ariaLabel="triangle-loading"
+            visible={true} />
+        </div>
+      );
+      else if (isUser === 'not_user') setAuthview(<Login />);
+    }, [isUser]
+  );
+
+  return (
+    <>
+      {isUser !== 'is_user' ?
+        <>
+          {authview}
+        </>
+        :
+        <ThemeProvider theme={Theme}>
+          <GlobalStyles />
+
+          <WebWrapper>
+            <Sidebar />
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/report" element={<Reports />} />
+              <Route path="/users" element={<Users />} />
+              <Route path="/manage-products" element={<ManageProducts />} />
+            </Routes>
+          </WebWrapper>
+        </ThemeProvider>
       }
     </>
-    // </BrowserRouter>
   );
 }
 

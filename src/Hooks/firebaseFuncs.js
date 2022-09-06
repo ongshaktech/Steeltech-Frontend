@@ -2,7 +2,7 @@ import { db_firestore, db_realtime } from "./config";
 import { ref, onValue } from "firebase/database";
 import { Timestamp, addDoc, collection, updateDoc, doc } from 'firebase/firestore';
 import { useEffect, useState, useRef, useReducer} from "react";
-import { onSnapshot, query, where , orderBy, getDocs } from 'firebase/firestore';
+import { onSnapshot, query, where , orderBy, getDocs, limit } from 'firebase/firestore';
 
 // Realtime Database
 export const GetData = (path, callback) => {
@@ -14,19 +14,20 @@ export const GetData = (path, callback) => {
 }
 
 // ------- Firestore Database ---------
+
 export async function AuthLogin (collection_name, email, password) {
     const ref = collection(db_firestore, collection_name);
 
-    const q = query(ref, where('email', '==', email), where('password', '==', password));
+    const q = query(ref, where('email', '==', email), where('password', '==', password), limit(1));
 
     const querySnapshot = await getDocs(q);
+    
     let items = [];
-
     querySnapshot.forEach((doc) => {  
       items.push(doc.data());
     });
 
-    return items.length !== 0 ? true : false;
+    return [items.length !== 0, items];
 }
 
 
@@ -108,7 +109,7 @@ export const useCollection = (collectionName, _query, _orderBy) => {
         let ref = collection(db_firestore, collectionName);
 
         if(currentQuery) {
-            ref = query(ref, where(...currentQuery), orderBy("createdAt"));
+            ref = query(ref, where(...currentQuery), orderBy("createdAt","desc"));
         }
 
         setIsLoading(true);

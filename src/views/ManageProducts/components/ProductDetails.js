@@ -10,7 +10,6 @@ import { useFirestore, useCollection } from '../../../Hooks/firebaseFuncs';
 export default function ProductDetails({ setshowProductModal, showProductModal }) {
 
   let [formData, setFormData] = useState({});
-  let [productData, setProductData] = useState([]);
   const { document } = useCollection('products');
   const { addDocument } = useFirestore('products');
 
