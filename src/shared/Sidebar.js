@@ -1,7 +1,8 @@
 import React from 'react'
-import { FaEnvelope, FaRegLifeRing, FaRegBell, FaChartBar, FaDharmachakra } from 'react-icons/fa';
+import { FaSignInAlt, FaRegLifeRing, FaRegBell, FaChartBar, FaDharmachakra } from 'react-icons/fa';
 import { NavSidebar } from '../styles/NavSidebar'
 import { NavLink } from "react-router-dom"
+import { ClearCookie } from '../views/Authentication/Cookies';
 
 
 export default function Sidebar() {
@@ -46,7 +47,12 @@ export default function Sidebar() {
                 </div>
             </NavLink>
             <div>
-                <FaEnvelope />
+                <a title='logout' onClick={()=>{
+                  ClearCookie();
+                  window.location.reload();  
+                }}>
+                    <FaSignInAlt />    
+                </a>
             </div>
         </NavSidebar>
     )

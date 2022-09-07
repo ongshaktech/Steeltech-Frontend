@@ -13,7 +13,6 @@ import { AuthLogin } from "./Hooks/firebaseFuncs";
 import { useState, useEffect } from "react";
 import { Triangle } from "react-loader-spinner";
 import './styles/spinnerStyle.css';
-import { ProtectedRoute } from "./views/Authentication/ProtectedRoute";
 
 const Theme = {
   color: {

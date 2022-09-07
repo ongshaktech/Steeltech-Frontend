@@ -4,16 +4,19 @@ import ProductForm from '../../../components/ProductForm';
 import Modal from '../../../organism/Modal';
 import { ReportsWrapper } from '../../../styles/CommonReports.styled';
 import { useState, useEffect } from 'react';
-import { useFirestore, useCollection } from '../../../Hooks/firebaseFuncs';
+import { useFirestore, GetFirestoreData } from '../../../Hooks/firebaseFuncs';
 
 
 export default function ProductDetails({ setshowProductModal, showProductModal }) {
-
+  let [TableData, setTableData] = useState([]);
   let [formData, setFormData] = useState({});
-  const { document } = useCollection('products');
-  const { addDocument } = useFirestore('products');
+  GetFirestoreData('products').then(
+    (data) => {
+      setTableData(data);
+    }
+  );
 
-  console.log(document);
+  const { addDocument } = useFirestore('products');
 
 
   useEffect(
@@ -26,11 +29,11 @@ export default function ProductDetails({ setshowProductModal, showProductModal }
 
   return (
     <ReportsWrapper>
-      <ProductDetail productData={document}/>
+      <ProductDetail productData={TableData} />
       {
         showProductModal && <Modal>
           <div onClick={() => setshowProductModal(false)} className='button'>X</div>
-          <ProductForm setFormData={setFormData} setshowProductModal={setshowProductModal}/>
+          <ProductForm setFormData={setFormData} setshowProductModal={setshowProductModal} />
         </Modal>
       }
     </ReportsWrapper>

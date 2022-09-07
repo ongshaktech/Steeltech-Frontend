@@ -3,6 +3,7 @@ import { ref, onValue } from "firebase/database";
 import { Timestamp, addDoc, collection, updateDoc, doc } from 'firebase/firestore';
 import { useEffect, useState, useRef, useReducer} from "react";
 import { onSnapshot, query, where , orderBy, getDocs, limit } from 'firebase/firestore';
+import { serverTimestamp } from "firebase/firestore";
 
 // Realtime Database
 export const GetData = (path, callback) => {
@@ -45,6 +46,21 @@ export async function FirestoreQuery (collection_name, target, operator, value) 
     return items;
 }
 
+export async function GetFirestoreData(collection_name) {
+    const ref = collection(db_firestore, collection_name);
+    const q = query(ref, orderBy('creatingDate', 'desc'));
+
+    const querySnapshot = await getDocs(q);
+    let items = [];
+
+    querySnapshot.forEach((doc) => {  
+      items.push(doc.data());
+    });
+
+    return items;
+}
+
+
 
 export const useFirestore = (collectionName) => {
     const [isCancelled, setIsCancelled] = useState(false);
@@ -65,8 +81,7 @@ export const useFirestore = (collectionName) => {
         dispatch("IS_LOADING");
 
         try {
-            const creatingDate = timeStamp.fromDate(new Date());
-            const addDocument = await addDoc(ref, { ...doc, creatingDate});
+            const addDocument = await addDoc(ref, { ...doc, creatingDate: serverTimestamp()});
             dispatchIfNotCancelled({ type: "ADD_DOCUMENT", payload: addDocument });
         }
         catch (error) {
@@ -94,41 +109,6 @@ export const useFirestore = (collectionName) => {
 
     return { addDocument, response, updateDocument };
 }
-
-
-// Firestore Collection
-
-export const useCollection = (collectionName, _query, _orderBy) => {
-    const [document, setDocument] = useState([]);
-    let [isLoading, setIsLoading] = useState(false);
-
-    const currentQuery = useRef(_query).current;
-    let orderB = useRef(_orderBy).current;
-
-    useEffect(() => {
-        let ref = collection(db_firestore, collectionName);
-
-        if(currentQuery) {
-            ref = query(ref, where(...currentQuery), orderBy("createdAt","desc"));
-        }
-
-        setIsLoading(true);
-
-        const unSubscribe = onSnapshot(ref, (snapshot) => {
-            let result = [];
-            snapshot.docs.forEach(doc => {
-                result.push({ ...doc.data(), id: doc.id });
-            })
-            setDocument(result);
-            setIsLoading(false);
-        })
-
-        return () => unSubscribe()
-    }, [collectionName, currentQuery, orderB]);
-
-    return { document, isLoading };
-};
-
 
 
 // ----------- Init Variables ---------

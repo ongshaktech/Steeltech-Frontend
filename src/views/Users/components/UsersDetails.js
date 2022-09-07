@@ -4,12 +4,18 @@ import UserForm from '../../../components/UserForm'
 import Modal from '../../../organism/Modal'
 import { ReportsWrapper } from '../../../styles/CommonReports.styled'
 import { useState, useEffect } from 'react';
-import { useFirestore, useCollection } from '../../../Hooks/firebaseFuncs';
+import { useFirestore, GetFirestoreData } from '../../../Hooks/firebaseFuncs';
 
 
 export default function UsersDetails({ setshowUserModal, showUserModal }) {
   let [formData, setFormData] = useState({});
-  const { document } = useCollection('users');
+  let [TableData, setTableData] = useState([]);
+  GetFirestoreData('users').then(
+    (data) => {
+      setTableData(data);
+    }
+  );
+
   const { addDocument } = useFirestore('users');
 
   useEffect(
@@ -22,11 +28,11 @@ export default function UsersDetails({ setshowUserModal, showUserModal }) {
 
   return (
     <ReportsWrapper>
-      <UserDetails userdata={document}/>
+      <UserDetails userdata={TableData} />
       {
         showUserModal && <Modal>
           <div onClick={() => setshowUserModal(false)} className='button'>X</div>
-          <UserForm setFormData={setFormData} setshowUserModal={setshowUserModal}/>
+          <UserForm setFormData={setFormData} setshowUserModal={setshowUserModal} />
         </Modal>
       }
     </ReportsWrapper>
