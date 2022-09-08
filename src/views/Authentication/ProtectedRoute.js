@@ -21,7 +21,7 @@ export const ProtectedRoute = ({ permission, children }) => {
                             (docSnap) => {
                                 if (docSnap.exists()) {
                                     setUserPermissions(docSnap.data());
-                                    console.log(docSnap.data())
+                                    // console.log(docSnap.data());
                                 }
                             }
                         );

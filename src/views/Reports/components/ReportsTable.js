@@ -144,9 +144,9 @@ const details = [
     },
 ]
 
-export default function ReportsTable({ReportData}) {
-    console.log(ReportData);
-    
+export default function ReportsTable({ ReportData }) {
+    // console.log(ReportData);
+
     return (
         <ReportTableWrapper>
             <div className='table_heading'>
@@ -156,24 +156,27 @@ export default function ReportsTable({ReportData}) {
                 <p>thickness</p>
                 <p>Product Count</p>
                 <p>Total weight</p>
-                <p>Average weight</p>
                 <p>Shift</p>
                 <p>Last Production Time</p>
             </div>
             {
-                details.map(item => (
-
-                    <div className='table_content' key={item.id}>
-                        <p>{item.id}</p>
-                        <p>{item.machineNumber}</p>
-                        <p>{item.productType}</p>
-                        <p>{item.thickness} mm</p>
-                        <p>{item.product} </p>
-                        <p>{item.totalWeight} KG</p>
-                        <p>{item.averageWeight} KG</p>
-                        <p>{item.shift}</p>
-                        <p>{item.lastProductionTime.time} {item.lastProductionTime.date}</p>
-                    </div>
+                ReportData.map((item, index) => (
+                    <>
+                        <hr className='divider' />
+                        <div className='table_content' key={item.id}>
+                            <p>{index + 1}</p>
+                            <p>{item.machine_no}</p>
+                            <p>{item.product_type}</p>
+                            <p>{item.thickness} mm</p>
+                            <p>{item.Count} </p>
+                            <p>{item.Weight} KG</p>
+                            <p>{item.shift}</p>
+                            <p>{item['date']} {
+                                `${(item['Time']).toString().slice(0, 2)}:${(item['Time']).toString().slice(2, 4)}:${(item['Time']).toString().slice(4, 6)}`
+                            }</p>
+                            {/* `${item.Time.slice(0, 2)} : ${item.Time.slice(2, 4)}: ${item.Time.slice(4, 6)}` */}
+                        </div>
+                    </>
                 ))
             }
         </ReportTableWrapper>

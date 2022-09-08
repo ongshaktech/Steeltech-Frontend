@@ -1,5 +1,5 @@
-import React from 'react'
-import { ReportDetails } from '../styles/CommonReports.styled'
+import React from 'react';
+import { ReportDetails } from '../styles/CommonReports.styled';
 
 export default function ProductDetail({ productData }) {
     return (

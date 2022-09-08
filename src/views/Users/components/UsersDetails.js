@@ -1,8 +1,8 @@
-import React from 'react'
-import UserDetails from '../../../components/UserDetails'
-import UserForm from '../../../components/UserForm'
-import Modal from '../../../organism/Modal'
-import { ReportsWrapper } from '../../../styles/CommonReports.styled'
+import React from 'react';
+import UserDetails from '../../../components/UserDetails';
+import UserForm from '../../../components/UserForm';
+import Modal from '../../../organism/Modal';
+import { ReportsWrapper } from '../../../styles/CommonReports.styled';
 import { useState, useEffect } from 'react';
 import { useFirestore, GetFirestoreData } from '../../../Hooks/firebaseFuncs';
 

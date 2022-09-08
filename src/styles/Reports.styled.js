@@ -48,9 +48,17 @@ export const ReportTableWrapper = styled.div`
         display: grid;
         grid-template-columns: repeat(9, 1fr);
         align-items: center;
-        /* justify-items: center; */
         gap: 1rem;
         font-size: 1.6rem;
-        margin-bottom: 1rem;
+        margin-bottom: .8rem;
+        margin-top: .8rem;
+        text-align: center;
+    }
+
+
+    .divider{
+        color: #dcdbdb;
+        border-width: 1px;
+        border-color: aliceblue;
     }
 `
