@@ -2,7 +2,6 @@ import React from 'react';
 import { DashboardContent } from '../../styles/Dashboard.styled';
 import ReportsHeading from './components/ReportsHeading';
 import ReportsTable from './components/ReportsTable';
-import { GetFirestoreData } from '../../Hooks/firebaseFuncs';
 import { db_firestore } from '../../Hooks/config';
 import { collection, query, orderBy, limit, getDocs, onSnapshot } from 'firebase/firestore';
 import { useState } from 'react';
@@ -25,7 +24,6 @@ export default function Reports() {
             snapShot.forEach((doc) => {
               items.push(doc.data());
             });
-            console.log(items);
             setReportData(items);
           }
         );

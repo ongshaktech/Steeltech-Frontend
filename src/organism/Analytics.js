@@ -10,8 +10,8 @@ export default function Analytics({ data }) {
         <AnalyticsCard>
             <h2>Total Mass Per Machine</h2>
             <div className='content'>
-                <div style={{width: "100%"}}>
-                <BarChartComponent data={data} />
+                <div style={{ width: "100%" }}>
+                    <BarChartComponent data={data} />
                 </div>
                 <AnalyticsDetails />
             </div>

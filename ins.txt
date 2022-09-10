@@ -1,0 +1,3 @@
+3. When was the machine Downtime? - Select Machine -> Graph ( x axis -> time , y axis -> on/off)
+5. Analysis of Production based on Product Type and Thikness - Graph ( x axis-> Rectangular-2mm; y axis -> count)
+                                          Graph ( x axis-> Rectangular-2mm; y axis -> weight)

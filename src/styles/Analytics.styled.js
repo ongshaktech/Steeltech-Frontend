@@ -10,7 +10,7 @@ export const AnalyticsCard = styled.div`
         font-size: 2rem;
         margin-bottom: 2rem;
     }
-
+    
     .content {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -34,18 +34,21 @@ export const AnalyticsDetail = styled.div`
     .category {
         display: flex;
         margin-bottom: 1.5rem;
-        div {
+        margin-top: 1.5rem;
+        button, select {
             width: 100%;
             padding: 1rem;
-            background: #000;
-            color: #fff;
             font-size: 1.6rem;
             cursor: pointer;
-
-            :first-child {
-                background: #ddd;
-                color: #000;
-            }
+            background: #ddd;
+            color: #000;
+            margin: .5rem;
+            border: none;
+            border-radius: 5rem;
+        }
+        button:focus, button:hover, select:focus, select:hover {
+            background: black;
+            color: white;
         }
     }
 `
