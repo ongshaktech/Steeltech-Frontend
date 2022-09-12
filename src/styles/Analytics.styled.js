@@ -22,7 +22,34 @@ export const AnalyticsCard = styled.div`
 `
 
 export const AnalyticsDetail = styled.div`
-    text-align: right;
+    
+    .upperContainer{
+        margin-top: 2rem;
+        
+        input[type=text], select{
+            background-color: white;
+            margin: .8rem .8rem .8rem 1.2rem;
+            outline: none;
+            border-radius: .5rem;
+            border-style: solid;
+            border-color: #5d5e5d;
+            height: 4rem;
+            padding: 1rem;
+            border-width: 1px;
+        }
+        button {
+            width: 8rem;
+            padding: 1rem;
+            font-size: 1.6rem;
+            cursor: pointer;
+            background: #2e976a;
+            color: white;
+            margin: .5rem;
+            border: none;
+            border-radius: .8rem;
+        }
+    }
+
     .detail {
         margin-bottom: 2rem;
         font-size: 1.6rem;

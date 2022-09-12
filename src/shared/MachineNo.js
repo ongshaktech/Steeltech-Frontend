@@ -1,1 +1,0 @@
-export const MachineNo = ['machine32', 'machine34'];

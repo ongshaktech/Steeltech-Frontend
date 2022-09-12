@@ -5,7 +5,7 @@ import { Section } from '../../../styles/Sections.styled';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { AnalyticsDetail } from '../../../styles/Analytics.styled';
 import { AnalyticsCard } from '../../../styles/Analytics.styled';
-import { MachineNo } from '../../../shared/MachineNo';
+import { MachineNo } from '../../../shared/constants';
 import { db_firestore } from '../../../Hooks/config';
 import { where, query, collection, getDocs } from 'firebase/firestore';
 
@@ -204,7 +204,7 @@ export default function TotalPipesGraph() {
                         <div className='category'>
                             <button onClick={() => {
                                 setDataPeriod('daily');
-                            }}>Daily</button>
+                            }} autoFocus>Daily</button>
 
                             <select onChange={(e) => {
                                 setDataPeriod(parseInt(e.target.options[e.target.selectedIndex].value));
