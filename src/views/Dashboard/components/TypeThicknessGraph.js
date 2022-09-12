@@ -23,7 +23,6 @@ export default function TypeThicknessGraph() {
             if (Object.keys(ProductData).length !== 0) {
                 let graphDataArr = [];
 
-
                 // Daily Data
                 if (DataPeriod === 'daily') {
                     const todayDate = new Date();
@@ -220,7 +219,7 @@ export default function TypeThicknessGraph() {
                         <div className='upperContainer'>
                             <input ref={thicknessInput} placeholder='Product Thickness' type="text" />
                             <select ref={machineNoInput}>
-                                <option selected disabled>Product Type</option>
+                                <option selected disabled>Machine No.</option>
                                 {
                                     MachineNo.map(
                                         (machine) =>

@@ -17,12 +17,14 @@ export default function ProductDetails({ setshowProductModal, showProductModal }
   );
 
   const { addDocument } = useFirestore('products');
+  const { updateDocument } = useFirestore('latest_product')
 
 
   useEffect(
     () => {
       if (Object.keys(formData).length !== 0) {
         addDocument(formData);
+        updateDocument('latest_product', formData);
       }
     }, [formData]
   );
