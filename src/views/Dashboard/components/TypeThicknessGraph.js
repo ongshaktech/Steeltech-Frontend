@@ -39,7 +39,7 @@ export default function TypeThicknessGraph() {
                             const ref = collection(db_firestore, ProductData.machineNo);
                             const q = query(ref, where('creatingDate', '>=', todayDate),
                                 where('thickness', '==', ProductData.thickness),
-                                where('product_type', '==', ProductData.machineNo)
+                                where('product_type', '==', product_type)
                             );
                             getDocs(q).then(
                                 (snapShot) => {
@@ -87,13 +87,15 @@ export default function TypeThicknessGraph() {
                     endDate.setMilliseconds(0);
                     endDate.setSeconds(0);
 
+                    // console.log();
+
                     ProductTypes.map(
                         (product_type, index) => {
                             const ref = collection(db_firestore, ProductData.machineNo);
                             const q = query(ref, where('creatingDate', '>=', startDate),
                                 where('creatingDate', '<=', endDate),
                                 where('thickness', '==', ProductData.thickness),
-                                where('product_type', '==', ProductData.machineNo)
+                                where('product_type', '==', product_type)
                             );
                             getDocs(q).then(
                                 (snapShot) => {
@@ -148,7 +150,7 @@ export default function TypeThicknessGraph() {
                                 where('creatingDate', '<=', endDate),
                                 where('creatingDate', '<=', endDate),
                                 where('thickness', '==', ProductData.thickness),
-                                where('product_type', '==', ProductData.machineNo)
+                                where('product_type', '==', product_type)
                             );
                             getDocs(q).then(
                                 (snapShot) => {
