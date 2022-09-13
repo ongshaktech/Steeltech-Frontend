@@ -8,21 +8,19 @@ export const DownTimeWrapper = styled.div`
     align-items: center;
     justify-items: center;
     gap: ${({ gap }) => gap || "2rem"};
-    grid-template-columns: repeat(3, 1fr);
-    @media (max-width: ${({ theme }) => theme.mobile}) {
-        grid-template-columns: 1fr;
-    }
-
+    grid-template-columns: 1fr;
+    
     >div {
         padding: 2rem;
-
-        .date {
-            padding: 3rem;
-            margin: 3rem 0;
-            border-radius: .8rem;
-            background: #00B6CD;
-            color: #fff;
-            font-size: 3.2rem;
-        }
+    }
+    input[type=date]{
+        padding: 1.5rem;
+        border-radius: .8rem;
+        border-style: solid;
+        font-size: 2rem;
+        margin: 1rem;
+    }
+    select{
+        margin: 1rem;
     }
 `
