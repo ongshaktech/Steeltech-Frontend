@@ -11,9 +11,8 @@ export default function Dashboard() {
     <DashboardContent>
       <TotalPipesGraph />
       <TypeThicknessGraph />
-      <Overview />
-      {/* <MasOverview /> */}
       <DownTime />
+      {/* <Overview /> */}
     </DashboardContent>
   );
 }

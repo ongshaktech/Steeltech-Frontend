@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { GridTwo } from '../../../styles/Common.styled';
 import { Section } from '../../../styles/Sections.styled';
 // import { Button, Select } from '../../../styles/Common.styled';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -21,16 +20,17 @@ export default function TotalPipesGraph() {
 
             // Daily Data
             if (DataPeriod === 'daily') {
-                const todayDate = new Date();
+                let todayDate = new Date();
                 todayDate.setHours(0);
                 todayDate.setMinutes(0);
                 todayDate.setMilliseconds(0);
                 todayDate.setSeconds(0);
+                todayDate = Math.floor(todayDate.getTime() / 1000);
 
                 MachineNo.map(
                     (machine, index) => {
-                        const ref = collection(db_firestore, machine);
-                        const q = query(ref, where('creatingDate', '>=', todayDate));
+                        const ref = collection(db_firestore, 'machines');
+                        const q = query(ref, where('unix_time', '>=', todayDate), where('machine_no', '==', machine));
                         getDocs(q).then(
                             (snapShot) => {
                                 let count = 0;
@@ -44,7 +44,7 @@ export default function TotalPipesGraph() {
                                     name: machine,
                                     pipes: count,
                                     'Total weight': Weight,
-                                    'Average Pipe Weight': (Weight/count).toFixed(2)
+                                    'Average Pipe Weight': (Weight / count).toFixed(2)
                                 });
 
                                 // Set data if the loop will complete and Array is fully pushed
@@ -68,6 +68,7 @@ export default function TotalPipesGraph() {
                 startDate.setMinutes(0);
                 startDate.setMilliseconds(0);
                 startDate.setSeconds(0);
+                startDate = Math.floor(startDate.getTime() / 1000);
 
                 let endDate = new Date();
                 endDate.setMonth(12);
@@ -76,13 +77,16 @@ export default function TotalPipesGraph() {
                 endDate.setMinutes(0);
                 endDate.setMilliseconds(0);
                 endDate.setSeconds(0);
+                endDate = Math.floor(endDate.getTime() / 1000);
 
                 console.log(startDate, endDate);
 
                 MachineNo.map(
                     (machine, index) => {
-                        const ref = collection(db_firestore, machine);
-                        const q = query(ref, where('creatingDate', '>=', startDate), where('creatingDate', '<=', endDate));
+                        const ref = collection(db_firestore, 'machines');
+                        const q = query(ref, where('unix_time', '>=', startDate), where('unix_time', '<=', endDate),
+                            where('machine_no', '==', machine)
+                        );
                         getDocs(q).then(
                             (snapShot) => {
                                 let count = 0;
@@ -96,7 +100,7 @@ export default function TotalPipesGraph() {
                                     name: machine,
                                     pipes: count,
                                     'Total weight': Weight,
-                                    'Average Pipe Weight': (Weight/count).toFixed(2)
+                                    'Average Pipe Weight': (Weight / count).toFixed(2)
                                 });
 
                                 // Set data if the loop will complete and Array is fully pushed
@@ -120,6 +124,8 @@ export default function TotalPipesGraph() {
                 startDate.setMinutes(0);
                 startDate.setMilliseconds(0);
                 startDate.setSeconds(0);
+                startDate = Math.floor(startDate.getTime() / 1000);
+                
 
                 let endDate = new Date();
                 endDate.setMonth(DataPeriod + 1);
@@ -128,11 +134,14 @@ export default function TotalPipesGraph() {
                 endDate.setMinutes(0);
                 endDate.setMilliseconds(0);
                 endDate.setSeconds(0);
+                endDate = Math.floor(endDate.getTime() / 1000);
 
                 MachineNo.map(
                     (machine, index) => {
-                        const ref = collection(db_firestore, machine);
-                        const q = query(ref, where('creatingDate', '>=', startDate), where('creatingDate', '<=', endDate));
+                        const ref = collection(db_firestore, 'machines');
+                        const q = query(ref, where('unix_time', '>=', startDate), where('unix_time', '<=', endDate),
+                            where('machine_no', '==', machine)
+                        );
                         getDocs(q).then(
                             (snapShot) => {
                                 let count = 0;
@@ -146,7 +155,7 @@ export default function TotalPipesGraph() {
                                     name: machine,
                                     pipes: count,
                                     'Total weight': Weight,
-                                    'Average Pipe Weight': (Weight/count).toFixed(2)
+                                    'Average Pipe Weight': (Weight / count).toFixed(2)
                                 });
 
                                 // Set data if the loop will complete and Array is fully pushed
@@ -183,11 +192,11 @@ export default function TotalPipesGraph() {
                                     bottom: 5,
                                 }}>
                                     <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="name"/>
+                                    <XAxis dataKey="name" />
                                     <YAxis />
                                     <Tooltip />
                                     <Legend />
-                                    <Bar dataKey="pipes" fill="#8884d8"/>
+                                    <Bar dataKey="pipes" fill="#8884d8" />
                                     <Bar dataKey="Total weight" fill="#ffd45e" />
                                     <Bar dataKey="Average Pipe Weight" fill="#6aa32e" />
                                 </BarChart>

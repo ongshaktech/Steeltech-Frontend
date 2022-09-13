@@ -10,44 +10,42 @@ import { ProtectedRoute } from '../Authentication/ProtectedRoute';
 
 
 export default function Reports() {
-  let [MachineNo, setMachineNo] = useState('');
+
   let [ReportData, setReportData] = useState([]);
 
   useEffect(
     () => {
-      if (MachineNo !== '') {
-        const ref = collection(db_firestore, `machine${MachineNo}`);
-        const q = query(ref, orderBy('creatingDate', 'desc'));
-        onSnapshot(q,
-          (snapShot) => {
-            let items = [];      
-            snapShot.forEach((doc) => {
-              items.push(doc.data());
-            });
-            setReportData(items);
-          }
-        );
-
-      }
-    }, [MachineNo]
-  );
-
-  useEffect(
-    () => {
-      // Set Machine No.
-      const ref = collection(db_firestore, 'products');
-      const q = query(ref, orderBy('creatingDate', 'desc'), limit(1));
-      getDocs(q).then(
+      const ref = collection(db_firestore, `machines`);
+      const q = query(ref, orderBy('unix_time', 'desc'));
+      onSnapshot(q,
         (snapShot) => {
           let items = [];
           snapShot.forEach((doc) => {
             items.push(doc.data());
           });
-          setMachineNo(items[0]['machine_no']);
+          setReportData(items);
         }
       );
     }, []
   );
+
+  // let [MachineNo, setMachineNo] = useState('');
+  // useEffect(
+  //   () => {
+  //     // Set Machine No.
+  //     const ref = collection(db_firestore, 'products');
+  //     const q = query(ref, orderBy('creatingDate', 'desc'), limit(1));
+  //     getDocs(q).then(
+  //       (snapShot) => {
+  //         let items = [];
+  //         snapShot.forEach((doc) => {
+  //           items.push(doc.data());
+  //         });
+  //         setMachineNo(items[0]['machine_no']);
+  //       }
+  //     );
+  //   }, []
+  // );
 
 
   return (

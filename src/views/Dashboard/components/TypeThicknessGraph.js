@@ -25,18 +25,20 @@ export default function TypeThicknessGraph() {
 
                 // Daily Data
                 if (DataPeriod === 'daily') {
-                    const todayDate = new Date();
+                    let todayDate = new Date();
                     todayDate.setHours(0);
                     todayDate.setMinutes(0);
                     todayDate.setMilliseconds(0);
                     todayDate.setSeconds(0);
+                    todayDate = Math.floor(todayDate.getTime() / 1000);
 
                     // console.log(ProductData.thickness, ProductData.type);
 
                     ProductTypes.map(
                         (product_type, index) => {
-                            const ref = collection(db_firestore, ProductData.machineNo);
-                            const q = query(ref, where('creatingDate', '>=', todayDate),
+                            const ref = collection(db_firestore, 'machines');
+                            const q = query(ref, where('unix_time', '>=', todayDate),
+                                where('machine_no', '==', ProductData.machineNo),
                                 where('thickness', '==', ProductData.thickness),
                                 where('product_type', '==', product_type)
                             );
@@ -77,6 +79,7 @@ export default function TypeThicknessGraph() {
                     startDate.setMinutes(0);
                     startDate.setMilliseconds(0);
                     startDate.setSeconds(0);
+                    startDate = Math.floor(startDate.getTime() / 1000);
 
                     let endDate = new Date();
                     endDate.setMonth(12);
@@ -85,14 +88,16 @@ export default function TypeThicknessGraph() {
                     endDate.setMinutes(0);
                     endDate.setMilliseconds(0);
                     endDate.setSeconds(0);
+                    endDate = Math.floor(endDate.getTime() / 1000);
 
                     // console.log();
 
                     ProductTypes.map(
                         (product_type, index) => {
-                            const ref = collection(db_firestore, ProductData.machineNo);
-                            const q = query(ref, where('creatingDate', '>=', startDate),
-                                where('creatingDate', '<=', endDate),
+                            const ref = collection(db_firestore, 'machines');
+                            const q = query(ref, where('unix_time', '>=', startDate),
+                                where('unix_time', '<=', endDate),
+                                where('machine_no', '==', ProductData.machineNo),
                                 where('thickness', '==', ProductData.thickness),
                                 where('product_type', '==', product_type)
                             );
@@ -133,6 +138,8 @@ export default function TypeThicknessGraph() {
                     startDate.setMinutes(0);
                     startDate.setMilliseconds(0);
                     startDate.setSeconds(0);
+                    startDate = Math.floor(startDate.getTime() / 1000);
+
 
                     let endDate = new Date();
                     endDate.setMonth(DataPeriod + 1);
@@ -141,13 +148,15 @@ export default function TypeThicknessGraph() {
                     endDate.setMinutes(0);
                     endDate.setMilliseconds(0);
                     endDate.setSeconds(0);
+                    endDate = Math.floor(endDate.getTime() / 1000);
+
 
                     ProductTypes.map(
                         (product_type, index) => {
-                            const ref = collection(db_firestore, ProductData.machineNo);
-                            const q = query(ref, where('creatingDate', '>=', startDate),
-                                where('creatingDate', '<=', endDate),
-                                where('creatingDate', '<=', endDate),
+                            const ref = collection(db_firestore, 'machines');
+                            const q = query(ref, where('unix_time', '>=', startDate),
+                                where('unix_time', '<=', endDate),
+                                where('machine_no', '==', ProductData.machineNo),
                                 where('thickness', '==', ProductData.thickness),
                                 where('product_type', '==', product_type)
                             );
@@ -223,7 +232,7 @@ export default function TypeThicknessGraph() {
                                 {
                                     MachineNo.map(
                                         (machine) =>
-                                            <option value={machine}>{machine}</option>
+                                            <option value={machine}>Machine {machine}</option>
                                     )
                                 }
 

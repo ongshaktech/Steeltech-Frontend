@@ -1,46 +1,46 @@
 import { db_firestore, db_realtime } from "./config";
 import { ref, onValue } from "firebase/database";
-import { Timestamp, addDoc, collection, updateDoc, doc } from 'firebase/firestore';
-import { useEffect, useState, useRef, useReducer} from "react";
-import { onSnapshot, query, where , orderBy, getDocs, limit } from 'firebase/firestore';
+import { Timestamp, addDoc, collection, updateDoc, doc, setDoc } from 'firebase/firestore';
+import { useEffect, useState, useRef, useReducer } from "react";
+import { onSnapshot, query, where, orderBy, getDocs, limit } from 'firebase/firestore';
 import { serverTimestamp } from "firebase/firestore";
 
 // Realtime Database
 export const GetData = (path, callback) => {
-  const dbRef = ref(db_realtime, path);
-  onValue(dbRef, (snapshot) => {
-    const data = snapshot.val();
-    callback(data);
-  });
+    const dbRef = ref(db_realtime, path);
+    onValue(dbRef, (snapshot) => {
+        const data = snapshot.val();
+        callback(data);
+    });
 }
 
 // ------- Firestore Database ---------
 
-export async function AuthLogin (collection_name, email, password) {
+export async function AuthLogin(collection_name, email, password) {
     const ref = collection(db_firestore, collection_name);
 
     const q = query(ref, where('email', '==', email), where('password', '==', password), limit(1));
 
     const querySnapshot = await getDocs(q);
-    
+
     let items = [];
-    querySnapshot.forEach((doc) => {  
-      items.push(doc.data());
+    querySnapshot.forEach((doc) => {
+        items.push(doc.data());
     });
 
     return [items.length !== 0, items];
 }
 
 
-export async function FirestoreQuery (collection_name, target, operator, value) {
+export async function FirestoreQuery(collection_name, target, operator, value) {
     const ref = collection(db_firestore, collection_name);
     const q = query(ref, where(target, operator, value));
 
     const querySnapshot = await getDocs(q);
     let items = [];
 
-    querySnapshot.forEach((doc) => {  
-      items.push(doc.data());
+    querySnapshot.forEach((doc) => {
+        items.push(doc.data());
     });
 
     return items;
@@ -53,8 +53,8 @@ export async function GetFirestoreData(collection_name) {
     const querySnapshot = await getDocs(q);
     let items = [];
 
-    querySnapshot.forEach((doc) => {  
-      items.push(doc.data());
+    querySnapshot.forEach((doc) => {
+        items.push(doc.data());
     });
 
     return items;
@@ -67,7 +67,7 @@ export const useFirestore = (collectionName) => {
     const [response, dispatch] = useReducer(fireStoreReducer, initialState);
 
     const ref = collection(db_firestore, collectionName);
-    
+
 
     // dispatch if not cancelled
     const dispatchIfNotCancelled = (action) => {
@@ -81,7 +81,7 @@ export const useFirestore = (collectionName) => {
         dispatch("IS_LOADING");
 
         try {
-            const addDocument = await addDoc(ref, { ...doc, creatingDate: serverTimestamp()});
+            const addDocument = await addDoc(ref, { ...doc, creatingDate: serverTimestamp() });
             dispatchIfNotCancelled({ type: "ADD_DOCUMENT", payload: addDocument });
         }
         catch (error) {
@@ -92,14 +92,15 @@ export const useFirestore = (collectionName) => {
     // update something from firestore database
     const updateDocument = async (id, obj) => {
         dispatch({ type: "IS_PENDING" });
+        const userDoc = doc(ref, id);
+
         try {
-            const userDoc = doc(ref, id);
-            const newField = obj;
-            const updated = await updateDoc(userDoc, newField);
+            const updated = await updateDoc(userDoc, obj);
             dispatchIfNotCancelled({ type: "UPDATE_DOCUMENT", payload: updated });
         }
         catch (error) {
             dispatch({ type: "ERROR", payload: error.message });
+            setDoc(userDoc, obj);
         }
     }
 

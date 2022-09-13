@@ -10,6 +10,8 @@ import { useFirestore, GetFirestoreData } from '../../../Hooks/firebaseFuncs';
 export default function ProductDetails({ setshowProductModal, showProductModal }) {
   let [TableData, setTableData] = useState([]);
   let [formData, setFormData] = useState({});
+
+
   GetFirestoreData('products').then(
     (data) => {
       setTableData(data);
@@ -24,7 +26,7 @@ export default function ProductDetails({ setshowProductModal, showProductModal }
     () => {
       if (Object.keys(formData).length !== 0) {
         addDocument(formData);
-        updateDocument('latest_product', formData);
+        updateDocument(`machine${formData.machine_no}`, formData);
       }
     }, [formData]
   );

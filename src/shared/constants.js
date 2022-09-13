@@ -1,2 +1,2 @@
-export const MachineNo = ['machine32', 'machine34'];
+export const MachineNo = ['32','34'];
 export const ProductTypes = ['Rectangular', 'Circular']
