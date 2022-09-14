@@ -9,6 +9,7 @@ export const ProtectedRoute = ({ permission, children }) => {
     let [UserPermissions, setUserPermissions] = useState({});
 
     // Get Permission Lists
+    // If permission is `true`, then render the children
     useEffect(
         () => {
             AuthLogin('users', GetCookie('email'), GetCookie('pswd')).then(
@@ -21,7 +22,6 @@ export const ProtectedRoute = ({ permission, children }) => {
                             (docSnap) => {
                                 if (docSnap.exists()) {
                                     setUserPermissions(docSnap.data());
-                                    // console.log(docSnap.data());
                                 }
                             }
                         );

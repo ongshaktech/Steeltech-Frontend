@@ -31,6 +31,7 @@ function App() {
 
   useEffect(
     () => {
+      // Get encrypted Login Credentials from Cookies and Validate with FireStore
       AuthLogin('users', GetCookie('email'), GetCookie('pswd')).then(
         (response) => {
           if (response[0]) setUser('is_user');
@@ -42,6 +43,7 @@ function App() {
 
   useEffect(
     () => {
+      // Loading Wheel
       if (isUser === 'unknown') setAuthview(
         <div className="loadingSpinner">
           <Triangle
@@ -59,10 +61,13 @@ function App() {
   return (
     <>
       {isUser !== 'is_user' ?
+        // If not user, then show Login page
         <>
           {authview}
         </>
         :
+
+        // If user, then Render the content
         <ThemeProvider theme={Theme}>
           <GlobalStyles />
 
