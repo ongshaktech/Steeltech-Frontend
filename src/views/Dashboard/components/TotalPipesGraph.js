@@ -25,7 +25,7 @@ export default function TotalPipesGraph() {
                 todayDate.setMinutes(0);
                 todayDate.setMilliseconds(0);
                 todayDate.setSeconds(0);
-                todayDate = Math.floor(todayDate.getTime() / 1000);
+                todayDate = Math.floor(todayDate.getTime() / 1000); // Date to Unix format
 
                 MachineNo.map(
                     (machine, index) => {
@@ -79,7 +79,6 @@ export default function TotalPipesGraph() {
                 endDate.setSeconds(0);
                 endDate = Math.floor(endDate.getTime() / 1000);
 
-                console.log(startDate, endDate);
 
                 MachineNo.map(
                     (machine, index) => {
