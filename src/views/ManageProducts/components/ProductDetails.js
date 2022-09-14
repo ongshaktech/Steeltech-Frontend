@@ -6,13 +6,12 @@ import { ReportsWrapper } from '../../../styles/CommonReports.styled';
 import { useState, useEffect } from 'react';
 import { useFirestore, GetFirestoreData } from '../../../Hooks/firebaseFuncs';
 
-
 export default function ProductDetails({ setshowProductModal, showProductModal }) {
   let [TableData, setTableData] = useState([]);
   let [formData, setFormData] = useState({});
 
 
-  GetFirestoreData('products').then(
+  GetFirestoreData('products', 65).then(
     (data) => {
       setTableData(data);
     }

@@ -3,7 +3,7 @@ import { DashboardContent } from '../../styles/Dashboard.styled';
 import ReportsHeading from './components/ReportsHeading';
 import ReportsTable from './components/ReportsTable';
 import { db_firestore } from '../../Hooks/config';
-import { collection, query, orderBy, limit, getDocs, onSnapshot } from 'firebase/firestore';
+import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { ProtectedRoute } from '../Authentication/ProtectedRoute';
@@ -16,7 +16,7 @@ export default function Reports() {
   useEffect(
     () => {
       const ref = collection(db_firestore, `machines`);
-      const q = query(ref, orderBy('unix_time', 'desc'));
+      const q = query(ref, orderBy('unix_time', 'desc'), limit(75));
       onSnapshot(q,
         (snapShot) => {
           let items = [];
@@ -28,24 +28,6 @@ export default function Reports() {
       );
     }, []
   );
-
-  // let [MachineNo, setMachineNo] = useState('');
-  // useEffect(
-  //   () => {
-  //     // Set Machine No.
-  //     const ref = collection(db_firestore, 'products');
-  //     const q = query(ref, orderBy('creatingDate', 'desc'), limit(1));
-  //     getDocs(q).then(
-  //       (snapShot) => {
-  //         let items = [];
-  //         snapShot.forEach((doc) => {
-  //           items.push(doc.data());
-  //         });
-  //         setMachineNo(items[0]['machine_no']);
-  //       }
-  //     );
-  //   }, []
-  // );
 
 
   return (

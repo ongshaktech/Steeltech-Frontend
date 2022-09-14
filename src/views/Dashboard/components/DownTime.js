@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import LineChartComponent from '../../../organism/LineChartComponent';
 import { LineChart, Legend, XAxis, YAxis, Tooltip, CartesianGrid, Line } from 'recharts';
 import { Select } from '../../../styles/Common.styled';
 import { DownTimeWrapper } from '../../../styles/DownTime.styled';
@@ -9,11 +8,13 @@ import { where, query, collection, getDocs } from 'firebase/firestore';
 import { useState } from 'react';
 import { db_firestore } from '../../../Hooks/config';
 import { MachineNo } from '../../../shared/constants';
+import { useRef } from 'react';
 
 
 export default function DownTime() {
+    let dateInput = useRef('');
     let [graphData, setGraphData] = useState([]);
-    let [DataPeriod, setDataPeriod] = useState('daily');
+    let [DataPeriod, setDataPeriod] = useState(new Date());
     let [machine_number, setMachine_number] = useState('');
 
     useEffect(
@@ -22,68 +23,55 @@ export default function DownTime() {
             if (machine_number !== '') {
                 let graphDataArr = [];
 
-                // Daily Data
-                if (DataPeriod === 'daily') {
-                    let todayDate = new Date();
-                    todayDate.setHours(0);
-                    todayDate.setMinutes(0);
-                    todayDate.setMilliseconds(0);
-                    todayDate.setSeconds(0);
-                    todayDate = Math.floor(todayDate.getTime() / 1000);
-
-                    const ref = collection(db_firestore, 'machineStatus');
-                    const q = query(ref, where('time_start', '>=', todayDate), where('machine_no', '==', machine_number));
-                    getDocs(q).then(
-                        (snapShot) => {
-                            snapShot.forEach((doc) => {
-                                Array.prototype.push.apply(graphDataArr, split_time(3600, doc.data()));
-                            });
-                            setGraphData(
-                                graphDataArr
-                            );
-                        }
-                    );
-                }
-
                 // Custom data filtering
-                else {
-                    let startDate = new Date(DataPeriod);
-                    startDate.setHours(0);
-                    startDate.setMinutes(0);
-                    startDate.setMilliseconds(0);
-                    startDate.setSeconds(0);
-                    
-                    let endDate = new Date(DataPeriod);
-                    endDate.setHours(23);
-                    endDate.setMinutes(59);
-                    endDate.setMilliseconds(99);
-                    endDate.setSeconds(59);
+                let startDate = new Date(DataPeriod);
+                startDate.setHours(0);
+                startDate.setMinutes(0);
+                startDate.setMilliseconds(0);
+                startDate.setSeconds(0);
 
-                    startDate = Math.floor(startDate.getTime() / 1000);
-                    endDate = Math.floor(endDate.getTime() / 1000);
+                let endDate = new Date(DataPeriod);
+                endDate.setHours(23);
+                endDate.setMinutes(59);
+                endDate.setMilliseconds(99);
+                endDate.setSeconds(59);
 
-                    console.log(startDate, endDate);
+                startDate = Math.floor(startDate.getTime() / 1000);
+                endDate = Math.floor(endDate.getTime() / 1000);
 
-                    const ref = collection(db_firestore, 'machineStatus');
-                    const q = query(ref, where('time_start', '>=', startDate),
-                        where('time_start', '<=', endDate),
-                        where('machine_no', '==', machine_number)
-                    );
-                    getDocs(q).then(
-                        (snapShot) => {
-                            snapShot.forEach((doc) => {
-                                Array.prototype.push.apply(graphDataArr, split_time(3600, doc.data()));
-                            });
-                            console.log(graphDataArr);
-                            setGraphData(
-                                graphDataArr
-                            );
-                        }
-                    );
-                }
+                console.log(startDate, endDate);
+
+                const ref = collection(db_firestore, 'machineStatus');
+                const q = query(ref, where('time_start', '>=', startDate),
+                    where('time_start', '<=', endDate),
+                    where('machine_no', '==', machine_number)
+                );
+                getDocs(q).then(
+                    (snapShot) => {
+                        snapShot.forEach((doc) => {
+                            Array.prototype.push.apply(graphDataArr, split_time(3600, doc.data()));
+                        });
+                        console.log(graphDataArr);
+                        setGraphData(
+                            graphDataArr
+                        );
+                    }
+                );
+                // }
             }
 
         }, [DataPeriod, machine_number]
+    );
+
+
+    useEffect(
+        () => {
+            var date = new Date();
+            var day = ("0" + date.getDate()).slice(-2);
+            var month = ("0" + (date.getMonth() + 1)).slice(-2);
+            var today = date.getFullYear() + "-" + (month) + "-" + (day);
+            dateInput.current.value = today;
+        }, []
     );
 
 
@@ -116,7 +104,8 @@ export default function DownTime() {
 
                     <input type="date" onChange={(e) => {
                         setDataPeriod((e.target.valueAsDate));
-                    }} />
+                    }} ref={dateInput}
+                    />
 
                 </div>
 

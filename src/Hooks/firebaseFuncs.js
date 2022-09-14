@@ -1,8 +1,8 @@
 import { db_firestore, db_realtime } from "./config";
 import { ref, onValue } from "firebase/database";
-import { Timestamp, addDoc, collection, updateDoc, doc, setDoc } from 'firebase/firestore';
-import { useEffect, useState, useRef, useReducer } from "react";
-import { onSnapshot, query, where, orderBy, getDocs, limit } from 'firebase/firestore';
+import { addDoc, collection, updateDoc, doc, setDoc } from 'firebase/firestore';
+import { useEffect, useState, useReducer } from "react";
+import { query, where, orderBy, getDocs, limit } from 'firebase/firestore';
 import { serverTimestamp } from "firebase/firestore";
 
 // Realtime Database
@@ -46,9 +46,16 @@ export async function FirestoreQuery(collection_name, target, operator, value) {
     return items;
 }
 
-export async function GetFirestoreData(collection_name) {
+export async function GetFirestoreData(collection_name, limits=-1) {
     const ref = collection(db_firestore, collection_name);
-    const q = query(ref, orderBy('creatingDate', 'desc'));
+    let q = null;
+
+    if(limits !== -1){
+        q = query(ref, orderBy('creatingDate', 'desc'), limit(limits));
+    }
+    else {
+        q = query(ref, orderBy('creatingDate', 'desc'));
+    }
 
     const querySnapshot = await getDocs(q);
     let items = [];
@@ -113,8 +120,6 @@ export const useFirestore = (collectionName) => {
 
 
 // ----------- Init Variables ---------
-
-const timeStamp = Timestamp;
 
 const initialState = {
     document: null,

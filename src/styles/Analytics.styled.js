@@ -48,6 +48,9 @@ export const AnalyticsDetail = styled.div`
             border: none;
             border-radius: .8rem;
         }
+        button:hover, button:focus{
+            background: #1c5b40;
+        }
     }
 
     .detail {

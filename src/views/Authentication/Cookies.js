@@ -4,7 +4,7 @@ export function SetCookie(cname, cvalue, exdays) {
     const d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
     let expires = "expires=" + d.toUTCString();
-    cvalue =  CryptoJS.AES.encrypt(cvalue, "test");
+    cvalue =  CryptoJS.AES.encrypt(cvalue, "@#$ *IlO0Oo0_-");
     document.cookie = cname + "=" + cvalue + "; " + expires + "; SameSite=None; Secure; path=/";
 }
 
@@ -18,7 +18,7 @@ export function GetCookie(cname) {
         }
         if (c.indexOf(name) === 0) {
             let output = c.substring(name.length, c.length);
-            output = (CryptoJS.AES.decrypt(output, "test")).toString(CryptoJS.enc.Utf8);
+            output = (CryptoJS.AES.decrypt(output, "@#$ *IlO0Oo0_-")).toString(CryptoJS.enc.Utf8);
             console.log(
                 output
             );
