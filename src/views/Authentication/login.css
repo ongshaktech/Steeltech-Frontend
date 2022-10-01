@@ -1,14 +1,30 @@
 body{
     background-color: #e5e5e5;
 }
+
+.loginHeader{
+    text-align: center;
+    font-size: 2rem;
+    color: rgb(97, 97, 97);
+    margin-top: 5rem;
+}
+
+.loginMsg{
+    color: orange;
+}
+
 .loginDivCont{
     max-width: 30rem;
     padding: 1.5rem;
     background-color: white;
     border-radius: 2rem;
-    margin: auto;
-    margin-top: 25vh;
     text-align: center;
+
+    position: absolute;
+    top: 35%;
+    left: 0;
+    right: 0;
+    margin: auto;
 }
 
 .loginInputField{
