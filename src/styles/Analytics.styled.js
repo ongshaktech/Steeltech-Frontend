@@ -22,7 +22,11 @@ export const AnalyticsCard = styled.div`
 `
 
 export const AnalyticsDetail = styled.div`
-    
+    .msgDiv{
+        color: orange;
+        font-size: 1.5rem;
+        padding: 1rem;
+    }
     .upperContainer{
         margin-top: 2rem;
         

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ReportsFormContainer } from '../styles/CommonReports.styled';
 import { useRef } from 'react';
+import { ProductTypes, Shifts } from '../shared/constants';
 
 export default function ProductForm({ setFormData, setshowProductModal }) {
     let machine_no = useRef('');
@@ -35,15 +36,23 @@ export default function ProductForm({ setFormData, setshowProductModal }) {
                 <label>
                     <p>Product Type*</p>
                     <select ref={product_type}>
-                        <option value="Circular">Circular</option>
-                        <option value="Rectangular">Rectangular</option>
+                        {
+                            ProductTypes.map(
+                                (type) =>
+                                    <option value={type}>{type}</option>
+                            )
+                        }
                     </select>
                 </label>
                 <label>
                     <p>Shift*</p>
                     <select ref={shift}>
-                        <option value="morning">Morning</option>
-                        <option value="evening">evening</option>
+                        {
+                            Shifts.map(
+                                (shift) =>
+                                    <option value={shift}>{shift}</option>
+                            )
+                        }
                     </select>
                 </label>
                 <input className='submit' type="button" value="Submit" onClick={setData} />

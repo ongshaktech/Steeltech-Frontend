@@ -7,12 +7,12 @@ export default function ReportsHeading() {
             <div>
                 <p>Real Time Table</p>
             </div>
-            <div>
+            {/* <div>
                 <div className='right'>
 
                     <input type="text" placeholder='Search my machine Number Id' />
                 </div>
-            </div>
+            </div> */}
         </ReportHeadingWrapper>
     )
 }

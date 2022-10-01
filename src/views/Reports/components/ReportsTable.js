@@ -167,12 +167,12 @@ export default function ReportsTable({ ReportData }) {
                             <p>{index + 1}</p>
                             <p>{item.machine_no}</p>
                             <p>{item.product_type}</p>
-                            <p>{item.thickness} mm</p>
-                            <p>{item.Count} </p>
-                            <p>{item.Weight} KG</p>
+                            <p>{item.thickness}</p>
+                            <p>{item.count} </p>
+                            <p>{item.weight} KG</p>
                             <p>{item.shift}</p>
                             <p>{item['date']} {
-                                `${(item['Time']).toString().slice(0, 2)}:${(item['Time']).toString().slice(2, 4)}:${(item['Time']).toString().slice(4, 6)}`
+                                `${(item['time']).toString().slice(0, 2)}:${(item['time']).toString().slice(2, 4)}:${(item['time']).toString().slice(4, 6)}`
                             }</p>
                             {/* `${item.Time.slice(0, 2)} : ${item.Time.slice(2, 4)}: ${item.Time.slice(4, 6)}` */}
                         </div>

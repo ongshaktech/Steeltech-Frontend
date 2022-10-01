@@ -14,6 +14,9 @@ export default function TypeThicknessGraph() {
     let [graphData, setGraphData] = useState([]);
     let [DataPeriod, setDataPeriod] = useState('daily');
     let [ProductData, setProductData] = useState({});
+    let [msg, setMsg] = useState('');
+
+    const collection_name = '*machines';
 
     let thicknessInput = useRef('');
     let machineNoInput = useRef('');
@@ -36,7 +39,7 @@ export default function TypeThicknessGraph() {
 
                     ProductTypes.map(
                         (product_type, index) => {
-                            const ref = collection(db_firestore, 'machines');
+                            const ref = collection(db_firestore, collection_name);
                             const q = query(ref, where('unix_time', '>=', todayDate),
                                 where('machine_no', '==', ProductData.machineNo),
                                 where('thickness', '==', ProductData.thickness),
@@ -48,8 +51,8 @@ export default function TypeThicknessGraph() {
                                     let Weight = 0;
 
                                     snapShot.forEach((doc) => {
-                                        count += doc.data()['Count'];
-                                        Weight += doc.data()['Weight'];
+                                        count += parseFloat(doc.data()['count']);
+                                        Weight += parseFloat(doc.data()['weight']);
                                     });
                                     graphDataArr.push({
                                         name: product_type,
@@ -94,7 +97,7 @@ export default function TypeThicknessGraph() {
 
                     ProductTypes.map(
                         (product_type, index) => {
-                            const ref = collection(db_firestore, 'machines');
+                            const ref = collection(db_firestore, collection_name);
                             const q = query(ref, where('unix_time', '>=', startDate),
                                 where('unix_time', '<=', endDate),
                                 where('machine_no', '==', ProductData.machineNo),
@@ -107,8 +110,8 @@ export default function TypeThicknessGraph() {
                                     let Weight = 0;
 
                                     snapShot.forEach((doc) => {
-                                        count += doc.data()['Count'];
-                                        Weight += doc.data()['Weight'];
+                                        count += parseFloat(doc.data()['count']);
+                                        Weight += parseFloat(doc.data()['weight']);
                                     });
                                     graphDataArr.push({
                                         name: product_type,
@@ -153,7 +156,7 @@ export default function TypeThicknessGraph() {
 
                     ProductTypes.map(
                         (product_type, index) => {
-                            const ref = collection(db_firestore, 'machines');
+                            const ref = collection(db_firestore, collection_name);
                             const q = query(ref, where('unix_time', '>=', startDate),
                                 where('unix_time', '<=', endDate),
                                 where('machine_no', '==', ProductData.machineNo),
@@ -166,8 +169,8 @@ export default function TypeThicknessGraph() {
                                     let Weight = 0;
 
                                     snapShot.forEach((doc) => {
-                                        count += doc.data()['Count'];
-                                        Weight += doc.data()['Weight'];
+                                        count += parseFloat(doc.data()['count']);
+                                        Weight += parseFloat(doc.data()['weight']);
                                     });
                                     graphDataArr.push({
                                         name: product_type,
@@ -228,7 +231,7 @@ export default function TypeThicknessGraph() {
                         <div className='upperContainer'>
                             <input ref={thicknessInput} placeholder='Product Thickness' type="text" />
                             <select ref={machineNoInput}>
-                                <option selected disabled>Machine No.</option>
+                                <option selected disabled value=''>Machine No.</option>
                                 {
                                     MachineNo.map(
                                         (machine) =>
@@ -238,15 +241,29 @@ export default function TypeThicknessGraph() {
 
                             </select>
                             <button onClick={() => {
-                                setProductData({
-                                    thickness: thicknessInput.current.value,
-                                    machineNo: machineNoInput.current.options[machineNoInput.current.selectedIndex].value
-                                });
+                                // Show Msg and set value
+                                if (thicknessInput.current.value !== '' && machineNoInput.current.options[machineNoInput.current.selectedIndex].value !== '') {
+                                    setProductData({
+                                        thickness: thicknessInput.current.value,
+                                        machineNo: machineNoInput.current.options[machineNoInput.current.selectedIndex].value
+                                    });
+                                    setMsg('Set!');
+                                }
+                                else {
+                                    setMsg('Please Fill up the fields correctly!');
+                                }
+                                window.setTimeout(() => {
+                                    setMsg('');
+                                }, 2000);
+
                             }}>
                                 Set
                             </button>
                         </div>
 
+                        <p className='msgDiv'>
+                            {msg}
+                        </p>
 
                         <div className='category'>
                             <button onClick={() => {

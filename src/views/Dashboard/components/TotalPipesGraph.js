@@ -12,6 +12,7 @@ export default function TotalPipesGraph() {
 
     let [graphData, setGraphData] = useState([]);
     let [DataPeriod, setDataPeriod] = useState('daily');
+    const collection_name = '*machines';
 
     useEffect(
         () => {
@@ -29,7 +30,7 @@ export default function TotalPipesGraph() {
 
                 MachineNo.map(
                     (machine, index) => {
-                        const ref = collection(db_firestore, 'machines');
+                        const ref = collection(db_firestore, collection_name);
                         const q = query(ref, where('unix_time', '>=', todayDate), where('machine_no', '==', machine));
                         getDocs(q).then(
                             (snapShot) => {
@@ -37,8 +38,8 @@ export default function TotalPipesGraph() {
                                 let Weight = 0;
 
                                 snapShot.forEach((doc) => {
-                                    count += doc.data()['Count'];
-                                    Weight += doc.data()['Weight'];
+                                    count += parseFloat(doc.data()['count']);
+                                    Weight += parseFloat(doc.data()['weight']);
                                 });
                                 graphDataArr.push({
                                     name: machine,
@@ -82,7 +83,7 @@ export default function TotalPipesGraph() {
 
                 MachineNo.map(
                     (machine, index) => {
-                        const ref = collection(db_firestore, 'machines');
+                        const ref = collection(db_firestore, collection_name);
                         const q = query(ref, where('unix_time', '>=', startDate), where('unix_time', '<=', endDate),
                             where('machine_no', '==', machine)
                         );
@@ -92,8 +93,8 @@ export default function TotalPipesGraph() {
                                 let Weight = 0;
 
                                 snapShot.forEach((doc) => {
-                                    count += doc.data()['Count'];
-                                    Weight += doc.data()['Weight'];
+                                    count += parseFloat(doc.data()['count']);
+                                    Weight += parseFloat(doc.data()['weight']);
                                 });
                                 graphDataArr.push({
                                     name: machine,
@@ -137,7 +138,7 @@ export default function TotalPipesGraph() {
 
                 MachineNo.map(
                     (machine, index) => {
-                        const ref = collection(db_firestore, 'machines');
+                        const ref = collection(db_firestore, collection_name);
                         const q = query(ref, where('unix_time', '>=', startDate), where('unix_time', '<=', endDate),
                             where('machine_no', '==', machine)
                         );
@@ -147,8 +148,8 @@ export default function TotalPipesGraph() {
                                 let Weight = 0;
 
                                 snapShot.forEach((doc) => {
-                                    count += doc.data()['Count'];
-                                    Weight += doc.data()['Weight'];
+                                    count += parseFloat(doc.data()['count']);
+                                    Weight += parseFloat(doc.data()['weight']);
                                 });
                                 graphDataArr.push({
                                     name: machine,
@@ -196,7 +197,7 @@ export default function TotalPipesGraph() {
                                     <Tooltip />
                                     <Legend />
                                     <Bar dataKey="pipes" fill="#8884d8" />
-                                    <Bar dataKey="Total weight" fill="#ffd45e" />
+                                    <Bar dataKey="Total weight" fill="#FFA500" />
                                     <Bar dataKey="Average Pipe Weight" fill="#6aa32e" />
                                 </BarChart>
                             </ResponsiveContainer>
