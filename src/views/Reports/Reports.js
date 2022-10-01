@@ -15,7 +15,7 @@ export default function Reports() {
 
   useEffect(
     () => {
-      const ref = collection(db_firestore, `machines`);
+      const ref = collection(db_firestore, `*machines`);
       const q = query(ref, orderBy('unix_time', 'desc'), limit(75));
       onSnapshot(q,
         (snapShot) => {
