@@ -9,7 +9,8 @@ const Login = () => {
     let password = useRef('');
     let [msg, setMsg] = useState("");
 
-    const doAuth = () => {
+    const doAuth = (e) => {
+        e.preventDefault();
         AuthLogin('users', email.current.value, password.current.value).then(
             (response) => {
                 if (response[0]) {
@@ -23,7 +24,7 @@ const Login = () => {
     }
 
     return (
-        <>
+        <form>
             <h1 className='loginHeader'>
                 Steeltech Admin <br /> Login
             </h1>
@@ -37,7 +38,7 @@ const Login = () => {
                     {msg}
                 </p>
             </div>
-        </>
+        </form>
     );
 }
 
