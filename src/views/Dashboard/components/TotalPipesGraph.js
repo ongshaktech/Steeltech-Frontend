@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Section } from '../../../styles/Sections.styled';
 // import { Button, Select } from '../../../styles/Common.styled';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -10,9 +10,18 @@ import { where, query, collection, getDocs } from 'firebase/firestore';
 
 export default function TotalPipesGraph() {
 
+    const currentYear = parseInt(new Date().getFullYear());
+    let dateRef = useRef('');
+
     let [graphData, setGraphData] = useState([]);
     let [DataPeriod, setDataPeriod] = useState('daily');
+    let [year, setYear] = useState(currentYear);
+
     const collection_name = '*machines';
+
+    useEffect(() => {
+        dateRef.current.valueAsDate = new Date();
+    }, []);
 
     useEffect(
         () => {
@@ -63,6 +72,7 @@ export default function TotalPipesGraph() {
             // Yearly data filtering
             else if (DataPeriod === 'yearly') {
                 let startDate = new Date();
+                startDate.setFullYear(year);
                 startDate.setMonth(0);
                 startDate.setDate(1);
                 startDate.setHours(0);
@@ -72,6 +82,7 @@ export default function TotalPipesGraph() {
                 startDate = Math.floor(startDate.getTime() / 1000);
 
                 let endDate = new Date();
+                endDate.setFullYear(year);
                 endDate.setMonth(12);
                 endDate.setDate(0);
                 endDate.setHours(0);
@@ -118,6 +129,7 @@ export default function TotalPipesGraph() {
             // Monthly data filtering
             else {
                 let startDate = new Date();
+                startDate.setFullYear(year);
                 startDate.setMonth(DataPeriod);
                 startDate.setDate(1);
                 startDate.setHours(0);
@@ -125,9 +137,10 @@ export default function TotalPipesGraph() {
                 startDate.setMilliseconds(0);
                 startDate.setSeconds(0);
                 startDate = Math.floor(startDate.getTime() / 1000);
-                
+
 
                 let endDate = new Date();
+                endDate.setFullYear(year);
                 endDate.setMonth(DataPeriod + 1);
                 endDate.setDate(0);
                 endDate.setHours(0);
@@ -172,13 +185,26 @@ export default function TotalPipesGraph() {
 
             }
 
-        }, [DataPeriod]
+        }, [DataPeriod, year]
     );
 
     return (
         <Section>
             <AnalyticsCard>
-                <h2>Production Details</h2>
+                <h2>
+                    Production Details of &nbsp;
+
+                    <select onChange={(e) => {
+                        setYear(parseInt(e.target.options[e.target.selectedIndex].value));
+                    }}>
+                        <option value={currentYear}>{currentYear}</option>
+                        <option value={currentYear - 1}>{currentYear - 1}</option>
+                        <option value={currentYear - 2}>{currentYear - 2}</option>
+                        <option value={currentYear - 3}>{currentYear - 3}</option>
+                        <option value={currentYear - 4}>{currentYear - 4}</option>
+                    </select>
+                </h2>
+
                 <div className='content'>
                     <div style={{ width: "100%" }}>
 
@@ -211,9 +237,12 @@ export default function TotalPipesGraph() {
                     {/* AnalyticsDetails */}
                     <AnalyticsDetail>
                         <div className='category'>
-                            <button onClick={() => {
+
+                            {/* <button onClick={() => {
                                 setDataPeriod('daily');
-                            }} autoFocus>Daily</button>
+                            }} autoFocus>Daily</button> */}
+
+                            <input type="date" ref={dateRef} />
 
                             <select onChange={(e) => {
                                 setDataPeriod(parseInt(e.target.options[e.target.selectedIndex].value));
@@ -233,9 +262,9 @@ export default function TotalPipesGraph() {
                                 <option value={11}>December</option>
                             </select>
 
-                            <button onClick={() => {
-                                setDataPeriod('yearly')
-                            }}>Yearly</button>
+                            <button onClick={() => { setDataPeriod('yearly') }}>
+                                Yearly
+                            </button>
                         </div>
                     </AnalyticsDetail>
                     {/* AnalyticsDetails */}

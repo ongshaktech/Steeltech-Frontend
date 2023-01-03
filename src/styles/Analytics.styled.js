@@ -69,7 +69,7 @@ export const AnalyticsDetail = styled.div`
         display: flex;
         margin-bottom: 1.5rem;
         margin-top: 1.5rem;
-        button, select {
+        button, select, input {
             width: 100%;
             padding: 1rem;
             font-size: 1.6rem;
@@ -83,6 +83,9 @@ export const AnalyticsDetail = styled.div`
         button:focus, button:hover, select:focus, select:hover {
             background: black;
             color: white;
+        }
+        input{
+            text-align: center;
         }
     }
 `

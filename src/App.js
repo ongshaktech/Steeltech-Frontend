@@ -70,7 +70,6 @@ function App() {
         // If user, then Render the content
         <ThemeProvider theme={Theme}>
           <GlobalStyles />
-
           <WebWrapper>
             <Sidebar />
             <Routes>

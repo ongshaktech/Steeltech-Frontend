@@ -4,7 +4,7 @@ import ReportsHeading from './components/ReportsHeading';
 import ReportsTable from './components/ReportsTable';
 import { db_firestore } from '../../Hooks/config';
 
-import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
+import { collection, query, orderBy, limit, onSnapshot, limitToLast } from 'firebase/firestore';
 import { startAfter, endBefore } from 'firebase/firestore';
 
 import { useState } from 'react';
@@ -24,12 +24,12 @@ export default function Reports() {
     () => {
       const ref = collection(db_firestore, `*machines`);
       const q = query(ref, orderBy('unix_time', 'desc'), limit(dataPerPage));
-      putDataInTable(q);
+      putDataInTable(q, 0);
     }, []
   );
 
 
-  const putDataInTable = (q) => {
+  const putDataInTable = (q, increase) => {
     onSnapshot(q,
       (snapShot) => {
         let items = [];
@@ -38,6 +38,7 @@ export default function Reports() {
           items.push(doc.data());
         });
         setReportData(items);
+        setPageIndex(pageIndex + increase);
       }
     );
   }
@@ -53,8 +54,7 @@ export default function Reports() {
       limit(dataPerPage)
     );
 
-    putDataInTable(q);
-    setPageIndex(pageIndex + 1);
+    putDataInTable(q, 1);
   }
 
   const handlePreviousPage = () => {
@@ -63,11 +63,10 @@ export default function Reports() {
     const q = query(collectionRef,
       orderBy('unix_time', 'desc'),
       endBefore(snap.docs[0]),
-      limit(dataPerPage)
+      limitToLast(dataPerPage)
     );
 
-    putDataInTable(q);
-    setPageIndex(pageIndex - 1);
+    putDataInTable(q, -1);
   }
 
 
@@ -78,12 +77,11 @@ export default function Reports() {
         <ReportsTable ReportData={ReportData} startIndex={pageIndex * dataPerPage} />
 
         <PaginationButton>
+          <button onClick={handlePreviousPage} disabled={pageIndex === 0}>
+            <b>Previous</b>
+          </button>
           <button onClick={handleNextPage}>
             <b>Next</b>
-          </button>
-
-          <button onClick={handlePreviousPage}>
-            <b>Previous</b>
           </button>
         </PaginationButton>
 

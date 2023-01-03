@@ -27,6 +27,11 @@ export const PaginationButton = styled.div`
         background-color: #006875;
     }
 
+    button:disabled{
+        background-color: gray;
+        cursor: default;
+    }
+
     button:first-child{
         float: left;
     }
