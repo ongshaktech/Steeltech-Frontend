@@ -53,6 +53,7 @@ export const AnalyticsDetail = styled.div`
             height: 4rem;
             padding: 1rem;
             border-width: 1px;
+            width: 15rem;
         }
         button {
             width: 8rem;

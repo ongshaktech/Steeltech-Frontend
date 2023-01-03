@@ -23,7 +23,20 @@ export default function TotalPipesGraph() {
     // set todays date to input initially
     useEffect(() => {
         dateRef.current.valueAsDate = new Date();
+
+        let startDate = new Date(dateRef.current.value);
+        startDate.setHours(0);
+        startDate.setMinutes(0);
+        startDate.setSeconds(0);
+
+        let endDate = new Date(dateRef.current.value);
+        endDate.setHours(23);
+        endDate.setMinutes(59);
+        endDate.setSeconds(59);
+
+        putGraphData(startDate, endDate);
         setStatus(`Showing Daily Graph of ${dateRef.current.value}`);
+
     }, []);
 
 
@@ -80,8 +93,9 @@ export default function TotalPipesGraph() {
         );
     }
 
-    // Filtering Cronologically
 
+
+    // Filtering Cronologically
     const dailyGraph = (e) => {
         let startDate = new Date(e.target.value);
         startDate.setHours(0);
@@ -123,12 +137,12 @@ export default function TotalPipesGraph() {
         endDate.setSeconds(0);
 
         putGraphData(startDate, endDate);
-
         setStatus(`Showing Monthly Graph of ${e.nativeEvent.target[e.nativeEvent.target.selectedIndex].text}, ${year}`);
-
         setFilter('monthly');
         setLastEvent(e);
     }
+
+
 
     const yearlyGraph = (_) => {
 
@@ -151,9 +165,7 @@ export default function TotalPipesGraph() {
         endDate.setSeconds(0);
 
         putGraphData(startDate, endDate);
-
         setStatus(`Showing Yearly Graph of ${year}`);
-
         setFilter('yearly');
     }
 
