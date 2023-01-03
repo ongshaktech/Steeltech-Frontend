@@ -65,6 +65,12 @@ export const AnalyticsDetail = styled.div`
         }
     }
 
+    .status-header{
+        text-align: center;
+        font-size: 2.5rem;
+        color: #494949;
+    }
+
     .category {
         display: flex;
         margin-bottom: 1.5rem;

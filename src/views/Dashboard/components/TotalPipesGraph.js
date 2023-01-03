@@ -10,183 +10,153 @@ import { where, query, collection, getDocs } from 'firebase/firestore';
 
 export default function TotalPipesGraph() {
 
+
+    const collection_name = '*machines';
     const currentYear = parseInt(new Date().getFullYear());
     let dateRef = useRef('');
 
     let [graphData, setGraphData] = useState([]);
-    let [DataPeriod, setDataPeriod] = useState('daily');
     let [year, setYear] = useState(currentYear);
+    let [status, setStatus] = useState('');
 
-    const collection_name = '*machines';
 
+    // set todays date to input initially
     useEffect(() => {
         dateRef.current.valueAsDate = new Date();
+        setStatus(`Showing Daily Graph of ${dateRef.current.value}`);
     }, []);
 
-    useEffect(
-        () => {
-            let graphDataArr = [];
 
 
-            // Daily Data
-            if (DataPeriod === 'daily') {
-                let todayDate = new Date();
-                todayDate.setHours(0);
-                todayDate.setMinutes(0);
-                todayDate.setMilliseconds(0);
-                todayDate.setSeconds(0);
-                todayDate = Math.floor(todayDate.getTime() / 1000); // Date to Unix format
+    // Update State if year is changed
+    let [lastEvent, setLastEvent] = useState(null);
+    let [filter, setFilter] = useState('daily');
 
-                MachineNo.map(
-                    (machine, index) => {
-                        const ref = collection(db_firestore, collection_name);
-                        const q = query(ref, where('unix_time', '>=', todayDate), where('machine_no', '==', machine));
-                        getDocs(q).then(
-                            (snapShot) => {
-                                let count = 0;
-                                let Weight = 0;
+    useEffect(() => {
+        if (filter === 'monthly') monthlyGraph(lastEvent);
+        else if (filter === 'yearly') yearlyGraph(null);
+    }, [year])
 
-                                snapShot.forEach((doc) => {
-                                    count += parseFloat(doc.data()['count']);
-                                    Weight += parseFloat(doc.data()['weight']);
-                                });
-                                graphDataArr.push({
-                                    name: machine,
-                                    pipes: count,
-                                    'Total weight': Weight,
-                                    'Average Pipe Weight': (Weight / count).toFixed(2)
-                                });
 
-                                // Set data if the loop will complete and Array is fully pushed
-                                if (MachineNo.length === index + 1) {
-                                    setGraphData(
-                                        graphDataArr
-                                    );
-                                }
-                            }
-                        );
+
+    // Query in firestore DB and plot data on graph
+    const putGraphData = (startDate, endDate) => {
+
+        let graphDataArr = [];
+
+        MachineNo.map(
+            (machine, index) => {
+                const ref = collection(db_firestore, collection_name);
+                const q = query(ref,
+                    where('unix_time', '>=', Math.floor(startDate.getTime() / 1000)),
+                    where('unix_time', '<=', Math.floor(endDate.getTime() / 1000)),
+                    where('machine_no', '==', machine)
+                );
+                getDocs(q).then(
+                    (snapShot) => {
+                        let count = 0;
+                        let Weight = 0;
+
+                        snapShot.forEach((doc) => {
+                            count += parseFloat(doc.data()['count']);
+                            Weight += parseFloat(doc.data()['weight']);
+                        });
+                        graphDataArr.push({
+                            name: machine,
+                            pipes: count,
+                            'Total weight': Weight,
+                            'Average Pipe Weight': (Weight / count).toFixed(2)
+                        });
+
+                        // Set data if the loop will complete and Array is fully pushed
+                        if (MachineNo.length === index + 1) {
+                            setGraphData(
+                                graphDataArr
+                            );
+                        }
                     }
                 );
             }
+        );
+    }
 
-            // Yearly data filtering
-            else if (DataPeriod === 'yearly') {
-                let startDate = new Date();
-                startDate.setFullYear(year);
-                startDate.setMonth(0);
-                startDate.setDate(1);
-                startDate.setHours(0);
-                startDate.setMinutes(0);
-                startDate.setMilliseconds(0);
-                startDate.setSeconds(0);
-                startDate = Math.floor(startDate.getTime() / 1000);
+    // Filtering Cronologically
 
-                let endDate = new Date();
-                endDate.setFullYear(year);
-                endDate.setMonth(12);
-                endDate.setDate(0);
-                endDate.setHours(0);
-                endDate.setMinutes(0);
-                endDate.setMilliseconds(0);
-                endDate.setSeconds(0);
-                endDate = Math.floor(endDate.getTime() / 1000);
+    const dailyGraph = (e) => {
+        let startDate = new Date(e.target.value);
+        startDate.setHours(0);
+        startDate.setMinutes(0);
+        startDate.setSeconds(0);
 
+        let endDate = new Date(e.target.value);
+        endDate.setHours(23);
+        endDate.setMinutes(59);
+        endDate.setSeconds(59);
 
-                MachineNo.map(
-                    (machine, index) => {
-                        const ref = collection(db_firestore, collection_name);
-                        const q = query(ref, where('unix_time', '>=', startDate), where('unix_time', '<=', endDate),
-                            where('machine_no', '==', machine)
-                        );
-                        getDocs(q).then(
-                            (snapShot) => {
-                                let count = 0;
-                                let Weight = 0;
+        putGraphData(startDate, endDate);
 
-                                snapShot.forEach((doc) => {
-                                    count += parseFloat(doc.data()['count']);
-                                    Weight += parseFloat(doc.data()['weight']);
-                                });
-                                graphDataArr.push({
-                                    name: machine,
-                                    pipes: count,
-                                    'Total weight': Weight,
-                                    'Average Pipe Weight': (Weight / count).toFixed(2)
-                                });
+        setStatus(`Showing Daily Graph of ${e.target.value}`);
 
-                                // Set data if the loop will complete and Array is fully pushed
-                                if (MachineNo.length === index + 1) {
-                                    setGraphData(
-                                        graphDataArr
-                                    );
-                                }
-                            }
-                        );
-                    }
-                );
-            }
-
-            // Monthly data filtering
-            else {
-                let startDate = new Date();
-                startDate.setFullYear(year);
-                startDate.setMonth(DataPeriod);
-                startDate.setDate(1);
-                startDate.setHours(0);
-                startDate.setMinutes(0);
-                startDate.setMilliseconds(0);
-                startDate.setSeconds(0);
-                startDate = Math.floor(startDate.getTime() / 1000);
+        setFilter('daily')
+    }
 
 
-                let endDate = new Date();
-                endDate.setFullYear(year);
-                endDate.setMonth(DataPeriod + 1);
-                endDate.setDate(0);
-                endDate.setHours(0);
-                endDate.setMinutes(0);
-                endDate.setMilliseconds(0);
-                endDate.setSeconds(0);
-                endDate = Math.floor(endDate.getTime() / 1000);
+    const monthlyGraph = (e) => {
+        let monthIndex = parseInt(e.target.options[e.target.selectedIndex].value);
 
-                MachineNo.map(
-                    (machine, index) => {
-                        const ref = collection(db_firestore, collection_name);
-                        const q = query(ref, where('unix_time', '>=', startDate), where('unix_time', '<=', endDate),
-                            where('machine_no', '==', machine)
-                        );
-                        getDocs(q).then(
-                            (snapShot) => {
-                                let count = 0;
-                                let Weight = 0;
+        let startDate = new Date();
+        startDate.setFullYear(year);
+        startDate.setMonth(monthIndex);
+        startDate.setDate(1);
+        startDate.setHours(0);
+        startDate.setMinutes(0);
+        startDate.setMilliseconds(0);
+        startDate.setSeconds(0);
 
-                                snapShot.forEach((doc) => {
-                                    count += parseFloat(doc.data()['count']);
-                                    Weight += parseFloat(doc.data()['weight']);
-                                });
-                                graphDataArr.push({
-                                    name: machine,
-                                    pipes: count,
-                                    'Total weight': Weight,
-                                    'Average Pipe Weight': (Weight / count).toFixed(2)
-                                });
+        let endDate = new Date();
+        endDate.setFullYear(year);
+        endDate.setMonth(monthIndex + 1);
+        endDate.setDate(0);
+        endDate.setHours(0);
+        endDate.setMinutes(0);
+        endDate.setMilliseconds(0);
+        endDate.setSeconds(0);
 
-                                // Set data if the loop will complete and Array is fully pushed
-                                if (MachineNo.length === index + 1) {
-                                    setGraphData(
-                                        graphDataArr
-                                    );
-                                }
-                            }
-                        );
-                    }
-                );
+        putGraphData(startDate, endDate);
 
+        setStatus(`Showing Monthly Graph of ${e.nativeEvent.target[e.nativeEvent.target.selectedIndex].text}, ${year}`);
 
-            }
+        setFilter('monthly');
+        setLastEvent(e);
+    }
 
-        }, [DataPeriod, year]
-    );
+    const yearlyGraph = (_) => {
+
+        let startDate = new Date();
+        startDate.setFullYear(year);
+        startDate.setMonth(0);
+        startDate.setDate(1);
+        startDate.setHours(0);
+        startDate.setMinutes(0);
+        startDate.setMilliseconds(0);
+        startDate.setSeconds(0);
+
+        let endDate = new Date();
+        endDate.setFullYear(year);
+        endDate.setMonth(12);
+        endDate.setDate(0);
+        endDate.setHours(0);
+        endDate.setMinutes(0);
+        endDate.setMilliseconds(0);
+        endDate.setSeconds(0);
+
+        putGraphData(startDate, endDate);
+
+        setStatus(`Showing Yearly Graph of ${year}`);
+
+        setFilter('yearly');
+    }
+
 
     return (
         <Section>
@@ -238,15 +208,10 @@ export default function TotalPipesGraph() {
                     <AnalyticsDetail>
                         <div className='category'>
 
-                            {/* <button onClick={() => {
-                                setDataPeriod('daily');
-                            }} autoFocus>Daily</button> */}
+                            <input type="date" ref={dateRef}
+                                onChange={dailyGraph} />
 
-                            <input type="date" ref={dateRef} />
-
-                            <select onChange={(e) => {
-                                setDataPeriod(parseInt(e.target.options[e.target.selectedIndex].value));
-                            }}>
+                            <select onChange={monthlyGraph}>
                                 <option selected disabled>Monthly</option>
                                 <option value={0}>January</option>
                                 <option value={1}>February</option>
@@ -262,10 +227,14 @@ export default function TotalPipesGraph() {
                                 <option value={11}>December</option>
                             </select>
 
-                            <button onClick={() => { setDataPeriod('yearly') }}>
+                            <button onClick={yearlyGraph}>
                                 Yearly
                             </button>
                         </div>
+
+                        <h1 className='status-header'>
+                            {status}
+                        </h1>
                     </AnalyticsDetail>
                     {/* AnalyticsDetails */}
                 </div>
