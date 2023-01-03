@@ -6,6 +6,19 @@ export const AnalyticsCard = styled.div`
     border-radius: .8rem;
     padding: 4rem 2rem;
 
+    select{
+        width: 10rem;
+        padding: .8rem;
+        font-size: 1.6rem;
+        cursor: pointer;
+        background: #ddd;
+        color: #000;
+        margin: .5rem;
+        border: none;
+        border-radius: 5rem;
+        text-align: center;
+    }
+
     h2 {
         font-size: 2rem;
         margin-bottom: 2rem;
