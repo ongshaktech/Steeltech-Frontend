@@ -4,7 +4,7 @@ import { Section } from '../../../styles/Sections.styled';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { AnalyticsDetail } from '../../../styles/Analytics.styled';
 import { AnalyticsCard } from '../../../styles/Analytics.styled';
-import { ProductTypes, MachineNo } from '../../../shared/constants';
+import { ProductTypes, MachineNo, ProductThickness } from '../../../shared/constants';
 import { db_firestore } from '../../../Hooks/config';
 import { where, query, collection, getDocs } from 'firebase/firestore';
 import { useRef } from 'react';
@@ -169,7 +169,7 @@ export default function TypeThicknessGraph() {
             <AnalyticsCard>
 
                 <h2>
-                    Product Type and Thickness &nbsp;
+                    Product Type and Thickness of &nbsp;
                     <select onChange={(e) => {
                         setYear(parseInt(e.target.options[e.target.selectedIndex].value));
                     }}>
@@ -204,16 +204,24 @@ export default function TypeThicknessGraph() {
                             </ResponsiveContainer>
                         </div>
                         {/* BarChartComponent */}
-
-
                     </div>
 
 
                     {/* AnalyticsDetails */}
                     <AnalyticsDetail>
 
-                        <div className='upperContainer'>
-                            <input ref={thicknessInput} placeholder='Product Thickness' type="text" />
+                        <div className='upperContainer'>                            
+                            <select ref={thicknessInput}>
+                                <option selected disabled value=''>Product Thickness</option>
+                                {
+                                    ProductThickness.map(
+                                        (thickness) =>
+                                            <option value={thickness}>{thickness}</option>
+                                    )
+                                }
+                            </select>
+
+
                             <select ref={machineNoInput}>
                                 <option selected disabled value=''>Machine No.</option>
                                 {
@@ -224,6 +232,7 @@ export default function TypeThicknessGraph() {
                                 }
 
                             </select>
+
                             <button onClick={set_product}>
                                 Set
                             </button>

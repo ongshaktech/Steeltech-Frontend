@@ -43,7 +43,7 @@ export const AnalyticsDetail = styled.div`
     .upperContainer{
         margin-top: 2rem;
         
-        input[type=text], select{
+        select{
             background-color: white;
             margin: .8rem .8rem .8rem 1.2rem;
             outline: none;
@@ -53,7 +53,8 @@ export const AnalyticsDetail = styled.div`
             height: 4rem;
             padding: 1rem;
             border-width: 1px;
-            width: 15rem;
+            width: 16rem;
+            font-size: 1.3rem;
         }
         button {
             width: 8rem;
@@ -110,10 +111,9 @@ export const AnalyticsDetail = styled.div`
             border-radius: 0rem 5rem 5rem 0rem;
             width: 16rem;
             margin-left: 0;
-            background-color: gray;
-            background-color: #494848;
+            background-color: #bfbdbd;
             font-weight: bold;
-            color: white;
+            color: #3c3b3b;
             cursor: pointer;
         }
         button:focus, button:hover, select:focus, select:hover, input:hover, input:focus {
