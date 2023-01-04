@@ -90,6 +90,7 @@ export const AnalyticsDetail = styled.div`
         margin-bottom: 1.5rem;
         margin-top: 1.5rem;
         button, select, input {
+            outline: none;
             width: 100%;
             padding: 1rem;
             font-size: 1.6rem;
@@ -100,7 +101,22 @@ export const AnalyticsDetail = styled.div`
             border: none;
             border-radius: 5rem;
         }
-        button:focus, button:hover, select:focus, select:hover {
+        input[type="date"]{
+            border-radius: 5rem 0rem 0rem 5rem;
+            width: 95%;
+            margin-right: 0;
+        }
+        .date-btn{
+            border-radius: 0rem 5rem 5rem 0rem;
+            width: 16rem;
+            margin-left: 0;
+            background-color: gray;
+            background-color: #494848;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+        }
+        button:focus, button:hover, select:focus, select:hover, input:hover, input:focus {
             background: black;
             color: white;
         }

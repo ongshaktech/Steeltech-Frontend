@@ -1,5 +1,5 @@
 import React from 'react'
-import { FaSignInAlt, FaRegLifeRing, FaRegBell, FaChartBar, FaDharmachakra } from 'react-icons/fa';
+import { FaSignInAlt, FaUserCircle, FaRegBell, FaChartBar, FaDharmachakra } from 'react-icons/fa';
 import { NavSidebar } from '../styles/NavSidebar'
 import { NavLink } from "react-router-dom"
 import { ClearCookie } from '../views/Authentication/Cookies';
@@ -22,7 +22,7 @@ export default function Sidebar() {
                 isActive ? activeStyle : normalStyle
             }>
                 <div>
-                    <FaRegLifeRing />
+                    <FaChartBar />
                 </div>
             </NavLink>
             <NavLink to="/report" style={({ isActive }) =>
@@ -36,7 +36,7 @@ export default function Sidebar() {
                 isActive ? activeStyle : normalStyle
             }>
                 <div>
-                    <FaChartBar />
+                    <FaUserCircle />
                 </div>
             </NavLink>
             <NavLink to="/manage-products" style={({ isActive }) =>
@@ -47,11 +47,11 @@ export default function Sidebar() {
                 </div>
             </NavLink>
             <div>
-                <a title='logout' onClick={()=>{
-                  ClearCookie();
-                  window.location.reload();  
+                <a title='logout' onClick={() => {
+                    ClearCookie();
+                    window.location.reload();
                 }}>
-                    <FaSignInAlt />    
+                    <FaSignInAlt />
                 </a>
             </div>
         </NavSidebar>

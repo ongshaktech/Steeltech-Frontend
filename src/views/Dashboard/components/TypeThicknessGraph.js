@@ -78,18 +78,18 @@ export default function TypeThicknessGraph() {
     // Filtering Cronologically
     const dailyGraph = (e) => {
         if (Object.keys(ProductData).length !== 0) {
-            let startDate = new Date(e.target.value);
+            let startDate = new Date(dateRef.current.value);
             startDate.setHours(0);
             startDate.setMinutes(0);
             startDate.setSeconds(0);
 
-            let endDate = new Date(e.target.value);
+            let endDate = new Date(dateRef.current.value);
             endDate.setHours(23);
             endDate.setMinutes(59);
             endDate.setSeconds(59);
 
             putGraphData(startDate, endDate);
-            setStatus(`Showing Daily Graph of ${e.target.value}`);
+            setStatus(`Showing Daily Graph of ${dateRef.current.value}`);
         }
     }
 
@@ -234,8 +234,10 @@ export default function TypeThicknessGraph() {
                         </p>
 
                         <div className='category'>
-                            <input type="date" ref={dateRef}
-                                onChange={dailyGraph} />
+                            <input type="date" ref={dateRef} />
+                            <button className='date-btn' onClick={dailyGraph}>
+                                set
+                            </button>
 
                             <select onChange={monthlyGraph}>
                                 <option selected disabled>Monthly</option>

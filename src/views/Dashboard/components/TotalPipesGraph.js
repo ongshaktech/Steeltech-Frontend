@@ -97,19 +97,19 @@ export default function TotalPipesGraph() {
 
     // Filtering Cronologically
     const dailyGraph = (e) => {
-        let startDate = new Date(e.target.value);
+        let startDate = new Date(dateRef.current.value);
         startDate.setHours(0);
         startDate.setMinutes(0);
         startDate.setSeconds(0);
 
-        let endDate = new Date(e.target.value);
+        let endDate = new Date(dateRef.current.value);
         endDate.setHours(23);
         endDate.setMinutes(59);
         endDate.setSeconds(59);
 
         putGraphData(startDate, endDate);
 
-        setStatus(`Showing Daily Graph of ${e.target.value}`);
+        setStatus(`Showing Daily Graph of ${dateRef.current.value}`);
 
         setFilter('daily')
     }
@@ -220,8 +220,11 @@ export default function TotalPipesGraph() {
                     <AnalyticsDetail>
                         <div className='category'>
 
-                            <input type="date" ref={dateRef}
-                                onChange={dailyGraph} />
+                            <input type="date" ref={dateRef} autoFocus/>
+
+                            <button className='date-btn' onClick={dailyGraph}>
+                                set
+                            </button>
 
                             <select onChange={monthlyGraph}>
                                 <option selected disabled>Monthly</option>
