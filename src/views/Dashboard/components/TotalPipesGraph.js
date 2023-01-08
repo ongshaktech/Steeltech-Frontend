@@ -11,7 +11,7 @@ import { where, query, collection, getDocs } from 'firebase/firestore';
 export default function TotalPipesGraph() {
 
 
-    const collection_name = '*machines';
+    const collection_name = 'machines';
     const currentYear = parseInt(new Date().getFullYear());
     let dateRef = useRef('');
 
@@ -73,6 +73,7 @@ export default function TotalPipesGraph() {
                         snapShot.forEach((doc) => {
                             count += parseFloat(doc.data()['count']);
                             Weight += parseFloat(doc.data()['weight']);
+                            console.log(doc.data());
                         });
                         graphDataArr.push({
                             name: machine,

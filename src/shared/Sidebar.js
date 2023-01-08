@@ -1,5 +1,5 @@
 import React from 'react'
-import { FaSignInAlt, FaUserCircle, FaRegBell, FaChartBar, FaDharmachakra } from 'react-icons/fa';
+import { FaSignInAlt, FaUserCircle, FaRegBell, FaChartBar, FaDharmachakra, FaBuromobelexperte } from 'react-icons/fa';
 import { NavSidebar } from '../styles/NavSidebar'
 import { NavLink } from "react-router-dom"
 import { ClearCookie } from '../views/Authentication/Cookies';
@@ -25,6 +25,15 @@ export default function Sidebar() {
                     <FaChartBar />
                 </div>
             </NavLink>
+
+            <NavLink to="/machines" style={({ isActive }) =>
+                isActive ? activeStyle : normalStyle
+            }>
+                <div>
+                    <FaBuromobelexperte />
+                </div>
+            </NavLink>
+
             <NavLink to="/report" style={({ isActive }) =>
                 isActive ? activeStyle : normalStyle
             }>

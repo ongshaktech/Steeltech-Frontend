@@ -1,0 +1,30 @@
+.card {
+    height: 15rem;
+    min-width: 20rem;
+    overflow: hidden;
+    border-radius: 1rem;
+    display: inline-block;
+    margin: 1rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.1s;
+    cursor: pointer;
+}
+
+.card:hover {
+    transition: box-shadow 0.2s;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    /* background-color:#6bffa9 ; */
+}
+
+.cardIcon {
+    font-size: 5rem;
+    text-align: center;
+}
+
+.cardIcon svg {
+    margin: 2rem;
+}
+
+.card h2{
+    text-align: center;
+}

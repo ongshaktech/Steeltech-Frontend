@@ -11,7 +11,7 @@ import { useRef } from 'react';
 
 export default function TypeThicknessGraph() {
 
-    const collection_name = '*machines';
+    const collection_name = 'machines';
     const currentYear = parseInt(new Date().getFullYear());
     let thicknessInput = useRef('');
     let machineNoInput = useRef('');

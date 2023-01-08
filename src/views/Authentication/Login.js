@@ -11,6 +11,12 @@ const Login = () => {
 
     const doAuth = (e) => {
         e.preventDefault();
+
+        if (email.current.value === "" || password.current.value === "") {
+            setMsg("Can't login with empty credentials!");
+            return;
+        }
+
         AuthLogin('users', email.current.value, password.current.value).then(
             (response) => {
                 if (response[0]) {
@@ -18,7 +24,7 @@ const Login = () => {
                     SetCookie('pswd', password.current.value, 30);
                     window.location.reload();
                 }
-                else setMsg("Wrong Password!");
+                else setMsg("Wrong Credentials!");
             }
         );
     }
@@ -29,8 +35,8 @@ const Login = () => {
                 Steeltech Admin <br /> Login
             </h1>
             <div className="loginDivCont">
-                <input type="text" className="loginInputField" placeholder='Your Email' ref={email} /> <br />
-                <input type="password" className="loginInputField" placeholder='Your Password' ref={password} /> <br />
+                <input type="text" className="loginInputField" placeholder='Your Email' ref={email} required /> <br />
+                <input type="password" className="loginInputField" placeholder='Your Password' ref={password} required /> <br />
                 <button className="loginButton" onClick={doAuth}>
                     LOG IN
                 </button>

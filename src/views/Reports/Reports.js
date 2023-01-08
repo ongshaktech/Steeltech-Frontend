@@ -17,12 +17,15 @@ export default function Reports() {
   let [ReportData, setReportData] = useState([]);
   let [snap, setSnap] = useState(null);
   let [pageIndex, setPageIndex] = useState(0);
+  let [fetchedDataNum, setFetchedDataNum] = useState(0);
 
   const dataPerPage = 30;
 
+  const collection_name = 'machines';
+
   useEffect(
     () => {
-      const ref = collection(db_firestore, `*machines`);
+      const ref = collection(db_firestore, collection_name);
       const q = query(ref, orderBy('unix_time', 'desc'), limit(dataPerPage));
       putDataInTable(q, 0);
     }, []
@@ -38,6 +41,7 @@ export default function Reports() {
           items.push(doc.data());
         });
         setReportData(items);
+        setFetchedDataNum(items.length);
         setPageIndex(pageIndex + increase);
       }
     );
@@ -46,19 +50,18 @@ export default function Reports() {
 
   // Pagination
   const handleNextPage = () => {
-    let collectionRef = collection(db_firestore, `*machines`);
-
+    let collectionRef = collection(db_firestore, collection_name);
+    
     const q = query(collectionRef,
       orderBy('unix_time', 'desc'),
       startAfter(snap.docs[ReportData.length - 1]),
       limit(dataPerPage)
     );
-
     putDataInTable(q, 1);
   }
 
   const handlePreviousPage = () => {
-    let collectionRef = collection(db_firestore, `*machines`);
+    let collectionRef = collection(db_firestore, collection_name);
 
     const q = query(collectionRef,
       orderBy('unix_time', 'desc'),
@@ -80,7 +83,7 @@ export default function Reports() {
           <button onClick={handlePreviousPage} disabled={pageIndex === 0}>
             <b>Previous</b>
           </button>
-          <button onClick={handleNextPage}>
+          <button onClick={handleNextPage} disabled={fetchedDataNum < dataPerPage}>
             <b>Next</b>
           </button>
         </PaginationButton>

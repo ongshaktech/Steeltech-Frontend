@@ -13,6 +13,8 @@ import { AuthLogin } from "./Hooks/firebaseFuncs";
 import { useState, useEffect } from "react";
 import { Triangle } from "react-loader-spinner";
 import './styles/spinnerStyle.css';
+import Machines from "./views/Machines/Machines";
+
 
 const Theme = {
   color: {
@@ -74,6 +76,7 @@ function App() {
             <Sidebar />
             <Routes>
               <Route path="/" element={<Dashboard />} />
+              <Route path="/machines" element={<Machines />} />
               <Route path="/report" element={<Reports />} />
               <Route path="/users" element={<Users />} />
               <Route path="/manage-products" element={<ManageProducts />} />
