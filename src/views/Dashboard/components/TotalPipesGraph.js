@@ -73,7 +73,7 @@ export default function TotalPipesGraph() {
                         snapShot.forEach((doc) => {
                             count += parseFloat(doc.data()['count']);
                             Weight += parseFloat(doc.data()['weight']);
-                            console.log(doc.data());
+                            // console.log(doc.data());
                         });
                         graphDataArr.push({
                             name: machine,
@@ -84,9 +84,7 @@ export default function TotalPipesGraph() {
 
                         // Set data if the loop will complete and Array is fully pushed
                         if (MachineNo.length === index + 1) {
-                            setGraphData(
-                                graphDataArr
-                            );
+                            setGraphData(graphDataArr);
                         }
                     }
                 );
@@ -221,7 +219,7 @@ export default function TotalPipesGraph() {
                     <AnalyticsDetail>
                         <div className='category'>
 
-                            <input type="date" ref={dateRef} autoFocus/>
+                            <input type="date" ref={dateRef} autoFocus />
 
                             <button className='date-btn' onClick={dailyGraph}>
                                 set
@@ -255,7 +253,6 @@ export default function TotalPipesGraph() {
                     {/* AnalyticsDetails */}
                 </div>
             </AnalyticsCard>
-
         </Section>
-    )
+    );
 }

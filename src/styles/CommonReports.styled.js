@@ -83,5 +83,11 @@ export const ReportsFormContainer = styled.div`
             margin: 0 auto;
             cursor: pointer;
         }
+        .msgSpan{
+            text-align: center;
+            font-size: 2rem;
+            margin: 1rem auto 0 auto;
+            display: block;
+        }
     }
 `

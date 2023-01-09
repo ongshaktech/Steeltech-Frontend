@@ -14,6 +14,7 @@ import { useState, useEffect } from "react";
 import { Triangle } from "react-loader-spinner";
 import './styles/spinnerStyle.css';
 import Machines from "./views/Machines/Machines";
+import DataPerMachine from "./views/DataPerMachine/DataPerMachine";
 
 
 const Theme = {
@@ -76,7 +77,8 @@ function App() {
             <Sidebar />
             <Routes>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/machines" element={<Machines />} />
+              <Route path="/machines" element={<Machines />}/>
+              <Route path="/machines/:machineNumber" element={<DataPerMachine />} />            
               <Route path="/report" element={<Reports />} />
               <Route path="/users" element={<Users />} />
               <Route path="/manage-products" element={<ManageProducts />} />

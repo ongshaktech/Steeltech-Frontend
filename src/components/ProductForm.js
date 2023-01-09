@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ReportsFormContainer } from '../styles/CommonReports.styled';
 import { useRef } from 'react';
 import { ProductTypes, Shifts } from '../shared/constants';
+import { ProductThickness } from '../shared/constants';
 
 export default function ProductForm({ setFormData, setshowProductModal }) {
+    let [msg, setMsg] = useState('');
     let machine_no = useRef('');
     let thickness = useRef('');
     let product_type = useRef('');
     let shift = useRef('');
 
-    const setData = () => {
+    const setData = (e) => {
+        e.preventDefault();
+
+        if (machine_no.current.value === "" || thickness.current.value === "" || product_type.current.value === "" || shift.current.value === "") {
+            setMsg('Please fill up this form properly');
+            return false;
+        }
 
         setFormData({
             machine_no: machine_no.current.value,
@@ -23,19 +31,31 @@ export default function ProductForm({ setFormData, setshowProductModal }) {
 
     return (
         <ReportsFormContainer bg="#E65192">
-            <form>
+            <form onSubmit={setData}>
                 <h3>Add Product</h3>
+
                 <label>
                     <p>Machine No*</p>
                     <input type="text" ref={machine_no} />
                 </label>
+
                 <label>
                     <p>Thickness*</p>
-                    <input type="text" ref={thickness} />
+                    <select ref={thickness}>
+                        <option selected disabled value=''>Product Thickness</option>
+                        {
+                            ProductThickness.map(
+                                (type) =>
+                                    <option value={type}>{type}</option>
+                            )
+                        }
+                    </select>
                 </label>
+
                 <label>
                     <p>Product Type*</p>
                     <select ref={product_type}>
+                        <option selected disabled value=''>Product Type</option>
                         {
                             ProductTypes.map(
                                 (type) =>
@@ -44,9 +64,11 @@ export default function ProductForm({ setFormData, setshowProductModal }) {
                         }
                     </select>
                 </label>
+
                 <label>
                     <p>Shift*</p>
                     <select ref={shift}>
+                        <option selected disabled value=''>Select Shift</option>
                         {
                             Shifts.map(
                                 (shift) =>
@@ -55,7 +77,14 @@ export default function ProductForm({ setFormData, setshowProductModal }) {
                         }
                     </select>
                 </label>
-                <input className='submit' type="button" value="Submit" onClick={setData} />
+
+                <button className='submit' type="submit">
+                    Submit
+                </button>
+
+                <span className='msgSpan'>
+                    {msg}
+                </span>
             </form>
         </ReportsFormContainer>
     )

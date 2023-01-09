@@ -25,7 +25,7 @@ export default function ProductDetails({ setshowProductModal, showProductModal }
     () => {
       if (Object.keys(formData).length !== 0) {
         addDocument(formData);
-        updateDocument(`machine${formData.machine_no}`, formData);
+        updateDocument(`${formData.machine_no}`, formData);
       }
     }, [formData]
   );

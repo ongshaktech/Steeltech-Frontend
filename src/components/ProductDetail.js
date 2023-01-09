@@ -13,16 +13,16 @@ export default function ProductDetail({ productData }) {
             </div>
             {
                 productData.map((item, index) => (
-                    <>
-                    <hr className='divider'/>
-                    <div className='table_content' key={item.id}>
-                        <p>{index+1}</p>
-                        <p>{item.machine_no}</p>
-                        <p>{item.thickness}</p>
-                        <p>{item.product_type}</p>
-                        <p>{item.shift}</p>
+                    <div key={index}>
+                        <hr className='divider' />
+                        <div className='table_content'>
+                            <p>{index + 1}</p>
+                            <p>{item.machine_no}</p>
+                            <p>{item.thickness}</p>
+                            <p>{item.product_type}</p>
+                            <p>{item.shift}</p>
+                        </div>
                     </div>
-                    </>
                 ))
             }
         </ReportDetails>
