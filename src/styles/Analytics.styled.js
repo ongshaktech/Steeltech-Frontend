@@ -17,24 +17,22 @@ export const AnalyticsCard = styled.div`
         border: none;
         border-radius: 5rem;
         text-align: center;
+        outline: none;
     }
 
     h2 {
         font-size: 2rem;
         margin-bottom: 2rem;
     }
-    
-    .content {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        
-        @media (max-width: 1400px) {
-            grid-template-columns: 1fr;
-        }
+    .recharts-wrapper{
+        margin: auto;
     }
 `
 
 export const AnalyticsDetail = styled.div`
+    max-width: 100rem;
+    margin: 0 auto;
+
     .msgDiv{
         color: orange;
         font-size: 1.5rem;
@@ -88,8 +86,8 @@ export const AnalyticsDetail = styled.div`
 
     .category {
         display: flex;
-        margin-bottom: 1.5rem;
-        margin-top: 1.5rem;
+        margin: 1.5rem 0 1.5rem 0;
+
         button, select, input {
             outline: none;
             width: 100%;

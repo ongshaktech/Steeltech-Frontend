@@ -186,11 +186,11 @@ export default function TotalPipesGraph() {
                     </select>
                 </h2>
 
-                <div className='content'>
+                <div>
                     <div style={{ width: "100%" }}>
 
                         {/* BarChartComponent */}
-                        <div style={{ width: '100%', height: 300 }}>
+                        <div style={{ width: '100%', height: '300px' }}>
                             <ResponsiveContainer width="100%" height="100%">
                                 <BarChart width={600} height={300} data={graphData} margin={{
                                     top: 5,

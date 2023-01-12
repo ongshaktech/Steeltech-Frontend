@@ -18,6 +18,10 @@ export const ReportHeadingWrapper = styled.div`
         gap: 2rem;
         align-items: center;
 
+        button:hover{
+            background-color: #2c2c2c;
+        }
+
         input {
             padding: 1rem 2rem;
             border: 1px solid #ddd;
@@ -37,7 +41,7 @@ export const ReportTableWrapper = styled.div`
         display: grid;
         grid-template-columns: repeat(9, 1fr);
         align-items: center;
-        /* justify-items: center; */
+        text-align: center;
         gap: 1rem;
         margin-bottom: 2rem;
         font-size: 1.8rem;

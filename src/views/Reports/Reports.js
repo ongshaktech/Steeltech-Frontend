@@ -36,13 +36,16 @@ export default function Reports() {
     onSnapshot(q,
       (snapShot) => {
         let items = [];
-        setSnap(snapShot);
         snapShot.forEach((doc) => {
           items.push(doc.data());
         });
-        setReportData(items);
+
         setFetchedDataNum(items.length);
-        setPageIndex(pageIndex + increase);
+        if (items.length !== 0) {
+          setSnap(snapShot);
+          setReportData(items);
+          setPageIndex(pageIndex + increase);
+        }
       }
     );
   }
@@ -51,7 +54,7 @@ export default function Reports() {
   // Pagination
   const handleNextPage = () => {
     let collectionRef = collection(db_firestore, collection_name);
-    
+
     const q = query(collectionRef,
       orderBy('unix_time', 'desc'),
       startAfter(snap.docs[ReportData.length - 1]),

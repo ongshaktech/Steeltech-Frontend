@@ -1,0 +1,55 @@
+.header {
+    background-color: white;
+    width: 100%;
+    border-radius: 1rem;
+    font-weight: bold;
+    color: rgb(44, 44, 44);
+    font-size: 2rem;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.listDiv {
+    background-color: white;
+    width: 100%;
+    border-radius: 1rem;
+    margin-top: 5rem;
+    padding: 0.5rem;
+    height: auto;
+    overflow: auto;
+}
+
+.listDiv header {
+    font-size: 2rem;
+    border-bottom: 1px solid rgb(77, 77, 77);
+    text-align: center;
+    padding: 1rem;
+    margin: 0 3rem 1rem 3rem;
+}
+
+.listElements {
+    background-color: rgb(196, 196, 196);
+    width: 5rem;
+    height: 5rem;
+    border-radius: 1rem;
+    margin: .8rem;
+    float: left;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.listElements span {
+    font-size: 3rem;
+}
+
+.AddElement{
+    background-color: #86efb0 !important;
+    color: rgb(46, 46, 46);
+    cursor: pointer;
+}
+
+.AddElement:hover{
+    background-color: #3bc070 !important;
+}

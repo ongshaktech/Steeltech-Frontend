@@ -3,13 +3,20 @@ import { ReportsFormContainer } from '../styles/CommonReports.styled';
 import { useRef } from 'react';
 import { ProductTypes, Shifts } from '../shared/constants';
 import { ProductThickness } from '../shared/constants';
+import { useEffect } from 'react';
+import { db_firestore } from '../Hooks/config';
+import { doc, getDoc } from 'firebase/firestore';
+
 
 export default function ProductForm({ setFormData, setshowProductModal }) {
+    let [machineNumList, setMachineNumList] = useState([]);
     let [msg, setMsg] = useState('');
     let machine_no = useRef('');
     let thickness = useRef('');
     let product_type = useRef('');
     let shift = useRef('');
+
+    
 
     const setData = (e) => {
         e.preventDefault();
@@ -29,6 +36,29 @@ export default function ProductForm({ setFormData, setshowProductModal }) {
         setshowProductModal(false);
     }
 
+
+    useEffect(() => {
+        const ref = doc(db_firestore, `information`, 'info');
+
+        getDoc(ref).then(data => {
+            let numList = [];
+            const list = data.data();
+
+            numList.push(<optgroup label='Forming Machines'></optgroup>)
+            list['forming_machine'].forEach((num, index)=>{
+                numList.push(<option key={index} defaultValue={num}>{num}</option>)
+            });
+
+            numList.push(<optgroup label='Polish Machines'></optgroup>)
+            list['polish_machine'].forEach((num, index)=>{
+                numList.push(<option key={index + numList.length} defaultValue={num}>{num}</option>)
+            });
+            
+            setMachineNumList(numList);
+        });
+
+    }, []);
+
     return (
         <ReportsFormContainer bg="#E65192">
             <form onSubmit={setData}>
@@ -36,17 +66,22 @@ export default function ProductForm({ setFormData, setshowProductModal }) {
 
                 <label>
                     <p>Machine No*</p>
-                    <input type="text" ref={machine_no} />
+
+                    <select ref={machine_no}>
+                        <option selected disabled defaultValue=''>Machine No.</option>
+                        {machineNumList}
+                    </select>
+
                 </label>
 
                 <label>
                     <p>Thickness*</p>
                     <select ref={thickness}>
-                        <option selected disabled value=''>Product Thickness</option>
+                        <option selected disabled defaultValue=''>Product Thickness</option>
                         {
                             ProductThickness.map(
                                 (type) =>
-                                    <option value={type}>{type}</option>
+                                    <option defaultValue={type}>{type}</option>
                             )
                         }
                     </select>
@@ -55,11 +90,11 @@ export default function ProductForm({ setFormData, setshowProductModal }) {
                 <label>
                     <p>Product Type*</p>
                     <select ref={product_type}>
-                        <option selected disabled value=''>Product Type</option>
+                        <option selected disabled defaultValue=''>Product Type</option>
                         {
                             ProductTypes.map(
                                 (type) =>
-                                    <option value={type}>{type}</option>
+                                    <option defaultValue={type}>{type}</option>
                             )
                         }
                     </select>
@@ -68,11 +103,11 @@ export default function ProductForm({ setFormData, setshowProductModal }) {
                 <label>
                     <p>Shift*</p>
                     <select ref={shift}>
-                        <option selected disabled value=''>Select Shift</option>
+                        <option selected disabled defaultValue=''>Select Shift</option>
                         {
                             Shifts.map(
                                 (shift) =>
-                                    <option value={shift}>{shift}</option>
+                                    <option defaultValue={shift}>{shift}</option>
                             )
                         }
                     </select>
