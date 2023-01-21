@@ -13,14 +13,4 @@ export const DownTimeWrapper = styled.div`
     >div {
         padding: 2rem;
     }
-    input[type=date]{
-        padding: 1.5rem;
-        border-radius: .8rem;
-        border-style: solid;
-        font-size: 2rem;
-        margin: 1rem;
-    }
-    select{
-        margin: 1rem;
-    }
 `

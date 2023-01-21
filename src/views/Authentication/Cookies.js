@@ -19,9 +19,6 @@ export function GetCookie(cname) {
         if (c.indexOf(name) === 0) {
             let output = c.substring(name.length, c.length);
             output = (CryptoJS.AES.decrypt(output, "@#$ *IlO0Oo0_-")).toString(CryptoJS.enc.Utf8);
-            console.log(
-                output
-            );
             return output;
         }
     }

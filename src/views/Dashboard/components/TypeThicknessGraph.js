@@ -4,9 +4,9 @@ import { Section } from '../../../styles/Sections.styled';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { AnalyticsDetail } from '../../../styles/Analytics.styled';
 import { AnalyticsCard } from '../../../styles/Analytics.styled';
-import { ProductTypes, MachineNo, ProductThickness } from '../../../shared/constants';
+import { ProductTypes, ProductThickness} from '../../../shared/constants';
 import { db_firestore } from '../../../Hooks/config';
-import { where, query, collection, getDocs } from 'firebase/firestore';
+import { where, query, collection, getDocs, getDoc, doc } from 'firebase/firestore';
 import { useRef } from 'react';
 
 export default function TypeThicknessGraph() {
@@ -20,15 +20,36 @@ export default function TypeThicknessGraph() {
 
     let [year, setYear] = useState(currentYear);
     let [graphData, setGraphData] = useState([]);
+    let [machineNumList, setMachineNumList] = useState([]);
     let [ProductData, setProductData] = useState({});
     let [status, setStatus] = useState('Select Product Thickness');
     let [machine, setMachine] = useState('Machine and Product is not selected');
     let [msg, setMsg] = useState('');
 
 
-    // set todays date to input initially
+    // set todays date to input initially & Get Machine No.
     useEffect(() => {
         dateRef.current.valueAsDate = new Date();
+
+        const ref = doc(db_firestore, `information`, 'info');
+
+        getDoc(ref).then(data => {
+            let numList = [];
+            const list = data.data();
+
+            numList.push(<optgroup label='Forming Machines'></optgroup>)
+            list['forming_machine'].forEach((num, index) => {
+                numList.push(<option key={index} defaultValue={num}>{num}</option>)
+            });
+
+            numList.push(<optgroup label='Polish Machines'></optgroup>)
+            list['polish_machine'].forEach((num, index) => {
+                numList.push(<option key={index + numList.length} defaultValue={num}>{num}</option>)
+            });
+
+            setMachineNumList(numList);
+        });
+
     }, []);
 
 
@@ -210,7 +231,7 @@ export default function TypeThicknessGraph() {
                     {/* AnalyticsDetails */}
                     <AnalyticsDetail>
 
-                        <div className='upperContainer'>                            
+                        <div className='upperContainer'>
                             <select ref={thicknessInput}>
                                 <option selected disabled value=''>Product Thickness</option>
                                 {
@@ -224,13 +245,7 @@ export default function TypeThicknessGraph() {
 
                             <select ref={machineNoInput}>
                                 <option selected disabled value=''>Machine No.</option>
-                                {
-                                    MachineNo.map(
-                                        (machine) =>
-                                            <option value={machine}>Machine {machine}</option>
-                                    )
-                                }
-
+                                {machineNumList}
                             </select>
 
                             <button onClick={set_product}>

@@ -33,7 +33,7 @@ export const AnalyticsDetail = styled.div`
     max-width: 100rem;
     margin: 0 auto;
 
-    .msgDiv{
+    .msgDiv {
         color: orange;
         font-size: 1.5rem;
         padding: 1rem;
@@ -41,7 +41,7 @@ export const AnalyticsDetail = styled.div`
     .upperContainer{
         margin-top: 2rem;
         
-        select{
+        select {
             background-color: white;
             margin: .8rem .8rem .8rem 1.2rem;
             outline: none;
@@ -105,7 +105,7 @@ export const AnalyticsDetail = styled.div`
             width: 95%;
             margin-right: 0;
         }
-        .date-btn{
+        .date-btn {
             border-radius: 0rem 5rem 5rem 0rem;
             width: 16rem;
             margin-left: 0;
@@ -114,11 +114,13 @@ export const AnalyticsDetail = styled.div`
             color: #3c3b3b;
             cursor: pointer;
         }
+
         button:focus, button:hover, select:focus, select:hover, input:hover, input:focus {
             background: black;
             color: white;
+            color-scheme: dark;
         }
-        input{
+        input {
             text-align: center;
         }
     }

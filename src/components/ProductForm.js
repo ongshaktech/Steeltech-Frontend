@@ -46,18 +46,18 @@ export default function ProductForm({ setFormData, setshowProductModal }) {
 
             numList.push(<optgroup label='Forming Machines'></optgroup>)
             list['forming_machine'].forEach((num, index)=>{
-                numList.push(<option key={index} defaultValue={num}>{num}</option>)
+                numList.push(<option key={index} value={num}>{num}</option>)
             });
 
             numList.push(<optgroup label='Polish Machines'></optgroup>)
             list['polish_machine'].forEach((num, index)=>{
-                numList.push(<option key={index + numList.length} defaultValue={num}>{num}</option>)
+                numList.push(<option key={index + numList.length} value={num}>{num}</option>)
             });
             
             setMachineNumList(numList);
         });
-
     }, []);
+    
 
     return (
         <ReportsFormContainer bg="#E65192">
@@ -68,7 +68,7 @@ export default function ProductForm({ setFormData, setshowProductModal }) {
                     <p>Machine No*</p>
 
                     <select ref={machine_no}>
-                        <option selected disabled defaultValue=''>Machine No.</option>
+                        <option selected disabled value=''>Machine No.</option>
                         {machineNumList}
                     </select>
 
@@ -77,11 +77,11 @@ export default function ProductForm({ setFormData, setshowProductModal }) {
                 <label>
                     <p>Thickness*</p>
                     <select ref={thickness}>
-                        <option selected disabled defaultValue=''>Product Thickness</option>
+                        <option selected disabled value=''>Product Thickness</option>
                         {
                             ProductThickness.map(
                                 (type) =>
-                                    <option defaultValue={type}>{type}</option>
+                                    <option value={type}>{type}</option>
                             )
                         }
                     </select>
@@ -90,11 +90,11 @@ export default function ProductForm({ setFormData, setshowProductModal }) {
                 <label>
                     <p>Product Type*</p>
                     <select ref={product_type}>
-                        <option selected disabled defaultValue=''>Product Type</option>
+                        <option selected disabled value=''>Product Type</option>
                         {
                             ProductTypes.map(
                                 (type) =>
-                                    <option defaultValue={type}>{type}</option>
+                                    <option value={type}>{type}</option>
                             )
                         }
                     </select>
@@ -103,11 +103,11 @@ export default function ProductForm({ setFormData, setshowProductModal }) {
                 <label>
                     <p>Shift*</p>
                     <select ref={shift}>
-                        <option selected disabled defaultValue=''>Select Shift</option>
+                        <option selected disabled value=''>Select Shift</option>
                         {
                             Shifts.map(
                                 (shift) =>
-                                    <option defaultValue={shift}>{shift}</option>
+                                    <option value={shift}>{shift}</option>
                             )
                         }
                     </select>

@@ -2,6 +2,7 @@ import React from 'react';
 import { ReportsFormContainer } from '../styles/CommonReports.styled';
 import { useRef } from 'react';
 import { userTypes } from '../shared/constants';
+import { useState } from 'react';
 
 export default function UserForm({ setFormData, setshowUserModal }) {
 
@@ -10,8 +11,15 @@ export default function UserForm({ setFormData, setshowUserModal }) {
     let password = useRef('');
     let email = useRef('');
     let access = useRef('');
+    let [msg, setMsg] = useState('');
 
-    const setData = () => {
+    const setData = (e) => {
+        e.preventDefault();
+
+        if (username.current.value === "" || name.current.value === "" || password.current.value === "" || email.current.value === "") {
+            setMsg('Please fill up this form properly');
+            return false;
+        }
 
         setFormData({
             username: username.current.value,
@@ -28,7 +36,7 @@ export default function UserForm({ setFormData, setshowUserModal }) {
     return (
         <ReportsFormContainer bg="#00B6CD">
             <h3>Add Users</h3>
-            <form>
+            <form onSubmit={setData}>
                 <label>
                     <p>User Name*</p>
                     <input type="text" ref={username} />
@@ -56,7 +64,14 @@ export default function UserForm({ setFormData, setshowUserModal }) {
                         }
                     </select>
                 </label>
-                <input className='submit' type="button" value="submit" onClick={setData} />
+                
+                <button className='submit' type="submit">
+                    Submit
+                </button>
+
+                <span className='msgSpan'>
+                    {msg}
+                </span>
             </form>
         </ReportsFormContainer>
     )

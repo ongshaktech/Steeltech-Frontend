@@ -4,6 +4,7 @@ import { AuthLogin } from "../../Hooks/firebaseFuncs";
 import { GetCookie } from "./Cookies";
 import { useState } from "react";
 import { useEffect } from "react";
+import { Triangle } from "react-loader-spinner";
 
 export const ProtectedRoute = ({ permission, children }) => {
     let [UserPermissions, setUserPermissions] = useState({});
@@ -32,6 +33,15 @@ export const ProtectedRoute = ({ permission, children }) => {
     );
 
     return (
-        UserPermissions[permission] ? children : <></>
+        UserPermissions[permission] ?
+            children :
+            <div className="loadingSpinner">
+                <Triangle
+                    height="80"
+                    width="80"
+                    color="#4fa94d"
+                    ariaLabel="triangle-loading"
+                    visible={true} />
+            </div>
     );
 }
