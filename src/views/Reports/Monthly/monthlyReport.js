@@ -9,11 +9,11 @@ import style from '../style.module.css';
 export default function MonthlyReport() {
 
     const collection_name = 'machines';
-    let weekRange = useRef(null);
-    let dateEndRef = useRef(null);
     let tableRef = useRef(null);
+    let year = useRef(null);
+    let startMonth = useRef(null);
+    let endMonth = useRef(null);
     let MachineNo = new Set([]);
-
     const currentYear = parseInt(new Date().getFullYear());
 
     useEffect(() => {
@@ -29,14 +29,20 @@ export default function MonthlyReport() {
             list['polish_machine'].forEach(index => {
                 MachineNo.add(index);
             });
-
-            console.log(MachineNo);
         });
     }, []);
 
 
     const generateReport = () => {
-        let endDate = new Date(dateEndRef.current.value);
+        let date = new Date();
+        date.setFullYear(year.current.value);
+        date.setMonth(startMonth.current.value);
+        date.setDate(1);
+        date.setHours(0);
+        date.setMinutes(0);
+        date.setMilliseconds(0);
+        date.setSeconds(0);
+
         tableRef.current.innerHTML =
             `<tr>
                 <td class='${style.reportStatus}' id='reportStatus' colSpan="9">
@@ -44,24 +50,18 @@ export default function MonthlyReport() {
                 </td>
             </tr>`;
 
-        for (let i = 0; i < weekRange.current.value; i++) {
-            putData(endDate);
-            endDate.setDate(endDate.getDate() - 7);
+        while (!(date.getMonth() > endMonth.current.value)) {
+            putData(date);
+            date.setMonth(date.getMonth() + 1);
         }
     }
 
 
     const putData = (dateInfo) => {
         let startDate = new Date(dateInfo);
-        startDate.setHours(0);
-        startDate.setMinutes(0);
-        startDate.setSeconds(0);
+        let endDate = new Date(year.current.value, startDate.getMonth() + 1, 0);
 
-        let endDate = new Date(dateInfo);
-        endDate.setDate(endDate.getDate() - 7);
-        endDate.setHours(23);
-        endDate.setMinutes(59);
-        endDate.setSeconds(59);
+        console.log(startDate, '[[[[[[[[', endDate);
 
         const ref = collection(db_firestore, collection_name);
 
@@ -73,8 +73,8 @@ export default function MonthlyReport() {
                 let doc_length = 0;
 
                 const q = query(ref,
-                    where('unix_time', '>=', Math.floor(endDate.getTime() / 1000)),
-                    where('unix_time', '<=', Math.floor(startDate.getTime() / 1000)),
+                    where('unix_time', '>=', Math.floor(startDate.getTime() / 1000)),
+                    where('unix_time', '<=', Math.floor(endDate.getTime() / 1000)),
                     where('machine_no', '==', machine_no),
                     where('product_type', '==', value)
                 );
@@ -88,9 +88,10 @@ export default function MonthlyReport() {
                             TW += data['weight'];
                             TP += data['count'];
                         });
+
                         if (doc_length !== 0)
                             appendTableRow(
-                                `${startDate.toISOString().split('T')[0]} - ${endDate.toISOString().split('T')[0]}`,
+                                startDate.toLocaleString('default', { month: 'long' }),
                                 machine_no, value, TP, TW
                             );
                     }
@@ -122,7 +123,7 @@ export default function MonthlyReport() {
             </h1>
 
             <div className={style.rangeContainer}>
-                <select>
+                <select ref={year}>
                     <option value={currentYear}>{currentYear}</option>
                     <option value={currentYear - 1}>{currentYear - 1}</option>
                     <option value={currentYear - 2}>{currentYear - 2}</option>
@@ -130,7 +131,7 @@ export default function MonthlyReport() {
                     <option value={currentYear - 4}>{currentYear - 4}</option>
                 </select>
 
-                <select>
+                <select ref={startMonth}>
                     <option selected disabled>From</option>
                     <option value={0}>January</option>
                     <option value={1}>February</option>
@@ -145,7 +146,8 @@ export default function MonthlyReport() {
                     <option value={10}>November</option>
                     <option value={11}>December</option>
                 </select>
-                <select>
+
+                <select ref={endMonth}>
                     <option selected disabled>To</option>
                     <option value={0}>January</option>
                     <option value={1}>February</option>

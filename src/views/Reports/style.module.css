@@ -9,7 +9,7 @@
     font-size: 1.5rem;
 }
 
-.rangeContainer input {
+.rangeContainer input, select{
     margin: 1rem;
     padding: .8rem;
 }
