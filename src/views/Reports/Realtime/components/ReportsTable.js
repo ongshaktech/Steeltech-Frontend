@@ -1,5 +1,5 @@
-import React from 'react'
-import { ReportTableWrapper } from '../../../styles/Reports.styled'
+import React from 'react';
+import { ReportTableWrapper } from '../../../../styles/Reports.styled';
 
 // const details = [
 //     {

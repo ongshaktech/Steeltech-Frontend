@@ -94,22 +94,24 @@ export const AnalyticsDetail = styled.div`
             padding: 1rem;
             font-size: 1.6rem;
             cursor: pointer;
-            background: #ddd;
-            color: #000;
+            background: cornflowerblue;
+            color: white;
+            font-weight: bold;
             margin: .5rem;
             border: none;
-            border-radius: 5rem;
+            border-radius: .8rem;
         }
         input[type="date"]{
-            border-radius: 5rem 0rem 0rem 5rem;
+            border-radius: .8rem 0rem 0rem .8rem;
             width: 95%;
             margin-right: 0;
+            color-scheme: dark;
         }
         .date-btn {
-            border-radius: 0rem 5rem 5rem 0rem;
+            border-radius: 0rem .8rem .8rem 0rem;
             width: 16rem;
             margin-left: 0;
-            background-color: #bfbdbd;
+            background-color: lightblue;
             font-weight: bold;
             color: #3c3b3b;
             cursor: pointer;
@@ -117,8 +119,7 @@ export const AnalyticsDetail = styled.div`
 
         button:focus, button:hover, select:focus, select:hover, input:hover, input:focus {
             background: black;
-            color: white;
-            color-scheme: dark;
+            color: white;            
         }
         input {
             text-align: center;

@@ -1,15 +1,15 @@
 import React from 'react';
-import { DashboardContent, PaginationButton } from '../../styles/Dashboard.styled';
+import { DashboardContent, PaginationButton } from '../../../styles/Dashboard.styled';
 import ReportsHeading from './components/ReportsHeading';
 import ReportsTable from './components/ReportsTable';
-import { db_firestore } from '../../Hooks/config';
+import { db_firestore } from '../../../Hooks/config';
 
 import { collection, query, orderBy, limit, onSnapshot, limitToLast } from 'firebase/firestore';
 import { startAfter, endBefore } from 'firebase/firestore';
 
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { ProtectedRoute } from '../Authentication/ProtectedRoute';
+import { ProtectedRoute } from '../../Authentication/ProtectedRoute';
 
 
 export default function Reports() {

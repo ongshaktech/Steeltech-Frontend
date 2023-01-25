@@ -5,7 +5,7 @@ import { collection, onSnapshot, getDoc, doc } from 'firebase/firestore';
 import { db_firestore } from "../../Hooks/config";
 import { useEffect, useState } from "react";
 import { Triangle } from "react-loader-spinner";
-
+import { BsFillGrid3X3GapFill } from 'react-icons/bs';
 
 export default function Machines() {
 
@@ -43,12 +43,12 @@ export default function Machines() {
 
                             if (isInArray(MachineData.machine_no, data.forming_machine)) {
                                 forming_machine.push(
-                                    <Card machineNo={MachineData.machine_no} active={MachineData.is_running} />
+                                    <Card machineNo={MachineData.machine_no} active={MachineData.is_running} icon={<BsFillGrid3X3GapFill/>}/>
                                 );
                             }
                             else if (isInArray(MachineData.machine_no, data.polish_machine)) {
                                 polish_machine.push(
-                                    <Card machineNo={MachineData.machine_no} active={MachineData.is_running} />
+                                    <Card machineNo={MachineData.machine_no} active={MachineData.is_running} icon={<BsFillGrid3X3GapFill/>}/>
                                 );
                             }
                         });

@@ -1,5 +1,4 @@
 import styles from './style.module.css';
-import { BsFillGrid3X3GapFill } from 'react-icons/bs';
 import { NavLink } from 'react-router-dom';
 
 export default function Card(props) {
@@ -7,7 +6,7 @@ export default function Card(props) {
         <NavLink to={`/machines/${props.machineNo}`}>
             <div className={styles.card} style={props.active ? { backgroundColor: '#6bffa9' } : { backgroundColor: 'rgb(255, 112, 102)' }}>
                 <div className={styles.cardIcon}>
-                    <BsFillGrid3X3GapFill />
+                    {props.icon}
                 </div>
                 <h2>
                     Machine {props.machineNo}

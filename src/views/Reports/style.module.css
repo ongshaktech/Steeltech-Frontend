@@ -1,0 +1,102 @@
+.container {
+    margin: auto;
+    max-width: 86rem;
+}
+
+.rangeContainer {
+    margin: auto;
+    width: 52.5rem;
+    font-size: 1.5rem;
+}
+
+.rangeContainer input {
+    margin: 1rem;
+    padding: .8rem;
+}
+
+.rangeContainer button {
+    padding: 1.2rem;
+    border: none;
+    border-radius: .5rem;
+    margin-left: 1.2rem;
+    outline: none;
+    background-color: rgb(255, 105, 187);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.heading {
+    font-size: 4rem;
+    color: rgb(27, 27, 27);
+    text-align: center;
+    margin-bottom: 5rem;
+}
+
+.card {
+    min-height: 22rem;
+    min-width: 26rem;
+    overflow: hidden;
+    border-radius: 1rem;
+    display: inline-block;
+    margin: 1rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.1s;
+    cursor: pointer;
+    color: rgb(36, 36, 36);
+    background-color: white;
+}
+
+.card:hover {
+    transition: box-shadow 0.2s;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    /* background-color:#6bffa9 ; */
+}
+
+.card h2 {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+}
+
+.card img {
+    width: 10rem;
+    margin: 2.5rem auto 2rem auto;
+    display: block;
+}
+
+
+/* Tables */
+.reportTable {
+    font-size: 1.5rem;
+}
+
+.reportTable table {
+    margin-top: 2rem;
+    background-color: white;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.reportTable thead {
+    background-color: #00aaff42;
+}
+
+.reportTable th,
+td {
+    border: 1px solid #939393;
+    padding: .5rem;
+    text-align: center;
+}
+
+.reportTable tbody tr:nth-child(even) {
+    background-color: cornsilk;
+}
+
+.reportStatus{
+    font-size: 3rem;
+    text-align: center;
+    padding: 3rem;
+    font-weight: bold;
+    color: gray;
+}

@@ -5,7 +5,7 @@ import { WebWrapper } from './styles/Common.styled';
 import Dashboard from './views/Dashboard/Dashboard';
 import Login from "./views/Authentication/Login";
 import { Routes, Route } from "react-router-dom";
-import Reports from './views/Reports/Reports';
+import Reports from './views/Reports/Realtime/Reports';
 import Users from './views/Users/Users';
 import ManageProducts from './views/ManageProducts/ManageProducts';
 import { GetCookie } from "./views/Authentication/Cookies";
@@ -16,7 +16,10 @@ import './styles/spinnerStyle.css';
 import Machines from "./views/Machines/Machines";
 import DataPerMachine from "./views/DataPerMachine/DataPerMachine";
 import ManageMachines from "./views/ManageMachines/ManageMachines";
-
+import ReportDashboard from "./views/Reports/ReportDashboard";
+import DailyReport from "./views/Reports/Daily/DailyReport";
+import WeeklyReport from "./views/Reports/Weekly/weeklyReport";
+import MonthlyReport from "./views/Reports/Monthly/monthlyReport";
 
 const Theme = {
   color: {
@@ -77,10 +80,17 @@ function App() {
           <WebWrapper>
             <Sidebar />
             <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/machines" element={<Machines />}/>
-              <Route path="/machines/:machineNumber" element={<DataPerMachine />} />            
-              <Route path="/report" element={<Reports />} />
+              <Route path="/" element={<Machines />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/machines/:machineNumber" element={<DataPerMachine />} />
+              
+              {/* Reports */}
+              <Route path="/reports" element={<ReportDashboard />} />
+              <Route path="/realtime-report" element={<Reports />} />
+              <Route path="/daily-report" element={<DailyReport />} />
+              <Route path="/weekly-report" element={<WeeklyReport />} />
+              <Route path="/monthly-report" element={<MonthlyReport />} />
+
               <Route path="/users" element={<Users />} />
               <Route path="/manage-products" element={<ManageProducts />} />
               <Route path="/manage-machines" element={<ManageMachines />} />

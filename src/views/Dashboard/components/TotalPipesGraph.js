@@ -53,7 +53,7 @@ export default function TotalPipesGraph() {
             list['forming_machine'].forEach((num, index) => {
                 TempMachine.push(num);
                 if ((index + 1) % 3 === 0) {
-                    numList.push(<option key={index} defaultValue={TempMachine}>
+                    numList.push(<option key={index} value={TempMachine}>
                         {TempMachine[0]}
                         {TempMachine[1] ? `, ${TempMachine[1]}` : ''}
                         {TempMachine[2] ? `, ${TempMachine[2]}` : ''}
@@ -63,7 +63,7 @@ export default function TotalPipesGraph() {
             });
 
             if (TempMachine.length !== 0) {
-                numList.push(<option key="x" defaultValue={TempMachine}>
+                numList.push(<option key="x" value={TempMachine}>
                     {TempMachine[0]}
                     {TempMachine[1] ? `, ${TempMachine[1]}` : ''}
                     {TempMachine[2] ? `, ${TempMachine[2]}` : ''}
@@ -76,7 +76,7 @@ export default function TotalPipesGraph() {
             list['polish_machine'].forEach((num, index) => {
                 TempMachine.push(num);
                 if ((index + 1) % 3 === 0) {
-                    numList.push(<option key={index + numList.length} defaultValue={TempMachine}>
+                    numList.push(<option key={index + numList.length} value={TempMachine}>
                         {TempMachine[0]}
                         {TempMachine[1] ? `, ${TempMachine[1]}` : ''}
                         {TempMachine[2] ? `, ${TempMachine[2]}` : ''}
@@ -86,7 +86,7 @@ export default function TotalPipesGraph() {
             });
 
             if (TempMachine.length !== 0) {
-                numList.push(<option key="y" defaultValue={TempMachine}>
+                numList.push(<option key="y" value={TempMachine}>
                     {TempMachine[0]}
                     {TempMachine[1] ? `, ${TempMachine[1]}` : ''}
                     {TempMachine[2] ? `, ${TempMachine[2]}` : ''}
@@ -246,7 +246,7 @@ export default function TotalPipesGraph() {
                     Production Details of &nbsp;
 
                     <select onChange={(e) => {
-                        setYear(parseInt(e.target.options[e.target.selectedIndex].value));
+                        setYear(parseInt(e.target.options.value));
                     }}>
                         <option value={currentYear}>{currentYear}</option>
                         <option value={currentYear - 1}>{currentYear - 1}</option>
@@ -294,7 +294,7 @@ export default function TotalPipesGraph() {
                     <AnalyticsDetail>
                         <div className='category'>
 
-                            <input type="date" ref={dateRef} autoFocus />
+                            <input type="date" ref={dateRef} />
 
                             <button className='date-btn' onClick={dailyGraph}>
                                 set

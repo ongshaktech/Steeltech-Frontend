@@ -1,5 +1,6 @@
 import React from 'react'
-import { FaSignInAlt, FaUserCircle, FaRegBell, FaChartBar, FaDharmachakra, FaBuromobelexperte } from 'react-icons/fa';
+import { FaSignInAlt, FaUserCircle, FaChartBar, FaDharmachakra, FaBuromobelexperte } from 'react-icons/fa';
+import {HiDocumentReport} from "react-icons/hi";
 import { NavSidebar } from '../styles/NavSidebar'
 import { NavLink } from "react-router-dom"
 import { ClearCookie } from '../views/Authentication/Cookies';
@@ -18,15 +19,8 @@ export default function Sidebar() {
     }
     return (
         <NavSidebar>
-            <NavLink to="/" style={({ isActive }) =>
-                isActive ? activeStyle : normalStyle
-            }>
-                <div>
-                    <FaChartBar />
-                </div>
-            </NavLink>
 
-            <NavLink to="/machines" style={({ isActive }) =>
+            <NavLink to="/" style={({ isActive }) =>
                 isActive ? activeStyle : normalStyle
             }>
                 <div>
@@ -34,11 +28,20 @@ export default function Sidebar() {
                 </div>
             </NavLink>
 
-            <NavLink to="/report" style={({ isActive }) =>
+
+            <NavLink to="/dashboard" style={({ isActive }) =>
                 isActive ? activeStyle : normalStyle
             }>
                 <div>
-                    <FaRegBell />
+                    <FaChartBar />
+                </div>
+            </NavLink>
+
+            <NavLink to="/reports" style={({ isActive }) =>
+                isActive ? activeStyle : normalStyle
+            }>
+                <div>
+                    <HiDocumentReport />
                 </div>
             </NavLink>
             <NavLink to="/users" style={({ isActive }) =>

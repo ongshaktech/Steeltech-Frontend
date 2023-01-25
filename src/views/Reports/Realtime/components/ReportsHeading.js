@@ -1,5 +1,5 @@
 import React from 'react'
-import { ReportHeadingWrapper } from '../../../styles/Reports.styled'
+import { ReportHeadingWrapper } from '../../../../styles/Reports.styled'
 
 export default function ReportsHeading() {
     return (

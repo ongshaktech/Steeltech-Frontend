@@ -1,0 +1,53 @@
+Reporting System
+
+Reporting Type:
+
+1. Production Report
+
+Machine 32-
+
+Thikness-> # of Product -> # of Mass/ Weight
+
+Every machine has a downtime
+
+Machine Efficieny for a specific product.
+
+2mm -> Machine 32
+
+Average Production time for Machine 32 (2mm) is 189 Seconds
+
+2mm-> Machine 34
+
+Average Production Time for Machine 34 (2mm) is 155 seconds.
+
+AVT= Average Production Time
+
+
+
+
+
+## Production Report
+
+-> Machine Wise Production (Daily)
+
+Date- Machine Number - Product Type-  Day Shift Production Count - Day Shift Production Weight- Evening Shift Production Count- Evening Shift Production Weight - TP (Count) - TP (Weight)
+
+
+
+
+-> Machine Wise Production (Monthly) (Quaterly) (Yearly)
+
+Month - Machine Number - Product Type - Total Weight - Total Count
+
+
+
+
+-> Product Specific Production
+
+Daily, Monthly, Quaterly, Yearly
+
+
+
+Day/Month/ Quarter/ Year- Product Type- Total Count - Total Weight
+
+-> Machinewise Efficiency Report
