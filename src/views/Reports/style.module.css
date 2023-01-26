@@ -9,7 +9,8 @@
     font-size: 1.5rem;
 }
 
-.rangeContainer input, select{
+.rangeContainer input,
+select {
     margin: 1rem;
     padding: .8rem;
 }
@@ -93,10 +94,23 @@ td {
     background-color: cornsilk;
 }
 
-.reportStatus{
+.reportStatus {
     font-size: 3rem;
     text-align: center;
     padding: 3rem;
     font-weight: bold;
     color: gray;
+}
+
+@media print {
+    :global(.sideBar) {
+        display: none !important;
+    }
+
+    .rangeContainer {
+        display: none !important;
+    }
+    .heading {
+        margin-bottom: 2rem;
+    }
 }

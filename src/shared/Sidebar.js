@@ -1,6 +1,6 @@
 import React from 'react'
 import { FaSignInAlt, FaUserCircle, FaChartBar, FaDharmachakra, FaBuromobelexperte } from 'react-icons/fa';
-import {HiDocumentReport} from "react-icons/hi";
+import { HiDocumentReport } from "react-icons/hi";
 import { NavSidebar } from '../styles/NavSidebar'
 import { NavLink } from "react-router-dom"
 import { ClearCookie } from '../views/Authentication/Cookies';
@@ -18,12 +18,12 @@ export default function Sidebar() {
         color: "currentColor",
     }
     return (
-        <NavSidebar>
+        <NavSidebar className='sideBar'>
 
             <NavLink to="/" style={({ isActive }) =>
                 isActive ? activeStyle : normalStyle
             }>
-                <div>
+                <div title='Machine Status'>
                     <FaBuromobelexperte />
                 </div>
             </NavLink>
@@ -32,7 +32,7 @@ export default function Sidebar() {
             <NavLink to="/dashboard" style={({ isActive }) =>
                 isActive ? activeStyle : normalStyle
             }>
-                <div>
+                <div title='Graph and Charts'>
                     <FaChartBar />
                 </div>
             </NavLink>
@@ -40,30 +40,30 @@ export default function Sidebar() {
             <NavLink to="/reports" style={({ isActive }) =>
                 isActive ? activeStyle : normalStyle
             }>
-                <div>
+                <div title='Reports'>
                     <HiDocumentReport />
                 </div>
             </NavLink>
             <NavLink to="/users" style={({ isActive }) =>
                 isActive ? activeStyle : normalStyle
             }>
-                <div>
+                <div title='Manage Users'>
                     <FaUserCircle />
                 </div>
             </NavLink>
             <NavLink to="/manage-products" style={({ isActive }) =>
                 isActive ? activeStyle : normalStyle
             }>
-                <div>
+                <div title='Manage Products'>
                     <FaDharmachakra />
                 </div>
             </NavLink>
-            <div>
+            <div title='Logout'>
                 <a title='logout' onClick={() => {
                     ClearCookie();
                     window.location.reload();
                 }}>
-                    <FaSignInAlt />
+                    <FaSignInAlt/>
                 </a>
             </div>
         </NavSidebar>

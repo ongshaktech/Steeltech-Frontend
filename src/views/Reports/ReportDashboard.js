@@ -34,8 +34,8 @@ export default function ReportDashboard() {
             <Cards reportLink='/daily-report' text="Daily Report" img={dailyImg} />
             <Cards reportLink='/weekly-report' text="Weekly Report" img={weeklyImg} />
             <Cards reportLink='/monthly-report' text="Monthly Report" img={monthlyImg} />
-            <Cards reportLink='/realtime-report' text="Quarterly Report" img={quarterlyImg} />
-            <Cards reportLink='/realtime-report' text="Yearly Report" img={yearlyImg} />
+            <Cards reportLink='/quarterly-report' text="Quarterly Report" img={quarterlyImg} />
+            <Cards reportLink='/yearly-report' text="Yearly Report" img={yearlyImg} />
         </div>
     );
 }

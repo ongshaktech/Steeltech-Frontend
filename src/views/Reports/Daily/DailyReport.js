@@ -43,7 +43,7 @@ export default function DailyReport() {
                     Plase Be Patient ...
                 </td>
             </tr>`;
-        while (true) {            
+        while (true) {
             if (startDate.getTime() === endDate.getTime()) break;
             putData(endDate);
             endDate.setDate(endDate.getDate() - 1);
@@ -98,8 +98,8 @@ export default function DailyReport() {
                         TW = night_weight + morning_weight;
                         if (doc_length !== 0)
                             appendTableRow(
-                                startDate.toISOString().split('T')[0], machine_no,
-                                value, morning_count, morning_weight, night_count, night_weight,
+                                `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()}`,
+                                machine_no, value, morning_count, morning_weight, night_count, night_weight,
                                 TP, TW
                             );
                     }
@@ -141,7 +141,9 @@ export default function DailyReport() {
                 <button onClick={generateReport}>
                     Generate
                 </button>
-                <button>
+                <button onClick={() => {
+                    window.print();
+                }}>
                     Print
                 </button>
             </div>

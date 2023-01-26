@@ -20,6 +20,8 @@ import ReportDashboard from "./views/Reports/ReportDashboard";
 import DailyReport from "./views/Reports/Daily/DailyReport";
 import WeeklyReport from "./views/Reports/Weekly/weeklyReport";
 import MonthlyReport from "./views/Reports/Monthly/monthlyReport";
+import QuarterlyReport from "./views/Reports/Quarterly/quarterlyReport";
+import YearlyReport from "./views/Reports/Yearly/yearlyReport";
 
 const Theme = {
   color: {
@@ -90,6 +92,8 @@ function App() {
               <Route path="/daily-report" element={<DailyReport />} />
               <Route path="/weekly-report" element={<WeeklyReport />} />
               <Route path="/monthly-report" element={<MonthlyReport />} />
+              <Route path="/quarterly-report" element={<QuarterlyReport />} />
+              <Route path="/yearly-report" element={<YearlyReport />} />
 
               <Route path="/users" element={<Users />} />
               <Route path="/manage-products" element={<ManageProducts />} />

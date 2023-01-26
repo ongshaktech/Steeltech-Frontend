@@ -6,18 +6,18 @@ import { collection, query, getDocs, where, doc, getDoc } from "firebase/firesto
 import { ProductTypes } from "../../../shared/constants";
 import style from '../style.module.css';
 
-export default function MonthlyReport() {
+export default function YearlyReport() {
 
     const collection_name = 'machines';
     let tableRef = useRef(null);
-    let year = useRef(null);
-    let startMonth = useRef(null);
-    let endMonth = useRef(null);
     let MachineNo = new Set([]);
+
     const currentYear = parseInt(new Date().getFullYear());
+    let startYear = useRef(null);
+    let endYear = useRef(null);
+
 
     useEffect(() => {
-        // dateEndRef.current.valueAsDate = new Date();
 
         // Get Machine Number List
         const ref = doc(db_firestore, `information`, 'info');
@@ -33,15 +33,16 @@ export default function MonthlyReport() {
     }, []);
 
 
-    async function generateReport() {
-        let date = new Date();
-        date.setFullYear(year.current.value);
-        date.setMonth(startMonth.current.value);
-        date.setDate(1);
-        date.setHours(0);
-        date.setMinutes(0);
-        date.setMilliseconds(0);
-        date.setSeconds(0);
+    const generateReport = () => {
+        let startDate = new Date();
+        startDate.setDate(1);
+        startDate.setFullYear(startYear.current.value);
+        startDate.setMonth(0);
+        startDate.setDate(1);
+        startDate.setHours(0);
+        startDate.setMinutes(0);
+        startDate.setMilliseconds(0);
+        startDate.setSeconds(0);
 
         tableRef.current.innerHTML =
             `<tr>
@@ -50,24 +51,35 @@ export default function MonthlyReport() {
                 </td>
             </tr>`;
 
-        while ((date.getMonth() < endMonth.current.value)) {
-            putData(date);
-            date.setMonth(date.getMonth() + 1);
+        for (let i = 0; i < (endYear.current.value - startYear.current.value + 1); i++) {
+            putData(startDate);
+            startDate.setFullYear(startDate.getFullYear() + 1);
         }
+
     }
 
 
     const putData = (dateInfo) => {
         let startDate = new Date(dateInfo);
-        let endDate = new Date(year.current.value, startDate.getMonth() + 1, 0);
+        startDate.setHours(0);
+        startDate.setMinutes(0);
+        startDate.setSeconds(0);
 
-        console.log(startDate, '[[[[[[[[', endDate);
+        let endDate = new Date(dateInfo);
+        endDate.setMonth(11);
+        endDate.setDate(31);
+        endDate.setHours(23);
+        endDate.setMinutes(59);
+        endDate.setSeconds(59);
+
+        console.log(startDate, '________', endDate);
 
         const ref = collection(db_firestore, collection_name);
 
         MachineNo.forEach(machine_no => {
             ProductTypes.map((value) => {
-
+                let morning_count = 0, morning_weight = 0;
+                let night_count = 0, night_weight = 0;
                 let TP = 0;
                 let TW = 0;
                 let doc_length = 0;
@@ -84,15 +96,23 @@ export default function MonthlyReport() {
                         snapShot.forEach((doc) => {
                             doc_length++;
                             const data = doc.data();
-
-                            TW += data['weight'];
-                            TP += data['count'];
+                            if (data['shift'] === 'Morning') {
+                                morning_count += data['count'];
+                                morning_weight += data['weight'];
+                            }
+                            else {
+                                night_count += data['count'];
+                                night_weight += data['weight'];
+                            }
                         });
 
+                        TP = morning_count + night_count;
+                        TW = night_weight + morning_weight;
                         if (doc_length !== 0)
                             appendTableRow(
-                                startDate.toLocaleString('default', { month: 'long' }),
-                                machine_no, value, TP, TW
+                                startDate.getFullYear(), machine_no,
+                                value, morning_count, morning_weight, night_count, night_weight,
+                                TP, TW
                             );
                     }
                 );
@@ -101,13 +121,17 @@ export default function MonthlyReport() {
     }
 
 
-    const appendTableRow = (date, machine_no, product_type, tp, tw) => {
+    const appendTableRow = (date, machine_no, product_type, m_count, m_weight, n_count, n_weight, tp, tw) => {
         const tr = document.createElement('tr');
         tr.innerHTML =
             `<tr>
         <td>${date}</td>
         <td>${machine_no}</td>
         <td>${product_type}</td>
+        <td>${m_count}</td>
+        <td>${m_weight}</td>
+        <td>${n_count}</td>
+        <td>${n_weight}</td>
         <td>${tp}</td>
         <td>${tw}</td>
         </tr>`;
@@ -119,11 +143,19 @@ export default function MonthlyReport() {
     return (
         <DashboardContent>
             <h1 className={style.heading}>
-                Monthly Report
+                Yearly Report
             </h1>
 
-            <div className={style.rangeContainer}>
-                <select ref={year}>
+            <div className={style.rangeContainer} style={{ width: '39rem' }}>
+                <select ref={startYear}>
+                    <option value={currentYear}>{currentYear}</option>
+                    <option value={currentYear - 1}>{currentYear - 1}</option>
+                    <option value={currentYear - 2}>{currentYear - 2}</option>
+                    <option value={currentYear - 3}>{currentYear - 3}</option>
+                    <option value={currentYear - 4}>{currentYear - 4}</option>
+                </select>
+                to
+                <select ref={endYear}>
                     <option value={currentYear}>{currentYear}</option>
                     <option value={currentYear - 1}>{currentYear - 1}</option>
                     <option value={currentYear - 2}>{currentYear - 2}</option>
@@ -131,42 +163,9 @@ export default function MonthlyReport() {
                     <option value={currentYear - 4}>{currentYear - 4}</option>
                 </select>
 
-                <select ref={startMonth}>
-                    <option selected disabled>From</option>
-                    <option value={0}>January</option>
-                    <option value={1}>February</option>
-                    <option value={2}>March</option>
-                    <option value={3}>April</option>
-                    <option value={4}>May</option>
-                    <option value={5}>June</option>
-                    <option value={6}>July</option>
-                    <option value={7}>August</option>
-                    <option value={8}>September</option>
-                    <option value={9}>October</option>
-                    <option value={10}>November</option>
-                    <option value={11}>December</option>
-                </select>
-
-                <select ref={endMonth}>
-                    <option selected disabled>To</option>
-                    <option value={0}>January</option>
-                    <option value={1}>February</option>
-                    <option value={2}>March</option>
-                    <option value={3}>April</option>
-                    <option value={4}>May</option>
-                    <option value={5}>June</option>
-                    <option value={6}>July</option>
-                    <option value={7}>August</option>
-                    <option value={8}>September</option>
-                    <option value={9}>October</option>
-                    <option value={10}>November</option>
-                    <option value={11}>December</option>
-                </select>
-
                 <button onClick={generateReport}>
                     Generate
                 </button>
-
                 <button onClick={() => {
                     window.print();
                 }}>
@@ -178,18 +177,26 @@ export default function MonthlyReport() {
                 <table>
                     <thead>
                         <tr>
-                            <th>Week</th>
-                            <th>Machine No.</th>
-                            <th>Product Type</th>
-                            <th>Total Product</th>
-                            <th>Total Weight</th>
+                            <th rowSpan="2">Year</th>
+                            <th rowSpan="2">Machine No.</th>
+                            <th rowSpan="2">Product Type</th>
+                            <th colSpan="2">Morning</th>
+                            <th colSpan="2">Night</th>
+                            <th rowSpan="2">Total Product</th>
+                            <th rowSpan="2">Total Weight</th>
+                        </tr>
+                        <tr>
+                            <th>Product Count</th>
+                            <th>Weight</th>
+                            <th>Product Count</th>
+                            <th>Weight</th>
                         </tr>
                     </thead>
 
                     <tbody ref={tableRef}>
                         <tr>
                             <td className={style.reportStatus} colSpan="9">
-                                Plase Select a Month Range
+                                Plase Select a Date Range
                             </td>
                         </tr>
                     </tbody>

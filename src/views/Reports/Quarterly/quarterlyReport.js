@@ -6,17 +6,18 @@ import { collection, query, getDocs, where, doc, getDoc } from "firebase/firesto
 import { ProductTypes } from "../../../shared/constants";
 import style from '../style.module.css';
 
-export default function WeeklyReport() {
+export default function QuarterlyReport() {
 
     const collection_name = 'machines';
-    let weekRange = useRef(null);
-    let dateEndRef = useRef(null);
+    let quarterRange = useRef(null);
+    let startMonth = useRef(null);
+    let year = useRef(null);
     let tableRef = useRef(null);
     let MachineNo = new Set([]);
+    const currentYear = parseInt(new Date().getFullYear());
 
 
     useEffect(() => {
-        dateEndRef.current.valueAsDate = new Date();
 
         // Get Machine Number List
         const ref = doc(db_firestore, `information`, 'info');
@@ -28,18 +29,19 @@ export default function WeeklyReport() {
             list['polish_machine'].forEach(index => {
                 MachineNo.add(index);
             });
-
-            console.log(MachineNo);
         });
     }, []);
 
 
     const generateReport = () => {
-        let endDate = new Date(dateEndRef.current.value);
-        endDate.setHours(0);
-        endDate.setMinutes(0);
-        endDate.setMilliseconds(0);
-        endDate.setSeconds(0);
+        let dateStart = new Date();
+        dateStart.setFullYear(year.current.value);
+        dateStart.setMonth(startMonth.current.value);
+        dateStart.setDate(1);
+        dateStart.setHours(0);
+        dateStart.setMinutes(0);
+        dateStart.setMilliseconds(0);
+        dateStart.setSeconds(0);
 
         tableRef.current.innerHTML =
             `<tr>
@@ -48,9 +50,9 @@ export default function WeeklyReport() {
                 </td>
             </tr>`;
 
-        for (let i = 0; i < weekRange.current.value; i++) {
-            putData(endDate);
-            endDate.setDate(endDate.getDate() - 7);
+        for (let i = 0; i < quarterRange.current.value; i++) {
+            putData(dateStart);
+            dateStart.setMonth(dateStart.getMonth() + 4);
         }
     }
 
@@ -62,10 +64,13 @@ export default function WeeklyReport() {
         startDate.setSeconds(0);
 
         let endDate = new Date(dateInfo);
-        endDate.setDate(endDate.getDate() - 7);
+        endDate.setMonth(endDate.getMonth() + 4);
+        endDate.setDate(0);
         endDate.setHours(23);
         endDate.setMinutes(59);
         endDate.setSeconds(59);
+
+        console.log(startDate, '_________', endDate);
 
         const ref = collection(db_firestore, collection_name);
 
@@ -77,8 +82,8 @@ export default function WeeklyReport() {
                 let doc_length = 0;
 
                 const q = query(ref,
-                    where('unix_time', '>=', Math.floor(endDate.getTime() / 1000)),
-                    where('unix_time', '<=', Math.floor(startDate.getTime() / 1000)),
+                    where('unix_time', '>=', Math.floor(startDate.getTime() / 1000)),
+                    where('unix_time', '<=', Math.floor(endDate.getTime() / 1000)),
                     where('machine_no', '==', machine_no),
                     where('product_type', '==', value)
                 );
@@ -94,8 +99,8 @@ export default function WeeklyReport() {
                         });
                         if (doc_length !== 0)
                             appendTableRow(
-                                `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()} - 
-                                ${endDate.getDate()}/${endDate.getMonth() + 1}/${endDate.getFullYear()}`,
+                                `${startDate.toLocaleString('default', { month: 'long' })}, ${startDate.getFullYear()} - 
+                                ${endDate.toLocaleString('default', { month: 'long' })}, ${endDate.getFullYear()}`,
                                 machine_no, value, TP, TW
                             );
                     }
@@ -123,13 +128,35 @@ export default function WeeklyReport() {
     return (
         <DashboardContent>
             <h1 className={style.heading}>
-                Weekly Report
+                Quarterly Report
             </h1>
 
-            <div className={style.rangeContainer}>
-                <input type="number" ref={weekRange} placeholder="Weeks" style={{ width: '10.5rem' }} />
+            <div className={style.rangeContainer} style={{ width: '55rem' }}>
+                <input type="number" ref={quarterRange} placeholder="Quarters" style={{ width: '9rem' }} />
                 From
-                <input type="date" ref={dateEndRef} /> {/*less*/}
+                <select ref={startMonth}>
+                    <option selected disabled>Start Month</option>
+                    <option value={0}>January</option>
+                    <option value={1}>February</option>
+                    <option value={2}>March</option>
+                    <option value={3}>April</option>
+                    <option value={4}>May</option>
+                    <option value={5}>June</option>
+                    <option value={6}>July</option>
+                    <option value={7}>August</option>
+                    <option value={8}>September</option>
+                    <option value={9}>October</option>
+                    <option value={10}>November</option>
+                    <option value={11}>December</option>
+                </select>
+                <select ref={year}>
+                    <option value={currentYear}>{currentYear}</option>
+                    <option value={currentYear - 1}>{currentYear - 1}</option>
+                    <option value={currentYear - 2}>{currentYear - 2}</option>
+                    <option value={currentYear - 3}>{currentYear - 3}</option>
+                    <option value={currentYear - 4}>{currentYear - 4}</option>
+                </select>
+
 
                 <button onClick={generateReport}>
                     Generate
@@ -145,7 +172,7 @@ export default function WeeklyReport() {
                 <table>
                     <thead>
                         <tr>
-                            <th>Week</th>
+                            <th>Quarter</th>
                             <th>Machine No.</th>
                             <th>Product Type</th>
                             <th>Total Product</th>
@@ -156,7 +183,7 @@ export default function WeeklyReport() {
                     <tbody ref={tableRef}>
                         <tr>
                             <td className={style.reportStatus} colSpan="9">
-                                Plase Select a Week Range
+                                Plase Select a Quarter Range
                             </td>
                         </tr>
                     </tbody>
