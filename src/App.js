@@ -22,6 +22,7 @@ import WeeklyReport from "./views/Reports/Weekly/weeklyReport";
 import MonthlyReport from "./views/Reports/Monthly/monthlyReport";
 import QuarterlyReport from "./views/Reports/Quarterly/quarterlyReport";
 import YearlyReport from "./views/Reports/Yearly/yearlyReport";
+import EfficiencyReport from "./views/Reports/Efficiency/efficiencyReport";
 
 const Theme = {
   color: {
@@ -85,7 +86,7 @@ function App() {
               <Route path="/" element={<Machines />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/machines/:machineNumber" element={<DataPerMachine />} />
-              
+
               {/* Reports */}
               <Route path="/reports" element={<ReportDashboard />} />
               <Route path="/realtime-report" element={<Reports />} />
@@ -94,6 +95,7 @@ function App() {
               <Route path="/monthly-report" element={<MonthlyReport />} />
               <Route path="/quarterly-report" element={<QuarterlyReport />} />
               <Route path="/yearly-report" element={<YearlyReport />} />
+              <Route path="/efficiency-report" element={<EfficiencyReport />} />
 
               <Route path="/users" element={<Users />} />
               <Route path="/manage-products" element={<ManageProducts />} />

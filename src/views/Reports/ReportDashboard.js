@@ -7,8 +7,8 @@ import quarterlyImg from '../../assets/images/quarterly.png';
 import monthlyImg from '../../assets/images/monthly.png';
 import yearlyImg from '../../assets/images/yearly.png';
 import realtimeImg from '../../assets/images/realtime.png';
-
-
+import efficiencyImg from '../../assets/images/productivity.png';
+import { DashboardContent } from '../../styles/Dashboard.styled';
 
 function Cards(props) {
     return (
@@ -26,16 +26,19 @@ function Cards(props) {
 
 export default function ReportDashboard() {
     return (
-        <div className={style.container}>
-            <h1 className={style.heading}>
-                Reports
-            </h1>
-            <Cards reportLink='/realtime-report' text="Realtime Report" img={realtimeImg} />
-            <Cards reportLink='/daily-report' text="Daily Report" img={dailyImg} />
-            <Cards reportLink='/weekly-report' text="Weekly Report" img={weeklyImg} />
-            <Cards reportLink='/monthly-report' text="Monthly Report" img={monthlyImg} />
-            <Cards reportLink='/quarterly-report' text="Quarterly Report" img={quarterlyImg} />
-            <Cards reportLink='/yearly-report' text="Yearly Report" img={yearlyImg} />
-        </div>
+        <DashboardContent>
+            <div className={style.container}>
+                <h1 className={style.heading}>
+                    Reports
+                </h1>
+                <Cards reportLink='/realtime-report' text="Realtime Report" img={realtimeImg} />
+                <Cards reportLink='/daily-report' text="Daily Report" img={dailyImg} />
+                <Cards reportLink='/weekly-report' text="Weekly Report" img={weeklyImg} />
+                <Cards reportLink='/monthly-report' text="Monthly Report" img={monthlyImg} />
+                <Cards reportLink='/quarterly-report' text="Quarterly Report" img={quarterlyImg} />
+                <Cards reportLink='/yearly-report' text="Yearly Report" img={yearlyImg} />
+                <Cards reportLink='/efficiency-report' text="Machine Efficiency" img={efficiencyImg} />
+            </div>
+        </DashboardContent>
     );
 }

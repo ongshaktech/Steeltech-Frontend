@@ -72,7 +72,7 @@ export default function DownTime() {
             startDate = Math.floor(startDate.getTime() / 1000);
             endDate = Math.floor(endDate.getTime() / 1000);
 
-            console.log(startDate, endDate);
+            // console.log(startDate, endDate);
 
             const ref = collection(db_firestore, 'machineStatus');
             const q = query(ref, where('time_start', '>=', startDate),
