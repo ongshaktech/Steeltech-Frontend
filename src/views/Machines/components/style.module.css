@@ -17,13 +17,10 @@
     /* background-color:#6bffa9 ; */
 }
 
-.cardIcon {
-    font-size: 5rem;
-    text-align: center;
-}
-
-.cardIcon svg {
-    margin: 2rem;
+.card img {
+    width: 6.8rem;
+    margin: 2.5rem auto 2rem auto;
+    display: block;
 }
 
 .card h2{

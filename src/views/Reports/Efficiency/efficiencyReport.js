@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useRef } from "react";
 import { DashboardContent } from "../../../styles/Dashboard.styled";
 import { db_firestore } from "../../../Hooks/config";
-import { collection, query, getDocs, where, doc, getDoc, limit, orderBy } from "firebase/firestore";
+import { collection, query, getDocs, where, doc, getDoc } from "firebase/firestore";
 import { ProductThickness } from "../../../shared/constants";
 import style from '../style.module.css';
 
@@ -15,7 +15,7 @@ export default function EfficiencyReport() {
     let tableBodyRef = useRef(null);
     let tableHeaderRef = useRef(null);
     let [MachineNoList, setMachineNoList] = useState(new Set([]));
-
+    let [btnStatus, setBtnStatus] = useState(true);
 
     useEffect(() => {
         dateEndRef.current.valueAsDate = new Date();
@@ -57,78 +57,85 @@ export default function EfficiencyReport() {
         endDate.setMilliseconds(99);
         endDate.setSeconds(59);
 
-        tableBodyRef.current.innerHTML =
-            `<tr>
-                <td class='${style.reportStatus}' id='reportStatus' colSpan="${ProductThickness.length}">
-                    Plase Be Patient ...
-                </td>
-            </tr>`;
+        if (dateEndRef.current.value === '' || dateStartRef.current.value === '') {
+            setTableStatus('Date Ranges cannot be empty!');
+            return null;
+        } else if (startDate.getTime() > endDate.getTime()) {
+            setTableStatus('Start date should be less than end date');
+            return null;
+        }
 
+        setTableStatus('Please be Patient ...');
+
+        setBtnStatus(false);
         putData(startDate, endDate);
     }
 
+    const setTableStatus = (prompt) => {
+        tableBodyRef.current.innerHTML =
+            `<tr>
+            <td class='${style.reportStatus}' id='reportStatus' colSpan=${ProductThickness.length + 1}>
+                ${prompt}
+            </td>
+        </tr>`;
+    }
 
     async function putData(startDate, endDate) {
-
 
         const ref = collection(db_firestore, 'machineStatus');
         const MachineRef = collection(db_firestore, collection_name);
 
-        for (const machine_number of MachineNoList) {
-
-
+        Array.from(MachineNoList).forEach((machine_number, index) => {
             // Getting Time Start and Time End
-            let time_start = 0, time_end = 0;
+            let total_time = 0;
+
             let q = query(ref, where('time_start', '>=', Math.floor(startDate.getTime() / 1000)),
                 where('time_start', '<=', Math.floor(endDate.getTime() / 1000)),
                 where('machine_no', '==', `${machine_number}`),
-                where('is_running', `==`, true),
-                orderBy('time_start', 'asc'),
-                limit(1)
+                where('is_running', `==`, true)
             );
-            let snap = await getDocs(q);
-            snap.forEach(result => {
-                time_start = result.data()['time_start']
-            });
-            q = query(ref, where('time_start', '>=', Math.floor(startDate.getTime() / 1000)),
-                where('time_start', '<=', Math.floor(endDate.getTime() / 1000)),
-                where('machine_no', '==', `${machine_number}`),
-                where('is_running', `==`, true),
-                orderBy('time_start', 'desc'),
-                limit(1)
-            );
-            snap = await getDocs(q);
-            snap.forEach(result => {
-                time_end = result.data()['time_end'];
-            });
 
+            getDocs(q).then((snap) => {
 
+                snap.forEach(result => {
+                    total_time += (result.data()['time_end'] - result.data()['time_start']);
+                });
 
-            // Getting Machines Info
-            let count = 0;
-            let av_time = [];
-
-            if (time_start !== 0 && time_end !== 0) {
+                let av_time = [];
                 for (const thickness of ProductThickness) {
-                    q = query(MachineRef, where('unix_time', '>=', time_start),
-                        where('unix_time', '<=', time_end),
+                    let count = 0;
+                    q = query(MachineRef, where('unix_time', '>=', Math.floor(startDate.getTime() / 1000)),
+                        where('unix_time', '<=', Math.floor(endDate.getTime() / 1000)),
                         where('machine_no', '==', `${machine_number}`),
                         where('thickness', `==`, thickness));
-                    snap = await getDocs(q);
-                    snap.forEach(result => {
-                        count += result.data()['count'];
-                    });
-                    av_time.push((time_end - time_start) / count);
-                }
-            }
 
-            appendTableRow(machine_number, av_time);
-        }
+                    getDocs(q).then((snap) => {
+                        snap.forEach(result => {
+                            count += result.data()['count'];
+                        });
+                        count !== 0 ?
+                            av_time.push(`${(total_time / count).toFixed(2)} sec`) :
+                            av_time.push('N/A');
+
+                        if (av_time.length === ProductThickness.length) {
+                            appendTableRow(machine_number, av_time);
+                        }
+                        if ((index + 1) === MachineNoList.size && av_time.length === ProductThickness.length) {
+                            setBtnStatus(true);
+                        }
+                        console.log(MachineNoList.size, index);
+                        console.log(av_time.length, ProductThickness.length);
+                    });
+                }
+            });
+        });
     }
+
 
 
     const appendTableRow = (machine_no, avTimes) => {
         let times = avTimes.map(avTime => `<td>${avTime}</td>`);
+        times = times.join("");
 
         const tr = document.createElement('tr');
         tr.innerHTML =
@@ -141,18 +148,19 @@ export default function EfficiencyReport() {
     }
 
 
+
     return (
         <DashboardContent>
             <h1 className={style.heading}>
                 Machine Efficiency
             </h1>
 
-            <div className={style.rangeContainer}>
+            <div className={style.rangeContainer} style={{ width: '53rem' }}>
                 <input type="date" ref={dateStartRef} /> {/*less*/}
                 to
                 <input type="date" ref={dateEndRef} />
-                <button onClick={generateReport}>
-                    Generate
+                <button onClick={generateReport} disabled={!true}>
+                    {btnStatus ? 'Generate' : 'Please Wait ...'}
                 </button>
                 <button onClick={() => {
                     window.print();

@@ -5,6 +5,7 @@ import { db_firestore } from "../../../Hooks/config";
 import { collection, query, getDocs, where, doc, getDoc } from "firebase/firestore";
 import { ProductTypes } from "../../../shared/constants";
 import style from '../style.module.css';
+import { useState } from "react";
 
 export default function QuarterlyReport() {
 
@@ -13,12 +14,14 @@ export default function QuarterlyReport() {
     let startMonth = useRef(null);
     let year = useRef(null);
     let tableRef = useRef(null);
-    let MachineNo = new Set([]);
     const currentYear = parseInt(new Date().getFullYear());
+
+    let [btnStatus, setBtnStatus] = useState(true);
+    let [MachineNoList, setMachineNoList] = useState(new Set([]));
 
 
     useEffect(() => {
-
+        let MachineNo = new Set([]);
         // Get Machine Number List
         const ref = doc(db_firestore, `information`, 'info');
         getDoc(ref).then(data => {
@@ -29,26 +32,85 @@ export default function QuarterlyReport() {
             list['polish_machine'].forEach(index => {
                 MachineNo.add(index);
             });
+            setMachineNoList(MachineNo);
         });
     }, []);
 
 
     const generateReport = () => {
+        let dataNum = 0;
         let dateStart = new Date();
-        dateStart.setFullYear(year.current.value);
-        dateStart.setMonth(startMonth.current.value);
         dateStart.setDate(1);
         dateStart.setHours(0);
         dateStart.setMinutes(0);
         dateStart.setMilliseconds(0);
         dateStart.setSeconds(0);
+        dateStart.setMonth(startMonth.current.value);
+        dateStart.setFullYear(year.current.value);
 
-        tableRef.current.innerHTML =
-            `<tr>
-                <td class='${style.reportStatus}' id='reportStatus' colSpan="9">
-                    Plase Be Patient ...
-                </td>
-            </tr>`;
+        if (quarterRange.current.value === '' || quarterRange.current.value <= 0) {
+            setTableStatus('Quarter Range cannot be empty!');
+            return null;
+        } else if (startMonth.current.value === '') {
+            setTableStatus('Start month cannot be empty!');
+            return null;
+        }
+
+
+        setTableStatus('Please Be Patient ...');
+        setBtnStatus(false);
+
+        const putData = (dateInfo) => {
+            let startDate = new Date(dateInfo);
+
+            let endDate = new Date(dateInfo);
+            endDate.setSeconds(59);
+            endDate.setHours(23);
+            endDate.setMinutes(59);
+            endDate.setDate(0);
+            endDate.setMonth(endDate.getMonth() + 4);
+
+
+            const ref = collection(db_firestore, collection_name);
+
+            Array.from(MachineNoList).map((machine_no, index_m) => {
+                ProductTypes.map((value, index_p) => {
+                    let TP = 0;
+                    let TW = 0;
+                    let doc_length = 0;
+
+                    const q = query(ref,
+                        where('unix_time', '>=', Math.floor(startDate.getTime() / 1000)),
+                        where('unix_time', '<=', Math.floor(endDate.getTime() / 1000)),
+                        where('machine_no', '==', machine_no),
+                        where('product_type', '==', value)
+                    );
+
+                    getDocs(q).then(
+                        (snapShot) => {
+                            snapShot.forEach((doc) => {
+                                doc_length++;
+                                dataNum++;
+                                const data = doc.data();
+                                TW += data['weight'];
+                                TP += data['count'];
+                            });
+
+                            if (doc_length !== 0)
+                                appendTableRow(
+                                    `${startDate.toLocaleString('default', { month: 'long' })}, ${startDate.getFullYear()} - 
+                                    ${endDate.toLocaleString('default', { month: 'long' })}, ${endDate.getFullYear()}`,
+                                    machine_no, value, TP, TW
+                                );
+
+                            if (((index_m + 1) * (index_p + 1)) === (MachineNoList.size * ProductTypes.length)) {
+                                if (dataNum === 0) setTableStatus('No Data Available in this Date Range');
+                                setBtnStatus(true);
+                            }
+                        });
+                });
+            });
+        }
 
         for (let i = 0; i < quarterRange.current.value; i++) {
             putData(dateStart);
@@ -57,57 +119,17 @@ export default function QuarterlyReport() {
     }
 
 
-    const putData = (dateInfo) => {
-        let startDate = new Date(dateInfo);
-        startDate.setHours(0);
-        startDate.setMinutes(0);
-        startDate.setSeconds(0);
-
-        let endDate = new Date(dateInfo);
-        endDate.setMonth(endDate.getMonth() + 4);
-        endDate.setDate(0);
-        endDate.setHours(23);
-        endDate.setMinutes(59);
-        endDate.setSeconds(59);
-
-        console.log(startDate, '_________', endDate);
-
-        const ref = collection(db_firestore, collection_name);
-
-        MachineNo.forEach(machine_no => {
-            ProductTypes.map((value) => {
-
-                let TP = 0;
-                let TW = 0;
-                let doc_length = 0;
-
-                const q = query(ref,
-                    where('unix_time', '>=', Math.floor(startDate.getTime() / 1000)),
-                    where('unix_time', '<=', Math.floor(endDate.getTime() / 1000)),
-                    where('machine_no', '==', machine_no),
-                    where('product_type', '==', value)
-                );
-
-                getDocs(q).then(
-                    (snapShot) => {
-                        snapShot.forEach((doc) => {
-                            doc_length++;
-                            const data = doc.data();
-
-                            TW += data['weight'];
-                            TP += data['count'];
-                        });
-                        if (doc_length !== 0)
-                            appendTableRow(
-                                `${startDate.toLocaleString('default', { month: 'long' })}, ${startDate.getFullYear()} - 
-                                ${endDate.toLocaleString('default', { month: 'long' })}, ${endDate.getFullYear()}`,
-                                machine_no, value, TP, TW
-                            );
-                    }
-                );
-            });
-        });
+    const setTableStatus = (prompt) => {
+        tableRef.current.innerHTML =
+            `<tr>
+            <td class='${style.reportStatus}' id='reportStatus' colSpan="9">
+                ${prompt}
+            </td>
+        </tr>`;
     }
+
+
+
 
 
     const appendTableRow = (date, machine_no, product_type, tp, tw) => {
@@ -131,11 +153,11 @@ export default function QuarterlyReport() {
                 Quarterly Report
             </h1>
 
-            <div className={style.rangeContainer} style={{ width: '55rem' }}>
+            <div className={style.rangeContainer} style={{ width: '57rem' }}>
                 <input type="number" ref={quarterRange} placeholder="Quarters" style={{ width: '9rem' }} />
                 From
                 <select ref={startMonth}>
-                    <option selected disabled>Start Month</option>
+                    <option selected disabled value=''>Start Month</option>
                     <option value={0}>January</option>
                     <option value={1}>February</option>
                     <option value={2}>March</option>
@@ -157,10 +179,10 @@ export default function QuarterlyReport() {
                     <option value={currentYear - 4}>{currentYear - 4}</option>
                 </select>
 
-
-                <button onClick={generateReport}>
-                    Generate
+                <button onClick={generateReport} disabled={!btnStatus}>
+                    {btnStatus ? 'Generate' : 'Please Wait ...'}
                 </button>
+
                 <button onClick={() => {
                     window.print();
                 }}>

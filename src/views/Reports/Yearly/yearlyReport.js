@@ -5,6 +5,7 @@ import { db_firestore } from "../../../Hooks/config";
 import { collection, query, getDocs, where, doc, getDoc } from "firebase/firestore";
 import { ProductTypes } from "../../../shared/constants";
 import style from '../style.module.css';
+import { useState } from "react";
 
 export default function YearlyReport() {
 
@@ -16,9 +17,12 @@ export default function YearlyReport() {
     let startYear = useRef(null);
     let endYear = useRef(null);
 
+    let [btnStatus, setBtnStatus] = useState(true);
+    let [MachineNoList, setMachineNoList] = useState(new Set([]));
+
 
     useEffect(() => {
-
+        let MachineNo = new Set([]);
         // Get Machine Number List
         const ref = doc(db_firestore, `information`, 'info');
         getDoc(ref).then(data => {
@@ -29,27 +33,92 @@ export default function YearlyReport() {
             list['polish_machine'].forEach(index => {
                 MachineNo.add(index);
             });
+            setMachineNoList(MachineNo);
         });
     }, []);
 
 
     const generateReport = () => {
+        let dataNum = 0;
         let startDate = new Date();
-        startDate.setDate(1);
-        startDate.setFullYear(startYear.current.value);
-        startDate.setMonth(0);
-        startDate.setDate(1);
-        startDate.setHours(0);
-        startDate.setMinutes(0);
         startDate.setMilliseconds(0);
         startDate.setSeconds(0);
+        startDate.setHours(0);
+        startDate.setMinutes(0);
+        startDate.setDate(1);
+        startDate.setMonth(0);
+        startDate.setFullYear(startYear.current.value);
 
-        tableRef.current.innerHTML =
-            `<tr>
-                <td class='${style.reportStatus}' id='reportStatus' colSpan="9">
-                    Plase Be Patient ...
-                </td>
-            </tr>`;
+        setTableStatus('Please Be Patient ...');
+        setBtnStatus(false);
+
+
+        const putData = (dateInfo) => {
+            let startDate = new Date(dateInfo);
+            startDate.setHours(0);
+            startDate.setMinutes(0);
+            startDate.setSeconds(0);
+
+            let endDate = new Date(dateInfo);
+            endDate.setMonth(11);
+            endDate.setDate(31);
+            endDate.setHours(23);
+            endDate.setMinutes(59);
+            endDate.setSeconds(59);
+
+            console.log(startDate, endDate);
+
+            const ref = collection(db_firestore, collection_name);
+
+            Array.from(MachineNoList).map((machine_no, index_m) => {
+                ProductTypes.map((value, index_p) => {
+                    let morning_count = 0, morning_weight = 0;
+                    let night_count = 0, night_weight = 0;
+                    let TP = 0;
+                    let TW = 0;
+                    let doc_length = 0;
+
+                    const q = query(ref,
+                        where('unix_time', '>=', Math.floor(startDate.getTime() / 1000)),
+                        where('unix_time', '<=', Math.floor(endDate.getTime() / 1000)),
+                        where('machine_no', '==', machine_no),
+                        where('product_type', '==', value)
+                    );
+
+                    getDocs(q).then(
+                        (snapShot) => {
+                            snapShot.forEach((doc) => {
+                                doc_length++;
+                                dataNum++;
+                                const data = doc.data();
+                                if (data['shift'] === 'Morning') {
+                                    morning_count += data['count'];
+                                    morning_weight += data['weight'];
+                                }
+                                else {
+                                    night_count += data['count'];
+                                    night_weight += data['weight'];
+                                }
+                            });
+
+                            TP = morning_count + night_count;
+                            TW = night_weight + morning_weight;
+                            if (doc_length !== 0)
+                                appendTableRow(
+                                    startDate.getFullYear(), machine_no,
+                                    value, morning_count, morning_weight, night_count, night_weight,
+                                    TP, TW
+                                );
+                            if (((index_m + 1) * (index_p + 1)) === (MachineNoList.size * ProductTypes.length)) {
+                                if (dataNum === 0) setTableStatus('No Data Available in this Date Range');
+                                setBtnStatus(true);
+                            }
+                        }
+                    );
+                });
+            });
+        }
+
 
         for (let i = 0; i < (endYear.current.value - startYear.current.value + 1); i++) {
             putData(startDate);
@@ -58,67 +127,15 @@ export default function YearlyReport() {
 
     }
 
-
-    const putData = (dateInfo) => {
-        let startDate = new Date(dateInfo);
-        startDate.setHours(0);
-        startDate.setMinutes(0);
-        startDate.setSeconds(0);
-
-        let endDate = new Date(dateInfo);
-        endDate.setMonth(11);
-        endDate.setDate(31);
-        endDate.setHours(23);
-        endDate.setMinutes(59);
-        endDate.setSeconds(59);
-
-        console.log(startDate, '________', endDate);
-
-        const ref = collection(db_firestore, collection_name);
-
-        MachineNo.forEach(machine_no => {
-            ProductTypes.map((value) => {
-                let morning_count = 0, morning_weight = 0;
-                let night_count = 0, night_weight = 0;
-                let TP = 0;
-                let TW = 0;
-                let doc_length = 0;
-
-                const q = query(ref,
-                    where('unix_time', '>=', Math.floor(startDate.getTime() / 1000)),
-                    where('unix_time', '<=', Math.floor(endDate.getTime() / 1000)),
-                    where('machine_no', '==', machine_no),
-                    where('product_type', '==', value)
-                );
-
-                getDocs(q).then(
-                    (snapShot) => {
-                        snapShot.forEach((doc) => {
-                            doc_length++;
-                            const data = doc.data();
-                            if (data['shift'] === 'Morning') {
-                                morning_count += data['count'];
-                                morning_weight += data['weight'];
-                            }
-                            else {
-                                night_count += data['count'];
-                                night_weight += data['weight'];
-                            }
-                        });
-
-                        TP = morning_count + night_count;
-                        TW = night_weight + morning_weight;
-                        if (doc_length !== 0)
-                            appendTableRow(
-                                startDate.getFullYear(), machine_no,
-                                value, morning_count, morning_weight, night_count, night_weight,
-                                TP, TW
-                            );
-                    }
-                );
-            });
-        });
+    const setTableStatus = (prompt) => {
+        tableRef.current.innerHTML =
+            `<tr>
+            <td class='${style.reportStatus}' id='reportStatus' colSpan="9">
+                ${prompt}
+            </td>
+        </tr>`;
     }
+
 
 
     const appendTableRow = (date, machine_no, product_type, m_count, m_weight, n_count, n_weight, tp, tw) => {
@@ -163,9 +180,10 @@ export default function YearlyReport() {
                     <option value={currentYear - 4}>{currentYear - 4}</option>
                 </select>
 
-                <button onClick={generateReport}>
-                    Generate
+                <button onClick={generateReport} disabled={!btnStatus}>
+                    {btnStatus ? 'Generate' : 'Please Wait ...'}
                 </button>
+
                 <button onClick={() => {
                     window.print();
                 }}>

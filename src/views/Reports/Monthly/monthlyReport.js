@@ -5,6 +5,7 @@ import { db_firestore } from "../../../Hooks/config";
 import { collection, query, getDocs, where, doc, getDoc } from "firebase/firestore";
 import { ProductTypes } from "../../../shared/constants";
 import style from '../style.module.css';
+import { useState } from "react";
 
 export default function MonthlyReport() {
 
@@ -13,12 +14,14 @@ export default function MonthlyReport() {
     let year = useRef(null);
     let startMonth = useRef(null);
     let endMonth = useRef(null);
-    let MachineNo = new Set([]);
     const currentYear = parseInt(new Date().getFullYear());
 
-    useEffect(() => {
-        // dateEndRef.current.valueAsDate = new Date();
+    let [btnStatus, setBtnStatus] = useState(true);
+    let [MachineNoList, setMachineNoList] = useState(new Set([]));
 
+
+    useEffect(() => {
+        let MachineNo = new Set([]);
         // Get Machine Number List
         const ref = doc(db_firestore, `information`, 'info');
         getDoc(ref).then(data => {
@@ -29,76 +32,100 @@ export default function MonthlyReport() {
             list['polish_machine'].forEach(index => {
                 MachineNo.add(index);
             });
+            setMachineNoList(MachineNo);
         });
     }, []);
 
 
-    async function generateReport() {
+
+    function generateReport() {
         let date = new Date();
-        date.setFullYear(year.current.value);
-        date.setMonth(startMonth.current.value);
-        date.setDate(1);
-        date.setHours(0);
-        date.setMinutes(0);
         date.setMilliseconds(0);
         date.setSeconds(0);
+        date.setMinutes(0);
+        date.setHours(0);
+        date.setDate(1);
+        date.setMonth(parseInt(startMonth.current.value));
+        date.setFullYear(parseInt(year.current.value));
 
-        tableRef.current.innerHTML =
-            `<tr>
-                <td class='${style.reportStatus}' id='reportStatus' colSpan="9">
-                    Plase Be Patient ...
-                </td>
-            </tr>`;
+        let dataNum = 0;
 
-        while ((date.getMonth() < endMonth.current.value)) {
+        if (endMonth.current.value === '' || startMonth.current.value === '') {
+            setTableStatus('Month Range cannot be empty!');
+            return null;
+        } else if (endMonth.current.value < startMonth.current.value) {
+            setTableStatus('Start month should be less than end month!');
+            return null;
+        }
+
+        setTableStatus('Please Be Patient ...');
+        setBtnStatus(false);
+
+        const putData = (dateInfo) => {
+            let startDate = new Date(dateInfo);
+            let endDate = new Date(year.current.value, startDate.getMonth() + 1, 0);
+
+            const ref = collection(db_firestore, collection_name);
+
+            Array.from(MachineNoList).map((machine_no, index_m) => {
+                ProductTypes.map((value, index_p) => {
+
+                    let TP = 0;
+                    let TW = 0;
+                    let doc_length = 0;
+
+                    const q = query(ref,
+                        where('unix_time', '>=', Math.floor(startDate.getTime() / 1000)),
+                        where('unix_time', '<=', Math.floor(endDate.getTime() / 1000)),
+                        where('machine_no', '==', machine_no),
+                        where('product_type', '==', value)
+                    );
+
+                    getDocs(q).then(
+                        (snapShot) => {
+                            snapShot.forEach((doc) => {
+                                doc_length++;
+                                dataNum++;
+                                const data = doc.data();
+                                TW += data['weight'];
+                                TP += data['count'];
+                            });
+
+                            if (doc_length !== 0)
+                                appendTableRow(
+                                    startDate.toLocaleString('default', { month: 'long' }),
+                                    machine_no, value, TP, TW);
+
+                            if (((index_m + 1) * (index_p + 1)) === (MachineNoList.size * ProductTypes.length)) {
+                                if (dataNum === 0) setTableStatus('No Data Available in this Date Range');
+                                setBtnStatus(true);
+                            }
+                        }
+                    );
+
+
+                });
+            });
+        }
+
+        while ((date.getMonth() <= endMonth.current.value)) {
             putData(date);
             date.setMonth(date.getMonth() + 1);
         }
     }
 
 
-    const putData = (dateInfo) => {
-        let startDate = new Date(dateInfo);
-        let endDate = new Date(year.current.value, startDate.getMonth() + 1, 0);
 
-        console.log(startDate, '[[[[[[[[', endDate);
-
-        const ref = collection(db_firestore, collection_name);
-
-        MachineNo.forEach(machine_no => {
-            ProductTypes.map((value) => {
-
-                let TP = 0;
-                let TW = 0;
-                let doc_length = 0;
-
-                const q = query(ref,
-                    where('unix_time', '>=', Math.floor(startDate.getTime() / 1000)),
-                    where('unix_time', '<=', Math.floor(endDate.getTime() / 1000)),
-                    where('machine_no', '==', machine_no),
-                    where('product_type', '==', value)
-                );
-
-                getDocs(q).then(
-                    (snapShot) => {
-                        snapShot.forEach((doc) => {
-                            doc_length++;
-                            const data = doc.data();
-
-                            TW += data['weight'];
-                            TP += data['count'];
-                        });
-
-                        if (doc_length !== 0)
-                            appendTableRow(
-                                startDate.toLocaleString('default', { month: 'long' }),
-                                machine_no, value, TP, TW
-                            );
-                    }
-                );
-            });
-        });
+    const setTableStatus = (prompt) => {
+        tableRef.current.innerHTML =
+            `<tr>
+            <td class='${style.reportStatus}' id='reportStatus' colSpan="9">
+                ${prompt}
+            </td>
+        </tr>`;
     }
+
+
 
 
     const appendTableRow = (date, machine_no, product_type, tp, tw) => {
@@ -132,7 +159,7 @@ export default function MonthlyReport() {
                 </select>
 
                 <select ref={startMonth}>
-                    <option selected disabled>From</option>
+                    <option selected disabled value=''>From</option>
                     <option value={0}>January</option>
                     <option value={1}>February</option>
                     <option value={2}>March</option>
@@ -148,7 +175,7 @@ export default function MonthlyReport() {
                 </select>
 
                 <select ref={endMonth}>
-                    <option selected disabled>To</option>
+                    <option selected disabled value=''>To</option>
                     <option value={0}>January</option>
                     <option value={1}>February</option>
                     <option value={2}>March</option>
@@ -163,8 +190,8 @@ export default function MonthlyReport() {
                     <option value={11}>December</option>
                 </select>
 
-                <button onClick={generateReport}>
-                    Generate
+                <button onClick={generateReport} disabled={!btnStatus}>
+                    {btnStatus ? 'Generate' : 'Please Wait ...'}
                 </button>
 
                 <button onClick={() => {
