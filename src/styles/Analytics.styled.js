@@ -8,16 +8,17 @@ export const AnalyticsCard = styled.div`
 
     select{
         width: 10rem;
-        padding: .8rem;
-        font-size: 1.6rem;
+        padding: 1rem;
+        font-size: 1.4rem;
         cursor: pointer;
-        background: #ddd;
+        background: transparent;
         color: #000;
         margin: .5rem;
-        border: none;
-        border-radius: 5rem;
         text-align: center;
         outline: none;
+        border-radius: 0.5rem;
+        border-style: solid;
+        border-color: #5d5e5d;
     }
 
     h2 {

@@ -79,8 +79,8 @@ export default function TypeThicknessGraph() {
                         });
                         graphDataArr.push({
                             name: product_type,
-                            pipes: count,
-                            weight: Weight
+                            Pipes: count,
+                            Weight: Weight
                         });
 
                         // Set data if the loop will complete and Array is fully pushed
@@ -219,8 +219,8 @@ export default function TypeThicknessGraph() {
                                     <YAxis />
                                     <Tooltip />
                                     <Legend />
-                                    <Bar dataKey="pipes" fill="#8884d8" />
-                                    <Bar dataKey="weight" fill="#ffd45e" />
+                                    <Bar dataKey="Pipes" fill="#8884d8" />
+                                    <Bar dataKey="Weight" fill="rgb(255 137 79)" />
                                 </BarChart>
                             </ResponsiveContainer>
                         </div>
@@ -260,7 +260,7 @@ export default function TypeThicknessGraph() {
                         <div className='category'>
                             <input type="date" ref={dateRef} />
                             <button className='date-btn' onClick={dailyGraph}>
-                                set
+                                Set
                             </button>
 
                             <select onChange={monthlyGraph}>

@@ -149,7 +149,7 @@ export default function TotalPipesGraph() {
                             });
                             graphDataArr.push({
                                 name: machine,
-                                pipes: count,
+                                Pipes: count,
                                 'Total weight': Weight,
                                 'Average Pipe Weight': (Weight / count).toFixed(2)
                             });
@@ -280,7 +280,7 @@ export default function TotalPipesGraph() {
                                     <YAxis />
                                     <Tooltip />
                                     <Legend />
-                                    <Bar dataKey="pipes" fill="#8884d8" />
+                                    <Bar dataKey="Pipes" fill="#8884d8" />
                                     <Bar dataKey="Total weight" fill="#FFA500" />
                                     <Bar dataKey="Average Pipe Weight" fill="#6aa32e" />
                                 </BarChart>
@@ -297,7 +297,7 @@ export default function TotalPipesGraph() {
                             <input type="date" ref={dateRef} />
 
                             <button className='date-btn' onClick={dailyGraph}>
-                                set
+                                Set
                             </button>
 
                             <select onChange={monthlyGraph}>

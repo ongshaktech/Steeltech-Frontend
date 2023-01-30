@@ -20,7 +20,7 @@ function split_time(time_span, dict) {
         let next_segment_scaled = time_delta / segments;
         let next_segment = (i + 1) * next_segment_scaled;
         new_dict.push({
-            value: dict.is_running ? 1 : 0,
+            Value: dict.is_running ? 1 : 0,
             time: timeConverter(dict.time_start + next_segment)
         });
     }

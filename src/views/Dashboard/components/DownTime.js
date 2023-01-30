@@ -103,7 +103,7 @@ export default function DownTime() {
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Line type="monotone" dataKey="value" stroke="#8884d8" />
+                        <Line type="monotone" dataKey="Value" stroke="#8884d8" />
                     </LineChart>
                 </div>
 
@@ -122,7 +122,7 @@ export default function DownTime() {
                         }} ref={dateInput} />
 
                         <button className='date-btn' onClick={setData}>
-                            set
+                            Set
                         </button>
                     </div>
                 </AnalyticsDetail>
