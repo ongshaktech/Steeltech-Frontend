@@ -92,21 +92,22 @@ export default function YearlyReport() {
                                 dataNum++;
                                 const data = doc.data();
                                 if (data['shift'] === 'Morning') {
-                                    morning_count += data['count'];
-                                    morning_weight += data['weight'];
+                                    morning_count += parseInt(data['count']);
+                                    morning_weight += parseFloat(data['weight']);
                                 }
                                 else {
-                                    night_count += data['count'];
-                                    night_weight += data['weight'];
+                                    night_count += parseInt(data['count']);
+                                    night_weight += parseFloat(data['weight']);
                                 }
                             });
 
-                            TP = morning_count + night_count;
-                            TW = night_weight + morning_weight;
+                            TP = (morning_count + night_count);
+                            TW = (night_weight + morning_weight).toFixed(2);
+
                             if (doc_length !== 0)
                                 appendTableRow(
                                     startDate.getFullYear(), machine_no,
-                                    value, morning_count, morning_weight, night_count, night_weight,
+                                    value, morning_count, morning_weight.toFixed(2), night_count, night_weight.toFixed(2),
                                     TP, TW
                                 );
                             if (((index_m + 1) * (index_p + 1)) === (MachineNoList.size * ProductTypes.length)) {

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const ReportsWrapper = styled.div`
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 3fr 1fr;
     gap: 3rem;
 `
 
@@ -12,7 +12,7 @@ export const ReportDetails = styled.div`
     border-radius: .8rem;
     .table_heading {
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(6, 1fr);
         align-items: center;
         gap: 1rem;
         margin-bottom: 2rem;
@@ -24,7 +24,7 @@ export const ReportDetails = styled.div`
     .table_content {
         text-align: center;
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(6, 1fr);
         align-items: center;
         gap: 1rem;
         font-size: 1.6rem;

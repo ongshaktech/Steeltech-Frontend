@@ -71,7 +71,7 @@ export default function DailyReport() {
             Array.from(MachineNoList).map((machine_no, index_m) => {
                 ProductTypes.map((value, index_p) => {
 
-                    let morning_count = 0, morning_weight = 0;
+                    let morning_count = 0.0, morning_weight = 0.0;
                     let night_count = 0, night_weight = 0;
                     let TP = 0;
                     let TW = 0;
@@ -91,21 +91,23 @@ export default function DailyReport() {
                                 dataNum++;
                                 const data = doc.data();
                                 if (data['shift'] === 'Morning') {
-                                    morning_count += data['count'];
-                                    morning_weight += data['weight'];
+                                    morning_count += parseInt(data['count']);
+                                    morning_weight += parseFloat(data['weight']);
                                 }
                                 else {
-                                    night_count += data['count'];
-                                    night_weight += data['weight'];
+                                    night_count += parseInt(data['count']);
+                                    night_weight += parseFloat(data['weight']);
                                 }
                             });
-                            TP = morning_count + night_count;
-                            TW = night_weight + morning_weight;
+
+                            TP = (morning_count + night_count).toFixed(2);
+                            TW = (night_weight + morning_weight).toFixed(2);
+
                             if (doc_length !== 0)
                                 appendTableRow(
                                     `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()}`,
-                                    machine_no, value, morning_count, morning_weight, night_count, night_weight,
-                                    TP, TW
+                                    machine_no, value, morning_count, morning_weight.toFixed(2), night_count, 
+                                    night_weight.toFixed(2), TP, TW
                                 );
                             if (((index_m + 1) * (index_p + 1)) === (MachineNoList.size * ProductTypes.length)) {
                                 if (dataNum === 0) setTableStatus('No Data Available in this Date Range');

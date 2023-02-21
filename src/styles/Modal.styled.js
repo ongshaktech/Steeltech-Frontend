@@ -12,7 +12,9 @@ export const ModalComponent = styled.div`
         position: relative;
         padding: 30px;
         max-width: 580px;
-        margin: 22vh auto;
+        margin: 0 auto;
+        top: 50%;
+        transform: translateY(-50%);
         background: #fff;
         border-radius: 10px;
     

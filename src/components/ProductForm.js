@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ReportsFormContainer } from '../styles/CommonReports.styled';
 import { useRef } from 'react';
 import { ProductTypes, Shifts } from '../shared/constants';
-import { ProductThickness } from '../shared/constants';
+import { ProductThickness, ProductDimension } from '../shared/constants';
 import { useEffect } from 'react';
 import { db_firestore } from '../Hooks/config';
 import { doc, getDoc } from 'firebase/firestore';
@@ -14,6 +14,7 @@ export default function ProductForm({ setFormData, setshowProductModal }) {
     let machine_no = useRef('');
     let thickness = useRef('');
     let product_type = useRef('');
+    let dimension = useRef('');
     let shift = useRef('');
 
     
@@ -21,7 +22,7 @@ export default function ProductForm({ setFormData, setshowProductModal }) {
     const setData = (e) => {
         e.preventDefault();
 
-        if (machine_no.current.value === "" || thickness.current.value === "" || product_type.current.value === "" || shift.current.value === "") {
+        if (machine_no.current.value === "" || thickness.current.value === "" || product_type.current.value === "" || shift.current.value === "" || dimension.current.value === "") {
             setMsg('Please fill up this form properly');
             return false;
         }
@@ -30,6 +31,7 @@ export default function ProductForm({ setFormData, setshowProductModal }) {
             machine_no: machine_no.current.value,
             thickness: thickness.current.value,
             product_type: product_type.current.value,
+            dimension: dimension.current.value,
             shift: shift.current.value
         });
 
@@ -72,6 +74,19 @@ export default function ProductForm({ setFormData, setshowProductModal }) {
                         {machineNumList}
                     </select>
 
+                </label>
+
+                <label>
+                    <p>Dimension*</p>
+                    <select ref={dimension}>
+                        <option selected disabled value=''>Dimension</option>
+                        {
+                            ProductDimension.map(
+                                (type) =>
+                                    <option value={type}>{type}</option>
+                            )
+                        }
+                    </select>
                 </label>
 
                 <label>

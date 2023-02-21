@@ -90,14 +90,14 @@ export default function WeeklyReport() {
                             doc_length++;
                             dataNum++;
                             const data = doc.data();
-                            TW += data['weight'];
-                            TP += data['count'];
+                            TW += parseFloat(data['weight']);
+                            TP += parseInt(data['count']);
                         });
                         if (doc_length !== 0)
                             appendTableRow(
                                 `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()} - 
                                     ${endDate.getDate()}/${endDate.getMonth() + 1}/${endDate.getFullYear()}`,
-                                machine_no, value, TP, TW);
+                                machine_no, value, TP, parseFloat(TW).toFixed(2));
 
                         if (((index_m + 1) * (index_p + 1)) === (MachineNoList.size * ProductTypes.length)) {
                             if (dataNum === 0) setTableStatus('No Data Available in this Date Range');

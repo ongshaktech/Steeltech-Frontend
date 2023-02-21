@@ -111,7 +111,7 @@ export default function EfficiencyReport() {
 
                     getDocs(q).then((snap) => {
                         snap.forEach(result => {
-                            count += result.data()['count'];
+                            count += parseInt(result.data()['count']);
                         });
                         count !== 0 ?
                             av_time.push(`${(total_time / count).toFixed(2)} sec`) :
@@ -123,8 +123,8 @@ export default function EfficiencyReport() {
                         if ((index + 1) === MachineNoList.size && av_time.length === ProductThickness.length) {
                             setBtnStatus(true);
                         }
-                        console.log(MachineNoList.size, index);
-                        console.log(av_time.length, ProductThickness.length);
+                        // console.log(MachineNoList.size, index);
+                        // console.log(av_time.length, ProductThickness.length);
                     });
                 }
             });

@@ -92,16 +92,15 @@ export default function QuarterlyReport() {
                                 doc_length++;
                                 dataNum++;
                                 const data = doc.data();
-                                TW += data['weight'];
-                                TP += data['count'];
+                                TW += parseFloat(data['weight']);
+                                TP += parseInt(data['count']);
                             });
 
                             if (doc_length !== 0)
                                 appendTableRow(
                                     `${startDate.toLocaleString('default', { month: 'long' })}, ${startDate.getFullYear()} - 
                                     ${endDate.toLocaleString('default', { month: 'long' })}, ${endDate.getFullYear()}`,
-                                    machine_no, value, TP, TW
-                                );
+                                    machine_no, value, TP,  parseFloat(TW).toFixed(2));
 
                             if (((index_m + 1) * (index_p + 1)) === (MachineNoList.size * ProductTypes.length)) {
                                 if (dataNum === 0) setTableStatus('No Data Available in this Date Range');
