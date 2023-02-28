@@ -13,7 +13,7 @@ function timeConverter(UNIX_timestamp) {
 
 function split_time(time_span, dict) {
     let new_dict = [];
-    let time_delta = dict.time_end - dict.time_start;
+    let time_delta = parseFloat(dict.time_end) - parseFloat(dict.time_start);
     let segments = parseInt(time_delta / time_span);
     
     for (let i = 0; i < segments; i++) {

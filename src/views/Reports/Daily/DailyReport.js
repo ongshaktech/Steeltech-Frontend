@@ -65,6 +65,7 @@ export default function DailyReport() {
             endDate.setMinutes(59);
             endDate.setSeconds(59);
 
+            // console.log(startDate, endDate);
 
             const ref = collection(db_firestore, collection_name);
 

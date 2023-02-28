@@ -79,6 +79,8 @@ export default function DownTime() {
                 where('time_start', '<=', endDate),
                 where('machine_no', '==', machine_number)
             );
+
+            
             getDocs(q).then(
                 (snapShot) => {
                     snapShot.forEach((doc) => {

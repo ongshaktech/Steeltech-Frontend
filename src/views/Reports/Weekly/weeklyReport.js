@@ -60,15 +60,17 @@ export default function WeeklyReport() {
 
         async function putData(dateInfo, is_last = false) {
             let startDate = new Date(dateInfo);
-            startDate.setHours(0);
-            startDate.setMinutes(0);
-            startDate.setSeconds(0);
+            startDate.setHours(23);
+            startDate.setMinutes(59);
+            startDate.setSeconds(59);
 
             let endDate = new Date(dateInfo);
-            endDate.setDate(endDate.getDate() - 7);
-            endDate.setHours(23);
-            endDate.setMinutes(59);
-            endDate.setSeconds(59);
+            endDate.setDate(endDate.getDate() - 6);
+            endDate.setHours(0);
+            endDate.setMinutes(0);
+            endDate.setSeconds(0);
+
+            console.log(startDate, endDate);
 
             const ref = collection(db_firestore, collection_name);
 

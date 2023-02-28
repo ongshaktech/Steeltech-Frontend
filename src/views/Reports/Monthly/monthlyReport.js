@@ -64,6 +64,11 @@ export default function MonthlyReport() {
         const putData = (dateInfo) => {
             let startDate = new Date(dateInfo);
             let endDate = new Date(year.current.value, startDate.getMonth() + 1, 0);
+            endDate.setHours(23);
+            endDate.setMinutes(59);
+            endDate.setSeconds(59);
+
+            // console.log(startDate, endDate);
 
             const ref = collection(db_firestore, collection_name);
 
