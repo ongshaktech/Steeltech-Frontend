@@ -10,7 +10,7 @@ import { where, query, collection, getDocs, getDoc, doc } from 'firebase/firesto
 
 export default function TotalPipesGraph() {
 
-    const collection_name = 'machines';
+    const collection_name = 'machinesIndividual';
     const currentYear = parseInt(new Date().getFullYear());
     let dateRef = useRef('');
 
@@ -111,9 +111,12 @@ export default function TotalPipesGraph() {
             else if (filter === 'monthly') monthlyGraph(lastEvent);
             else if (filter === 'yearly') yearlyGraph(null);
         }
-        else if(MachineNo.length !== 0){
+        else if (MachineNo.length !== 0) {
             setStatus('Now select timespan')
         }
+
+        console.log(year);
+
     }, [year, MachineNo]);
 
 
@@ -185,30 +188,34 @@ export default function TotalPipesGraph() {
 
 
     const monthlyGraph = (e) => {
-        let monthIndex = parseInt(e.target.options[e.target.selectedIndex].value);
+        if (e.detail === 0) {
+            let monthIndex = parseInt(e.target.options[e.target.selectedIndex].value);
 
-        let startDate = new Date();
-        startDate.setFullYear(year);
-        startDate.setMonth(monthIndex);
-        startDate.setDate(1);
-        startDate.setHours(0);
-        startDate.setMinutes(0);
-        startDate.setMilliseconds(0);
-        startDate.setSeconds(0);
+            let startDate = new Date();
+            startDate.setFullYear(year);
+            startDate.setMonth(monthIndex);
+            startDate.setDate(1);
+            startDate.setHours(0);
+            startDate.setMinutes(0);
+            startDate.setMilliseconds(0);
+            startDate.setSeconds(0);
 
-        let endDate = new Date();
-        endDate.setFullYear(year);
-        endDate.setMonth(monthIndex + 1);
-        endDate.setDate(0);
-        endDate.setHours(0);
-        endDate.setMinutes(0);
-        endDate.setMilliseconds(0);
-        endDate.setSeconds(0);
+            let endDate = new Date();
+            endDate.setFullYear(year);
+            endDate.setMonth(monthIndex + 1);
+            endDate.setDate(0);
+            endDate.setHours(23);
+            endDate.setMinutes(59);
+            endDate.setMilliseconds(0);
+            endDate.setSeconds(59);
 
-        setStatus(`Showing Monthly Graph of ${e.nativeEvent.target[e.nativeEvent.target.selectedIndex].text}, ${year}`);
-        putGraphData(startDate, endDate);
-        setFilter('monthly');
-        setLastEvent(e);
+            // console.log(startDate, endDate);
+
+            setStatus(`Showing Monthly Graph of ${e.nativeEvent.target[e.nativeEvent.target.selectedIndex].text}, ${year}`);
+            putGraphData(startDate, endDate);
+            setFilter('monthly');
+            setLastEvent(e);
+        }
     }
 
 
@@ -228,10 +235,12 @@ export default function TotalPipesGraph() {
         endDate.setFullYear(year);
         endDate.setMonth(12);
         endDate.setDate(0);
-        endDate.setHours(0);
-        endDate.setMinutes(0);
+        endDate.setHours(23);
+        endDate.setMinutes(59);
         endDate.setMilliseconds(0);
-        endDate.setSeconds(0);
+        endDate.setSeconds(59);
+
+        // console.log(startDate, endDate);
 
         setStatus(`Showing Yearly Graph of ${year}`);
         putGraphData(startDate, endDate);
@@ -246,7 +255,7 @@ export default function TotalPipesGraph() {
                     Production Details of &nbsp;
 
                     <select onChange={(e) => {
-                        setYear(parseInt(e.target.options.value));
+                        setYear(parseInt(e.target.value));
                     }}>
                         <option value={currentYear}>{currentYear}</option>
                         <option value={currentYear - 1}>{currentYear - 1}</option>
@@ -300,7 +309,7 @@ export default function TotalPipesGraph() {
                                 Set
                             </button>
 
-                            <select onChange={monthlyGraph}>
+                            <select onClick={monthlyGraph}>
                                 <option selected disabled>Monthly</option>
                                 <option value={0}>January</option>
                                 <option value={1}>February</option>

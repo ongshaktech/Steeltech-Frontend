@@ -9,7 +9,7 @@ import { useState } from "react";
 
 export default function YearlyReport() {
 
-    const collection_name = 'machines';
+    const collection_name = 'machinesIndividual';
     let tableRef = useRef(null);
     let MachineNo = new Set([]);
 

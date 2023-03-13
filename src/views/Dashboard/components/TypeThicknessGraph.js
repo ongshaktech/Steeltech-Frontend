@@ -4,14 +4,14 @@ import { Section } from '../../../styles/Sections.styled';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { AnalyticsDetail } from '../../../styles/Analytics.styled';
 import { AnalyticsCard } from '../../../styles/Analytics.styled';
-import { ProductTypes, ProductThickness} from '../../../shared/constants';
+import { ProductTypes, ProductThickness } from '../../../shared/constants';
 import { db_firestore } from '../../../Hooks/config';
 import { where, query, collection, getDocs, getDoc, doc } from 'firebase/firestore';
 import { useRef } from 'react';
 
 export default function TypeThicknessGraph() {
 
-    const collection_name = 'machines';
+    const collection_name = 'machinesIndividual';
     const currentYear = parseInt(new Date().getFullYear());
     let thicknessInput = useRef('');
     let machineNoInput = useRef('');
@@ -116,28 +116,31 @@ export default function TypeThicknessGraph() {
 
 
     const monthlyGraph = (e) => {
-        let monthIndex = parseInt(e.target.options[e.target.selectedIndex].value);
+        if (e.detail === 0) {
+            let monthIndex = parseInt(e.target.options[e.target.selectedIndex].value);
 
-        let startDate = new Date();
-        startDate.setFullYear(year);
-        startDate.setMonth(monthIndex);
-        startDate.setDate(1);
-        startDate.setHours(0);
-        startDate.setMinutes(0);
-        startDate.setMilliseconds(0);
-        startDate.setSeconds(0);
+            let startDate = new Date();
+            startDate.setFullYear(year);
+            startDate.setMonth(monthIndex);
+            startDate.setDate(1);
+            startDate.setHours(0);
+            startDate.setMinutes(0);
+            startDate.setMilliseconds(0);
+            startDate.setSeconds(0);
 
-        let endDate = new Date();
-        endDate.setFullYear(year);
-        endDate.setMonth(monthIndex + 1);
-        endDate.setDate(0);
-        endDate.setHours(0);
-        endDate.setMinutes(0);
-        endDate.setMilliseconds(0);
-        endDate.setSeconds(0);
+            let endDate = new Date();
+            endDate.setFullYear(year);
+            endDate.setMonth(monthIndex + 1);
+            endDate.setDate(0);
+            endDate.setHours(23);
+            endDate.setMinutes(59);
+            endDate.setMilliseconds(0);
+            endDate.setSeconds(59);
 
-        putGraphData(startDate, endDate);
-        setStatus(`Showing Monthly Graph of ${e.nativeEvent.target[e.nativeEvent.target.selectedIndex].text}, ${year}`);
+            putGraphData(startDate, endDate);
+            setStatus(`Showing Monthly Graph of ${e.nativeEvent.target[e.nativeEvent.target.selectedIndex].text}, ${year}`);
+
+        }
     }
 
 
@@ -157,10 +160,10 @@ export default function TypeThicknessGraph() {
         endDate.setFullYear(year);
         endDate.setMonth(12);
         endDate.setDate(0);
-        endDate.setHours(0);
-        endDate.setMinutes(0);
+        endDate.setHours(23);
+        endDate.setMinutes(59);
         endDate.setMilliseconds(0);
-        endDate.setSeconds(0);
+        endDate.setSeconds(59);
 
         putGraphData(startDate, endDate);
         setStatus(`Showing Yearly Graph of ${year}`);
@@ -174,6 +177,7 @@ export default function TypeThicknessGraph() {
                 machineNo: machineNoInput.current.options[machineNoInput.current.selectedIndex].value
             });
             setMachine(`Machine No: ${machineNoInput.current.options[machineNoInput.current.selectedIndex].value}, Product Thickness: ${thicknessInput.current.value}`);
+            setStatus('Now Select Time Span');
             setMsg('Set!');
         }
         else {
@@ -263,7 +267,7 @@ export default function TypeThicknessGraph() {
                                 Set
                             </button>
 
-                            <select onChange={monthlyGraph}>
+                            <select onClick={monthlyGraph}>
                                 <option selected disabled>Monthly</option>
                                 <option value={0}>January</option>
                                 <option value={1}>February</option>

@@ -35,7 +35,7 @@ export const AnalyticsDetail = styled.div`
     margin: 0 auto;
 
     .msgDiv {
-        color: orange;
+        color: #ff6000;
         font-size: 1.5rem;
         padding: 1rem;
     }

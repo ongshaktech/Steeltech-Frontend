@@ -9,7 +9,7 @@ import style from '../style.module.css';
 
 export default function EfficiencyReport() {
 
-    const collection_name = 'machines';
+    const collection_name = 'machinesIndividual';
     let dateStartRef = useRef(null);
     let dateEndRef = useRef(null);
     let tableBodyRef = useRef(null);

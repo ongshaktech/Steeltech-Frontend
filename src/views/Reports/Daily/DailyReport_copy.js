@@ -8,7 +8,7 @@ import style from '../style.module.css';
 
 export default function DailyReport() {
 
-    const collection_name = 'machines';
+    const collection_name = 'machinesIndividual';
     let dateStartRef = useRef(null);
     let dateEndRef = useRef(null);
     let tableRef = useRef(null);

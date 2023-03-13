@@ -9,7 +9,7 @@ import { useState } from "react";
 
 export default function QuarterlyReport() {
 
-    const collection_name = 'machines';
+    const collection_name = 'machinesIndividual';
     let quarterRange = useRef(null);
     let startMonth = useRef(null);
     let year = useRef(null);

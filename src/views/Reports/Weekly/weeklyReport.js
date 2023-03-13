@@ -9,7 +9,7 @@ import { useState } from "react";
 
 export default function WeeklyReport() {
 
-    const collection_name = 'machines';
+    const collection_name = 'machinesIndividual';
     let weekRange = useRef(null);
     let dateEndRef = useRef(null);
     let tableRef = useRef(null);
