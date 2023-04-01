@@ -20,7 +20,7 @@ export default function ProductDetail({ productData }) {
                             <p>{index + 1}</p>
                             <p>{item?.machine_no}</p>
                             <p>{item?.thickness}</p>
-                            <p>{item?.dimension}</p>
+                            <p>{item?.product_dimensions}</p>
                             <p>{item?.product_type}</p>
                             <p>{item?.shift}</p>
                         </div>

@@ -31,7 +31,7 @@ export default function ProductForm({ setFormData, setshowProductModal }) {
             machine_no: machine_no.current.value,
             thickness: thickness.current.value,
             product_type: product_type.current.value,
-            dimension: dimension.current.value,
+            product_dimensions: dimension.current.value,
             shift: shift.current.value
         });
 

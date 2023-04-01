@@ -84,7 +84,7 @@ export default function DownTime() {
             getDocs(q).then(
                 (snapShot) => {
                     snapShot.forEach((doc) => {
-                        Array.prototype.push.apply(graphDataArr, split_time(3600, doc.data()));
+                        Array.prototype.push.apply(graphDataArr, split_time(900, doc.data()));
                     });
                     setGraphData(graphDataArr);
                 }
