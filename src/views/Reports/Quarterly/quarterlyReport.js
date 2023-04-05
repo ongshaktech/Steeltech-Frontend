@@ -6,6 +6,9 @@ import { collection, query, getDocs, where, doc, getDoc } from "firebase/firesto
 import { ProductTypes } from "../../../shared/constants";
 import style from '../style.module.css';
 import { useState } from "react";
+import ReactHTMLTableToExcel from 'react-html-table-to-excel-dev';
+import { FaFileDownload } from "react-icons/fa";
+
 
 export default function QuarterlyReport() {
 
@@ -152,7 +155,7 @@ export default function QuarterlyReport() {
                 Quarterly Report
             </h1>
 
-            <div className={style.rangeContainer} style={{ width: '57rem' }}>
+            <div className={style.rangeContainer}>
                 <input type="number" ref={quarterRange} placeholder="Quarters" style={{ width: '9rem' }} />
                 From
                 <select ref={startMonth}>
@@ -187,10 +190,17 @@ export default function QuarterlyReport() {
                 }}>
                     Print
                 </button>
+                <ReactHTMLTableToExcel
+                    id="xls-download-btn"
+                    className="download-table-xls-button"
+                    table="table-to-xls"
+                    filename={`quarterly_report_${new Date().toLocaleDateString()}`}
+                    sheet="tablexls"
+                    buttonText={<FaFileDownload/>} />
             </div>
 
             <div className={style.reportTable}>
-                <table>
+                <table id="table-to-xls">
                     <thead>
                         <tr>
                             <th>Quarter</th>

@@ -6,6 +6,8 @@ import { collection, query, getDocs, where, doc, getDoc } from "firebase/firesto
 import { ProductTypes } from "../../../shared/constants";
 import style from '../style.module.css';
 import { useState } from "react";
+import ReactHTMLTableToExcel from 'react-html-table-to-excel-dev';
+import { FaFileDownload } from "react-icons/fa";
 
 export default function DailyReport() {
 
@@ -107,7 +109,7 @@ export default function DailyReport() {
                             if (doc_length !== 0)
                                 appendTableRow(
                                     `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()}`,
-                                    machine_no, value, morning_count, morning_weight.toFixed(2), night_count, 
+                                    machine_no, value, morning_count, morning_weight.toFixed(2), night_count,
                                     night_weight.toFixed(2), TP, TW
                                 );
                             if (((index_m + 1) * (index_p + 1)) === (MachineNoList.size * ProductTypes.length)) {
@@ -176,10 +178,17 @@ export default function DailyReport() {
                 }}>
                     Print
                 </button>
+                <ReactHTMLTableToExcel
+                    id="xls-download-btn"
+                    className="download-table-xls-button"
+                    table="table-to-xls"
+                    filename={`daily_report_${new Date().toLocaleDateString()}`}
+                    sheet="tablexls"
+                    buttonText={<FaFileDownload/>} />
             </div>
 
             <div className={style.reportTable}>
-                <table>
+                <table id="table-to-xls">
                     <thead>
                         <tr>
                             <th rowSpan="2">Date</th>

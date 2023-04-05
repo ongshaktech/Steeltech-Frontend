@@ -5,6 +5,8 @@ import { db_firestore } from "../../../Hooks/config";
 import { collection, query, getDocs, where, doc, getDoc } from "firebase/firestore";
 import { ProductThickness } from "../../../shared/constants";
 import style from '../style.module.css';
+import ReactHTMLTableToExcel from 'react-html-table-to-excel-dev';
+import { FaFileDownload } from "react-icons/fa";
 
 
 export default function EfficiencyReport() {
@@ -155,7 +157,7 @@ export default function EfficiencyReport() {
                 Machine Efficiency
             </h1>
 
-            <div className={style.rangeContainer} style={{ width: '53rem' }}>
+            <div className={style.rangeContainer}>
                 <input type="date" ref={dateStartRef} /> {/*less*/}
                 to
                 <input type="date" ref={dateEndRef} />
@@ -167,10 +169,17 @@ export default function EfficiencyReport() {
                 }}>
                     Print
                 </button>
+                <ReactHTMLTableToExcel
+                    id="xls-download-btn"
+                    className="download-table-xls-button"
+                    table="table-to-xls"
+                    filename={`daily_report_${new Date().toLocaleDateString()}`}
+                    sheet="tablexls"
+                    buttonText={<FaFileDownload />} />
             </div>
 
             <div className={style.reportTable}>
-                <table>
+                <table id="table-to-xls">
                     <thead ref={tableHeaderRef}>
                         {/* Machine NO */}
                     </thead>
