@@ -27,7 +27,7 @@ export default function Machines() {
 
     useEffect(
         () => {
-            const threshold_sec = 30 * 60;
+            const threshold_sec = 10 * 60;
 
             GetMachineIndexs().then(data => {
                 const ref = collection(db_firestore, `machineStatus`);
@@ -45,20 +45,20 @@ export default function Machines() {
                             docs.forEach(
                                 doc => {
                                     let data = doc.data();
-                                    console.log((Math.floor(new Date().getTime() / 1000) - data?.time_end), threshold_sec);
 
                                     if ((Math.floor(new Date().getTime() / 1000) - data?.time_end) <= threshold_sec) {
                                         forming_machine.push(
-                                            <Card meta="forming" machineNo={number} active={true} />
+                                            <Card meta="forming" machineNo={`${number}`} active={true} />
                                         );
                                     }
                                     else {
                                         forming_machine.push(
-                                            <Card meta="forming" machineNo={number} active={false} />
+                                            <Card meta="forming" machineNo={`${number}`} active={false} />
                                         );
                                     }
                                 }
-                            )
+                            );
+                            setFormingMachine(forming_machine);
                             setDataLoaded(true);
                             setDataAvailable(forming_machine.length !== 0 || polish_machine.length !== 0);
                         }
@@ -80,16 +80,17 @@ export default function Machines() {
                                     let data = doc.data();
                                     if ((Math.floor(new Date().getTime() / 1000) - data?.time_end) <= threshold_sec) {
                                         polish_machine.push(
-                                            <Card meta="polish" machineNo={number} active={true} />
+                                            <Card meta="polish" machineNo={`${number}`} active={true} />
                                         );
                                     }
                                     else {
                                         polish_machine.push(
-                                            <Card meta="polish" machineNo={number} active={false} />
+                                            <Card meta="polish" machineNo={`${number}`} active={false} />
                                         );
                                     }
                                 }
-                            )
+                            );
+                            setPolishMachine(polish_machine);
                             setDataLoaded(true);
                             setDataAvailable(forming_machine.length !== 0 || polish_machine.length !== 0);
                         }
@@ -97,8 +98,8 @@ export default function Machines() {
                 });
 
 
-                setFormingMachine(forming_machine);
-                setPolishMachine(polish_machine);
+
+
 
                 // setDataAvailable(forming_machine.length !== 0 || polish_machine.length !== 0);
 
