@@ -1,7 +1,7 @@
 import { DashboardContent } from "../../styles/Dashboard.styled";
 import Card from "./components/Card";
 import styles from './Machines.module.css';
-import { collection, onSnapshot, getDoc, doc, orderBy, limit, where, query, getDocs } from 'firebase/firestore';
+import { collection, getDoc, doc, orderBy, limit, where, query, getDocs } from 'firebase/firestore';
 import { db_firestore } from "../../Hooks/config";
 import { useEffect, useState } from "react";
 import { Triangle } from "react-loader-spinner";
@@ -20,9 +20,9 @@ export default function Machines() {
         return querySnapshot.data();
     }
 
-    function isInArray(value, array) {
-        return array.indexOf(value) > -1;
-    }
+    // function isInArray(value, array) {
+    //     return array.indexOf(value) > -1;
+    // }
 
 
     useEffect(
@@ -45,6 +45,8 @@ export default function Machines() {
                             docs.forEach(
                                 doc => {
                                     let data = doc.data();
+                                    console.log((Math.floor(new Date().getTime() / 1000) - data?.time_end), threshold_sec);
+
                                     if ((Math.floor(new Date().getTime() / 1000) - data?.time_end) <= threshold_sec) {
                                         forming_machine.push(
                                             <Card meta="forming" machineNo={number} active={true} />
