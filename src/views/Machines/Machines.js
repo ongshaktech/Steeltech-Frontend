@@ -27,7 +27,7 @@ export default function Machines() {
 
     useEffect(
         () => {
-            const threshold_millis = 5 * 60 * 1000;
+            const threshold_sec = 10 * 60;
 
             GetMachineIndexs().then(data => {
                 const ref = collection(db_firestore, `machineStatus`);
@@ -45,7 +45,7 @@ export default function Machines() {
                             docs.forEach(
                                 doc => {
                                     let data = doc.data();
-                                    if ((Math.floor(new Date().getTime() / 1000) - data?.time_end) <= threshold_millis) {
+                                    if ((Math.floor(new Date().getTime() / 1000) - data?.time_end) <= threshold_sec) {
                                         forming_machine.push(
                                             <Card meta="forming" machineNo={number} active={true} />
                                         );
@@ -76,14 +76,14 @@ export default function Machines() {
                             docs.forEach(
                                 doc => {
                                     let data = doc.data();
-                                    if ((Math.floor(new Date().getTime() / 1000) - data?.time_end) <= threshold_millis) {
+                                    if ((Math.floor(new Date().getTime() / 1000) - data?.time_end) <= threshold_sec) {
                                         polish_machine.push(
                                             <Card meta="polish" machineNo={number} active={true} />
                                         );
                                     }
                                     else {
-                                        forming_machine.push(
-                                            <Card meta="forming" machineNo={number} active={false} />
+                                        polish_machine.push(
+                                            <Card meta="polish" machineNo={number} active={false} />
                                         );
                                     }
                                 }
