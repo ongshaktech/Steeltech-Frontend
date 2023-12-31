@@ -50,7 +50,7 @@ export default function DataPerMachine() {
     useEffect(() => {
         if (filter === 'monthly') monthlyGraph(lastEvent);
         else if (filter === 'yearly') yearlyGraph(null);
-    }, [year])
+    }, [year]);
 
 
 
@@ -106,7 +106,7 @@ export default function DataPerMachine() {
 
         setStatus(`Showing Daily Graph of ${dateRef.current.value}`);
 
-        setFilter('daily')
+        setFilter('daily');
     }
 
 

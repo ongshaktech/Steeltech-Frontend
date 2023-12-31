@@ -1,0 +1,199 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "machines",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "machine_no",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "product_type",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "thickness",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "unix_time",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "machines",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "machine_no",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "product_type",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "unix_time",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "machines",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "machine_no",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "thickness",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "unix_time",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "machines",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "machine_no",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "unix_time",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "machinesIndividual",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "machine_no",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "product_type",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "thickness",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "unix_time",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "machinesIndividual",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "machine_no",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "product_type",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "unix_time",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "machinesIndividual",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "machine_no",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "thickness",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "unix_time",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "machinesIndividual",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "machine_no",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "unix_time",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "machineStatus",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "is_running",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "machine_no",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "time_start",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "machineStatus",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "is_running",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "machine_no",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "time_start",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "machineStatus",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "machine_no",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "time_start",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

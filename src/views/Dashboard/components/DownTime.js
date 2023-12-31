@@ -54,6 +54,7 @@ export default function DownTime() {
 
     const setData = () => {
         if (machine_number !== '') {
+            let queryResult = [];
             let graphDataArr = [];
 
             // Custom data filtering
@@ -72,21 +73,25 @@ export default function DownTime() {
             startDate = Math.floor(startDate.getTime() / 1000);
             endDate = Math.floor(endDate.getTime() / 1000);
 
-            // console.log(startDate, endDate);
+            // console.log(startDate, endDate, machine_number);
 
             const ref = collection(db_firestore, 'machineStatus');
-            const q = query(ref, where('time_start', '>=', startDate),
-                where('time_start', '<=', endDate),
+            const q = query(ref,
+                // where('time_start', '>=', startDate),
+                // where('time_start', '<=', endDate),
                 where('machine_no', '==', machine_number)
             );
 
-            
+
             getDocs(q).then(
                 (snapShot) => {
                     snapShot.forEach((doc) => {
-                        Array.prototype.push.apply(graphDataArr, split_time(900, doc.data()));
+                        // Array.prototype.push.apply(graphDataArr, split_time(900, doc.data()));
+                        // console.log(doc.data());
+                        // graphDataArr.
+                        queryResult.push(doc.data());
                     });
-                    setGraphData(graphDataArr);
+                    setGraphData(split_time(900, queryResult, startDate));
                 }
             );
         }
