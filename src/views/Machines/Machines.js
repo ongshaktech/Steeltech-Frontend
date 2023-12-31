@@ -27,7 +27,7 @@ export default function Machines() {
 
     useEffect(
         () => {
-            const threshold_sec = 10 * 60;
+            const threshold_sec = 30 * 60;
 
             GetMachineIndexs().then(data => {
                 const ref = collection(db_firestore, `machineStatus`);
