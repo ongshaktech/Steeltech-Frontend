@@ -35,6 +35,19 @@ export default function Machines() {
                 let forming_machine = [];
                 let polish_machine = [];
 
+                let f_machine_arr = data?.forming_machine;
+                let p_machine_arr = data?.polish_machine;
+
+                // sorting
+                f_machine_arr.sort(function (a, b) {
+                    return parseInt(a, 10) - parseInt(b, 10);
+                });
+
+                p_machine_arr.sort(function (a, b) {
+                    return parseInt(a, 10) - parseInt(b, 10);
+                });
+
+
                 // forming machines
                 data?.forming_machine.forEach(number => {
                     const q = query(ref, where('machine_no', '==', number), orderBy('time_end', 'desc'), limit(1));
@@ -42,22 +55,22 @@ export default function Machines() {
                     // check a machine is active or not
                     getDocs(q).then(
                         docs => {
+                            let is_active = false;
+
                             docs.forEach(
                                 doc => {
                                     let data = doc.data();
 
                                     if ((Math.floor(new Date().getTime() / 1000) - data?.time_end) <= threshold_sec) {
-                                        forming_machine.push(
-                                            <Card meta="forming" machineNo={`${number}`} active={true} />
-                                        );
-                                    }
-                                    else {
-                                        forming_machine.push(
-                                            <Card meta="forming" machineNo={`${number}`} active={false} />
-                                        );
+                                        is_active = true;
                                     }
                                 }
                             );
+
+                            forming_machine.push(
+                                <Card meta="forming" machineNo={`${number}`} active={is_active} />
+                            );
+
                             setFormingMachine(forming_machine);
                             setDataLoaded(true);
                             setDataAvailable(forming_machine.length !== 0 || polish_machine.length !== 0);
@@ -75,21 +88,22 @@ export default function Machines() {
                     getDocs(q).then(
                         docs => {
 
+                            let is_active = false;
+
                             docs.forEach(
                                 doc => {
                                     let data = doc.data();
                                     if ((Math.floor(new Date().getTime() / 1000) - data?.time_end) <= threshold_sec) {
-                                        polish_machine.push(
-                                            <Card meta="polish" machineNo={`${number}`} active={true} />
-                                        );
+                                        is_active = true;
                                     }
-                                    else {
-                                        polish_machine.push(
-                                            <Card meta="polish" machineNo={`${number}`} active={false} />
-                                        );
-                                    }
+
                                 }
                             );
+
+                            polish_machine.push(
+                                <Card meta="polish" machineNo={`${number}`} active={is_active} />
+                            );
+
                             setPolishMachine(polish_machine);
                             setDataLoaded(true);
                             setDataAvailable(forming_machine.length !== 0 || polish_machine.length !== 0);
