@@ -74,8 +74,10 @@ export default function TypeThicknessGraph() {
                         let Weight = 0;
 
                         snapShot.forEach((doc) => {
-                            count += parseFloat(doc.data()['count']);
-                            Weight += parseFloat(doc.data()['weight']);
+                            if (parseFloat(doc.data()['weight']) > 0) {
+                                count += parseFloat(doc.data()['count']);
+                                Weight += parseFloat(doc.data()['weight']);
+                            }
                         });
                         graphDataArr.push({
                             name: product_type,

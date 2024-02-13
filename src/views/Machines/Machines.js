@@ -47,9 +47,11 @@ export default function Machines() {
                     return parseInt(a, 10) - parseInt(b, 10);
                 });
 
+                console.log(p_machine_arr, f_machine_arr);
+
 
                 // forming machines
-                data?.forming_machine.forEach(number => {
+                f_machine_arr.forEach(number => {
                     const q = query(ref, where('machine_no', '==', number), orderBy('time_end', 'desc'), limit(1));
 
                     // check a machine is active or not
@@ -81,7 +83,7 @@ export default function Machines() {
 
 
                 // polish machine
-                data?.polish_machine.forEach(number => {
+                p_machine_arr.forEach(number => {
                     const q = query(ref, where('machine_no', '==', number), orderBy('time_end', 'desc'), limit(1));
 
                     // check a machine is active or not

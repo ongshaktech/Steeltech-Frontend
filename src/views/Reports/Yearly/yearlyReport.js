@@ -95,12 +95,16 @@ export default function YearlyReport() {
                                 dataNum++;
                                 const data = doc.data();
                                 if (data['shift'] === 'Morning') {
-                                    morning_count += parseInt(data['count']);
-                                    morning_weight += parseFloat(data['weight']);
+                                    if (parseFloat(data['weight']) > 0) {
+                                        morning_count += parseInt(data['count']);
+                                        morning_weight += parseFloat(data['weight']);
+                                    }
                                 }
                                 else {
-                                    night_count += parseInt(data['count']);
-                                    night_weight += parseFloat(data['weight']);
+                                    if (parseFloat(data['weight']) > 0) {
+                                        night_count += parseInt(data['count']);
+                                        night_weight += parseFloat(data['weight']);
+                                    }
                                 }
                             });
 

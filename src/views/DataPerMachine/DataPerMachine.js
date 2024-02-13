@@ -73,14 +73,16 @@ export default function DataPerMachine() {
                 let Weight = 0;
 
                 snapShot.forEach((doc) => {
-                    count += parseFloat(doc.data()['count']);
-                    Weight += parseFloat(doc.data()['weight']);
+                    if (parseFloat(doc.data()['weight']) > 0) {
+                        count += parseFloat(doc.data()['count']);
+                        Weight += parseFloat(doc.data()['weight']);
+                    }
                     // console.log(doc.data());
                 });
                 graphDataArr.push({
                     name: `Machine ${machineNumber}`,
                     pipes: count,
-                    'Total weight': Weight,
+                    'Total weight': Weight.toFixed(2),
                     'Average Pipe Weight': (Weight / count).toFixed(2)
                 });
                 setGraphData(graphDataArr);

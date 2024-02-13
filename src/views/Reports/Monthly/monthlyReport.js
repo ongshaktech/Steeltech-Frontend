@@ -95,8 +95,10 @@ export default function MonthlyReport() {
                                 doc_length++;
                                 dataNum++;
                                 const data = doc.data();
-                                TW += parseFloat(data['weight']);
-                                TP += parseInt(data['count']);
+                                if (parseFloat(data['weight']) > 0) {
+                                    TW += parseFloat(data['weight']);
+                                    TP += parseInt(data['count']);
+                                }
                             });
 
                             if (doc_length !== 0)
@@ -213,7 +215,7 @@ export default function MonthlyReport() {
                     table="table-to-xls"
                     filename={`monthly_report_${new Date().toLocaleDateString()}`}
                     sheet="tablexls"
-                    buttonText={<FaFileDownload/>} />
+                    buttonText={<FaFileDownload />} />
             </div>
 
             <div className={style.reportTable}>

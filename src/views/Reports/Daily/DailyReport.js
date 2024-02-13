@@ -94,12 +94,16 @@ export default function DailyReport() {
                                 dataNum++;
                                 const data = doc.data();
                                 if (data['shift'] === 'Morning') {
-                                    morning_count += parseInt(data['count']);
-                                    morning_weight += parseFloat(data['weight']);
+                                    if (parseFloat(data['weight']) > 0) {
+                                        morning_count += parseInt(data['count']);
+                                        morning_weight += parseFloat(data['weight']);
+                                    }
                                 }
                                 else {
-                                    night_count += parseInt(data['count']);
-                                    night_weight += parseFloat(data['weight']);
+                                    if (parseFloat(data['weight']) > 0) {
+                                        night_count += parseInt(data['count']);
+                                        night_weight += parseFloat(data['weight']);
+                                    }
                                 }
                             });
 
@@ -184,7 +188,7 @@ export default function DailyReport() {
                     table="table-to-xls"
                     filename={`daily_report_${new Date().toLocaleDateString()}`}
                     sheet="tablexls"
-                    buttonText={<FaFileDownload/>} />
+                    buttonText={<FaFileDownload />} />
             </div>
 
             <div className={style.reportTable}>

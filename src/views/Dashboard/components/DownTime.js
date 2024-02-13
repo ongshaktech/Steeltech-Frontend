@@ -91,6 +91,8 @@ export default function DownTime() {
                         // graphDataArr.
                         queryResult.push(doc.data());
                     });
+
+                    console.log(queryResult);                
                     setGraphData(split_time(900, queryResult, startDate));
                 }
             );
