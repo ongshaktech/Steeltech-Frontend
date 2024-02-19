@@ -28,7 +28,7 @@ export default function ReportsTable({ ReportData, startIndex }) {
                 <p>Machine Number</p>
                 <p>Product Type</p>
                 <p>Thickness</p>
-                <p>Dimension</p>
+                {/* <p>Dimension</p> */}
                 <p>Product Count</p>
                 <p>Total weight</p>
                 <p>Shift</p>
@@ -43,7 +43,7 @@ export default function ReportsTable({ ReportData, startIndex }) {
                             <p>{item?.machine_no}</p>
                             <p>{item?.product_type}</p>
                             <p>{item?.thickness}</p>
-                            <p>{item?.product_dimensions}</p>
+                            {/* <p>{item?.product_dimensions}</p> */}
                             <p>{item?.count} </p>
                             <p>{item?.weight} KG</p>
                             <p>{item?.shift}</p>
